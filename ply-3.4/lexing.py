@@ -96,7 +96,6 @@ class BGDLexer(object):
             if not tok:
                 break
             tok_str += str(tok) + "\n"
-        print tok_str
         return tok_str
 
 if __name__ == '__main__':
