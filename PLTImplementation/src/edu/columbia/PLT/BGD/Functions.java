@@ -7,26 +7,37 @@ package edu.columbia.PLT.BGD;
  */
 
 public class Functions {
-	public boolean add(int posx, int posy, Player currentowner) {
-		
+	public static boolean add(int posx, int posy, Player currentowner) {
 		if(isEmpty(posx, posy)){
+			Board.boardSlots[posx][posy] = new Slot();
 			Board.boardSlots[posx][posy].setPiece(new Piece(currentowner));
 			Board.boardSlots[posx][posy].setPlayer(currentowner);
-		}
-	}
-	
-	public boolean isEmpty(int posx, int posy) {
-		Slot currentSlot = Board.boardSlots[posx][posy];
-		if(currentSlot.getPiece() == null){
 			return true;
 		}else {
 			return false;
 		}
 	}
 	
-	public int numberInRow(int posx, int posy) {
+	public static boolean win(int posx, int posy, Player currentowner) {
+		if(numberInRow(posx, posy) >= 3){
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	public static boolean isEmpty(int posx, int posy) {
 		Slot currentSlot = Board.boardSlots[posx][posy];
-		if(currentSlot.getPiece() == null){
+		if(currentSlot == null){
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	public static int numberInRow(int posx, int posy) {
+		Slot currentSlot = Board.boardSlots[posx][posy];
+		if(currentSlot == null){
 			return 0;
 		}
 		//check horizontal line
@@ -39,9 +50,11 @@ public class Functions {
 		return Math.max(a, Math.max(b, c));
 	}
 	
-	int CountHorizontal(int posx, int posy, Slot currentSlot){
+	private static int CountHorizontal(int posx, int posy, Slot currentSlot){
 		int total = 1;
 		for(int i = posy+1; i < Board.parcolumn; ++i){
+			if(Board.boardSlots[posx][i] == null)
+				break;
 			if(Board.boardSlots[posx][i].getPlayer() == currentSlot.getPlayer()){
 				total++;
 			}else {
@@ -49,6 +62,8 @@ public class Functions {
 			}
 		}
 		for(int i = posy - 1; i >= 0; --i){
+			if(Board.boardSlots[posx][i] == null)
+				break;
 			if(Board.boardSlots[posx][i].getPlayer() == currentSlot.getPlayer()){
 				total++;
 			}else {
@@ -59,9 +74,11 @@ public class Functions {
 		return total;
 	}
 	
-	int CountVertical(int posx, int posy, Slot currentSlot){
+	private static int CountVertical(int posx, int posy, Slot currentSlot){
 		int total = 1;
 		for(int i = posx+1; i < Board.parrow; ++i){
+			if(Board.boardSlots[i][posy] == null)
+				break;
 			if(Board.boardSlots[i][posy].getPlayer() == currentSlot.getPlayer()){
 				total++;
 			}else {
@@ -69,6 +86,8 @@ public class Functions {
 			}
 		}
 		for(int i = posx - 1; i >= 0; --i){
+			if(Board.boardSlots[i][posy] == null)
+				break;
 			if(Board.boardSlots[i][posy].getPlayer() == currentSlot.getPlayer()){
 				total++;
 			}else {
@@ -79,7 +98,7 @@ public class Functions {
 		return total;
 	}
 	
-	int CountDiagonal(int posx, int posy, Slot currentSlot){
+	private static int CountDiagonal(int posx, int posy, Slot currentSlot){
 		int i = posx;
 		int j = posy;
 		int total1 = 1;
@@ -88,15 +107,21 @@ public class Functions {
 		i -= 1;
 		j -= 1;
 		while(i >= 0 && i < Board.parrow && j >=0 && j < Board.parcolumn){
+			if(Board.boardSlots[i][j] == null)
+				break;
 			if(Board.boardSlots[i][j].getPlayer() == currentSlot.getPlayer()){
 				total1++;
 			}
 			i-=1;
 			j-=1;
 		}
+		i = posx;
+		j = posy;
 		i +=1;
 		j +=1;
 		while(i >= 0 && i < Board.parrow && j >=0 && j < Board.parcolumn){
+			if(Board.boardSlots[i][j] == null)
+				break;
 			if(Board.boardSlots[i][j].getPlayer() == currentSlot.getPlayer()){
 				total1++;
 			}
@@ -104,9 +129,13 @@ public class Functions {
 			j+=1;
 		}
 		
+		i = posx;
+		j = posy;
 		i-=1;
 		j+=1;
 		while(i >= 0 && i < Board.parrow && j >=0 && j < Board.parcolumn){
+			if(Board.boardSlots[i][j] == null)
+				break;
 			if(Board.boardSlots[i][j].getPlayer() == currentSlot.getPlayer()){
 				total2++;
 			}
@@ -114,9 +143,13 @@ public class Functions {
 			j+=1;
 		}
 		
+		i = posx;
+		j = posy;
 		i+=1;
 		j-=1;
 		while(i >= 0 && i < Board.parrow && j >=0 && j < Board.parcolumn){
+			if(Board.boardSlots[i][j] == null)
+				break;
 			if(Board.boardSlots[i][j].getPlayer() == currentSlot.getPlayer()){
 				total2++;
 			}

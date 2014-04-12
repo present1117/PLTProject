@@ -5,5 +5,14 @@ package edu.columbia.PLT.BGD;
  *
  */
 public class Player {
-		int numberofpieces;
+	int numberofpieces;
+	int identifier;
+	
+	Player() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	Player(int id){
+		identifier = id;
+	}
 }
