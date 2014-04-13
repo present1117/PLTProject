@@ -34,7 +34,7 @@ def p_input_stmt(t):
     t[0] = Node('input_stmt', [t[1], t[2], t[3], t[4], t[5]])
 
 def p_piece_stmt(t):
-    'piece_stmt : PIECE ":" NEWLINE INDENT piece_expr DEDENT'
+    'piece_stmt : PIECE ":" INDENT piece_expr DEDENT'
     t[0] = Node('piece_stmt', [t[5]])
 
 def p_piece_expr(t):
@@ -66,7 +66,7 @@ def p_action_stmt(t):
         t[0] = Node('action_stmt', [t[1], t[5]])
 
 def p_function_stmt(t):
-    '''function_stmt : funcdef
+    '''function_stmt : FUNCTION funcdef
                     | function_stmt funcdef'''
     if len(t) == 2:
         t[0] = Node('function_stmt', [t[1]])
@@ -316,5 +316,5 @@ if __name__ == "__main__":
     m.build()
     parser = yacc.yacc()
     print 'Input a text'
-    line = raw_input()
-    parser.parse(line, lexer = m.lexer)
+    line = raw_input()+'\n'
+    parser.parse(line, lexer = m.lexer, tokenfunc = m.token)

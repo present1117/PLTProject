@@ -3,13 +3,13 @@ Created by PLY version 3.4 (http://www.dabeaz.com/ply)
 Unused terminals:
 
     COMMENT
-    FUNCTION
+    WHITESPACE
 
 Grammar
 
 Rule 0     S' -> piece_stmt
 Rule 1     input_stmt -> piece_stmt board_stmt player_stmt rule_stmt function_stmt
-Rule 2     piece_stmt -> PIECE : NEWLINE INDENT piece_expr DEDENT
+Rule 2     piece_stmt -> PIECE : INDENT piece_expr DEDENT
 Rule 3     piece_expr -> STRING NUMBER NEWLINE
 Rule 4     piece_expr -> piece_expr STRING NUMBER NEWLINE
 Rule 5     board_stmt -> BOARD : NEWLINE INDENT NUMBER NUMBER DEDENT
@@ -17,7 +17,7 @@ Rule 6     player_stmt -> PLAYER : NEWLINE INDENT NUMBER DEDENT
 Rule 7     rule_stmt -> RULE : NEWLINE INDENT action_stmt DEDENT
 Rule 8     action_stmt -> ACTION : = ID NEWLINE
 Rule 9     action_stmt -> action_stmt ACTION : = ID NEWLINE
-Rule 10    function_stmt -> funcdef
+Rule 10    function_stmt -> FUNCTION funcdef
 Rule 11    function_stmt -> function_stmt funcdef
 Rule 12    stmt -> simple_stmt
 Rule 13    stmt -> compound_stmt
@@ -120,12 +120,12 @@ DEF                  : 24 25
 ELSE                 : 73 74
 ELSEIF               : 75 76
 FOR                  : 69 70
-FUNCTION             : 
+FUNCTION             : 10
 ID                   : 8 9 20 24 25 28 29 56 63 65 66 69 70
 IF                   : 71 72 73 74
 IN                   : 70
 INDENT               : 2 5 6 7 79
-NEWLINE              : 2 3 4 5 6 7 8 9 20 78 79 82 83 84
+NEWLINE              : 3 4 5 6 7 8 9 20 78 79 82 83 84
 NIL                  : 60
 NOT                  : 35
 NUMBER               : 3 4 5 5 6 58 69 69
@@ -137,6 +137,7 @@ RULE                 : 7
 STRING               : 3 4 57
 TO                   : 69
 WHILE                : 77
+WHITESPACE           : 
 [                    : 64
 ]                    : 64
 error                : 
@@ -188,7 +189,7 @@ Parsing method: LALR
 state 0
 
     (0) S' -> . piece_stmt
-    (2) piece_stmt -> . PIECE : NEWLINE INDENT piece_expr DEDENT
+    (2) piece_stmt -> . PIECE : INDENT piece_expr DEDENT
 
     PIECE           shift and go to state 1
 
@@ -196,7 +197,7 @@ state 0
 
 state 1
 
-    (2) piece_stmt -> PIECE . : NEWLINE INDENT piece_expr DEDENT
+    (2) piece_stmt -> PIECE . : INDENT piece_expr DEDENT
 
     :               shift and go to state 3
 
@@ -209,66 +210,59 @@ state 2
 
 state 3
 
-    (2) piece_stmt -> PIECE : . NEWLINE INDENT piece_expr DEDENT
+    (2) piece_stmt -> PIECE : . INDENT piece_expr DEDENT
 
-    NEWLINE         shift and go to state 4
+    INDENT          shift and go to state 4
 
 
 state 4
 
-    (2) piece_stmt -> PIECE : NEWLINE . INDENT piece_expr DEDENT
-
-    INDENT          shift and go to state 5
-
-
-state 5
-
-    (2) piece_stmt -> PIECE : NEWLINE INDENT . piece_expr DEDENT
+    (2) piece_stmt -> PIECE : INDENT . piece_expr DEDENT
     (3) piece_expr -> . STRING NUMBER NEWLINE
     (4) piece_expr -> . piece_expr STRING NUMBER NEWLINE
 
-    STRING          shift and go to state 6
+    STRING          shift and go to state 5
 
-    piece_expr                     shift and go to state 7
+    piece_expr                     shift and go to state 6
 
-state 6
+state 5
 
     (3) piece_expr -> STRING . NUMBER NEWLINE
 
-    NUMBER          shift and go to state 8
+    NUMBER          shift and go to state 7
+
+
+state 6
+
+    (2) piece_stmt -> PIECE : INDENT piece_expr . DEDENT
+    (4) piece_expr -> piece_expr . STRING NUMBER NEWLINE
+
+    DEDENT          shift and go to state 8
+    STRING          shift and go to state 9
 
 
 state 7
 
-    (2) piece_stmt -> PIECE : NEWLINE INDENT piece_expr . DEDENT
-    (4) piece_expr -> piece_expr . STRING NUMBER NEWLINE
+    (3) piece_expr -> STRING NUMBER . NEWLINE
 
-    DEDENT          shift and go to state 9
-    STRING          shift and go to state 10
+    NEWLINE         shift and go to state 10
 
 
 state 8
 
-    (3) piece_expr -> STRING NUMBER . NEWLINE
+    (2) piece_stmt -> PIECE : INDENT piece_expr DEDENT .
 
-    NEWLINE         shift and go to state 11
+    $end            reduce using rule 2 (piece_stmt -> PIECE : INDENT piece_expr DEDENT .)
 
 
 state 9
 
-    (2) piece_stmt -> PIECE : NEWLINE INDENT piece_expr DEDENT .
+    (4) piece_expr -> piece_expr STRING . NUMBER NEWLINE
 
-    $end            reduce using rule 2 (piece_stmt -> PIECE : NEWLINE INDENT piece_expr DEDENT .)
+    NUMBER          shift and go to state 11
 
 
 state 10
-
-    (4) piece_expr -> piece_expr STRING . NUMBER NEWLINE
-
-    NUMBER          shift and go to state 12
-
-
-state 11
 
     (3) piece_expr -> STRING NUMBER NEWLINE .
 
@@ -276,14 +270,14 @@ state 11
     STRING          reduce using rule 3 (piece_expr -> STRING NUMBER NEWLINE .)
 
 
-state 12
+state 11
 
     (4) piece_expr -> piece_expr STRING NUMBER . NEWLINE
 
-    NEWLINE         shift and go to state 13
+    NEWLINE         shift and go to state 12
 
 
-state 13
+state 12
 
     (4) piece_expr -> piece_expr STRING NUMBER NEWLINE .
 

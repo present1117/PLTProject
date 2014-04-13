@@ -5,9 +5,9 @@ _tabversion = '3.2'
 
 _lr_method = 'LALR'
 
-_lr_signature = '\x0bj\x0b\xac"0\xe2\x04\x04E~\xae\xb8\xeb\xd2\xf3'
+_lr_signature = 'K\x013\x18Mj\x91\xfd\x88\xb9`\x07\xa8\x88PF'
     
-_lr_action_items = {'DEDENT':([7,11,13,],[9,-3,-4,]),'PIECE':([0,],[1,]),'INDENT':([4,],[5,]),'STRING':([5,7,11,13,],[6,10,-3,-4,]),'NEWLINE':([3,8,12,],[4,11,13,]),'NUMBER':([6,10,],[8,12,]),':':([1,],[3,]),'$end':([2,9,],[0,-2,]),}
+_lr_action_items = {'DEDENT':([6,10,12,],[8,-3,-4,]),'PIECE':([0,],[1,]),'INDENT':([3,],[4,]),'STRING':([4,6,10,12,],[5,9,-3,-4,]),'NEWLINE':([7,11,],[10,12,]),'NUMBER':([5,9,],[7,11,]),':':([1,],[3,]),'$end':([2,8,],[0,-2,]),}
 
 _lr_action = { }
 for _k, _v in _lr_action_items.items():
@@ -16,7 +16,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'piece_stmt':([0,],[2,]),'piece_expr':([5,],[7,]),}
+_lr_goto_items = {'piece_stmt':([0,],[2,]),'piece_expr':([4,],[6,]),}
 
 _lr_goto = { }
 for _k, _v in _lr_goto_items.items():
@@ -27,7 +27,7 @@ del _lr_goto_items
 _lr_productions = [
   ("S' -> piece_stmt","S'",1,None,None,None),
   ('input_stmt -> piece_stmt board_stmt player_stmt rule_stmt function_stmt','input_stmt',5,'p_input_stmt','/Users/dechuanxu/Documents/Columbia/Spring14/PLT/PLTProject/ply-3.4/yaccing.py',33),
-  ('piece_stmt -> PIECE : NEWLINE INDENT piece_expr DEDENT','piece_stmt',6,'p_piece_stmt','/Users/dechuanxu/Documents/Columbia/Spring14/PLT/PLTProject/ply-3.4/yaccing.py',37),
+  ('piece_stmt -> PIECE : INDENT piece_expr DEDENT','piece_stmt',5,'p_piece_stmt','/Users/dechuanxu/Documents/Columbia/Spring14/PLT/PLTProject/ply-3.4/yaccing.py',37),
   ('piece_expr -> STRING NUMBER NEWLINE','piece_expr',3,'p_piece_expr','/Users/dechuanxu/Documents/Columbia/Spring14/PLT/PLTProject/ply-3.4/yaccing.py',41),
   ('piece_expr -> piece_expr STRING NUMBER NEWLINE','piece_expr',4,'p_piece_expr','/Users/dechuanxu/Documents/Columbia/Spring14/PLT/PLTProject/ply-3.4/yaccing.py',42),
   ('board_stmt -> BOARD : NEWLINE INDENT NUMBER NUMBER DEDENT','board_stmt',7,'p_board_stmt','/Users/dechuanxu/Documents/Columbia/Spring14/PLT/PLTProject/ply-3.4/yaccing.py',49),
@@ -35,7 +35,7 @@ _lr_productions = [
   ('rule_stmt -> RULE : NEWLINE INDENT action_stmt DEDENT','rule_stmt',6,'p_rule_stmt','/Users/dechuanxu/Documents/Columbia/Spring14/PLT/PLTProject/ply-3.4/yaccing.py',57),
   ('action_stmt -> ACTION : = ID NEWLINE','action_stmt',5,'p_action_stmt','/Users/dechuanxu/Documents/Columbia/Spring14/PLT/PLTProject/ply-3.4/yaccing.py',61),
   ('action_stmt -> action_stmt ACTION : = ID NEWLINE','action_stmt',6,'p_action_stmt','/Users/dechuanxu/Documents/Columbia/Spring14/PLT/PLTProject/ply-3.4/yaccing.py',62),
-  ('function_stmt -> funcdef','function_stmt',1,'p_function_stmt','/Users/dechuanxu/Documents/Columbia/Spring14/PLT/PLTProject/ply-3.4/yaccing.py',69),
+  ('function_stmt -> FUNCTION funcdef','function_stmt',2,'p_function_stmt','/Users/dechuanxu/Documents/Columbia/Spring14/PLT/PLTProject/ply-3.4/yaccing.py',69),
   ('function_stmt -> function_stmt funcdef','function_stmt',2,'p_function_stmt','/Users/dechuanxu/Documents/Columbia/Spring14/PLT/PLTProject/ply-3.4/yaccing.py',70),
   ('stmt -> simple_stmt','stmt',1,'p_stmt','/Users/dechuanxu/Documents/Columbia/Spring14/PLT/PLTProject/ply-3.4/yaccing.py',77),
   ('stmt -> compound_stmt','stmt',1,'p_stmt','/Users/dechuanxu/Documents/Columbia/Spring14/PLT/PLTProject/ply-3.4/yaccing.py',78),

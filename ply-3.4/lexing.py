@@ -1,4 +1,5 @@
 import ply.lex as lex
+import copy
 
 class BGDLexer(object):
     
@@ -29,15 +30,18 @@ class BGDLexer(object):
         'NUMBER',
         'BOOLEAN',
         'STRING',
+        'EMPTYLINE',
         'INDENT',
         'DEDENT',
         'ID',
         'COMMENT',
         'NEWLINE',
+        
         'WHITESPACE'
+        
         ] + list(reserved.values())
 
-    literals = [ '+', '-', '*', '/', '%', ':', '=', ',', '>', '<',\
+    literals = [ '+', '-', '*', '/', '%', ':', '=', ',', '>', '<',
                  '.', '(', ')', '[', ']']
 
 
@@ -56,15 +60,15 @@ class BGDLexer(object):
         return t
 
     def t_ID(self, t):
-        r'[a-zA-Z_][a-zA-Z_0-9]*'
+        r'[A-Za-z_][A-Za-z0-9_]*'
         t.type = self.reserved.get(t.value,'ID')
         return t
 
     t_ignore_COMMENT = r'@@.*$'
 
-    t_ignore = r'\n[ \t]*\n'
+    #t_ignore_EMPTYLINE = r'\n[\t ]*$'
     
-    t_WHITESPACE = r'\n[ ]*'           
+    t_WHITESPACE = r'\n[ \t]*'
 
     def t_error(self, t):
         print "Illegal character '%s'" % t.value[0]
@@ -79,33 +83,41 @@ class BGDLexer(object):
         if self.tokens:
             return self.tokens.pop(0)
         # loop until we find a valid token
-        while 1:
-            # grab the next from first stage
-            token = self.lexer.token()
+        # grab the next from first stage
+        token = self.lexer.token()
 
-            # we only care about whitespace
-            if not token or token.type != 'WHITESPACE':
-                return token
-
-            # check for new indent/dedent
-            whitespace = token.value[1:]  # strip \n
-            change = self._calc_indent(whitespace)
-            if change:
-                break
-
-        # indentation change
-        if change == 1:
-            token.type = 'INDENT'
+        # we only care about whitespace
+        if not token or token.type != 'WHITESPACE':
             return token
+
+        # check for new indent/dedent
+        whitespace = token.value[1:]  # strip \n
+        change = self._calc_indent(whitespace)
+
+        if change == 0:
+            token.type = 'NEWLINE'
+            return token
+        
+        # indentation change
+        elif change == 1:
+            token.type = 'INDENT'
+            self.tokens.append(copy.copy(token))
+            token.type = 'NEWLINE'
+            return token
+        
+        # dedenting one or more times
+        assert change < 0
+        token.type = 'DEDENT'
+
         # buffer any additional DEDENTs
         while change:
             self.tokens.append(copy.copy(token))
             change += 1
+        token.type = 'NEWLINE'       
         return token
-
+    
     def _calc_indent(self, whitespace):
-        "returns a number representing indents added or removed"
-        n = len(whitespace) # number of spaces
+        n = len(whitespace) + 3 * whitespace.count('\t')# number of spaces
         indents = self.indents # stack of space numbers
         if n > indents[-1]:
             indents.append(n)
@@ -129,7 +141,7 @@ class BGDLexer(object):
         self.lexer.input(data)
         tok_str = ""
         while True:
-            tok = self.lexer.token()
+            tok = self.token()
             if not tok:
                 break
             tok_str += str(tok) + "\n"
@@ -140,5 +152,5 @@ if __name__ == '__main__':
     lexer = BGDLexer()
     lexer.build()
     print 'Input a text'
-    line = raw_input()
+    line = raw_input() + '\n'
     lexer.tok_str(line)
