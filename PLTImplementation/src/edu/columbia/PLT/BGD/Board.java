@@ -1,6 +1,6 @@
 package edu.columbia.PLT.BGD;
 /**
- * 
+ * Defination of the Board
  * @author Presenthuang
  *
  */
@@ -30,5 +30,17 @@ class Slot{
 	public boolean setPlayer(Player p) {
 		owner = p;
 		return true;
+	}
+}
+
+
+
+class Pos{
+	int posx;
+	int posy;
+	public Pos(int x, int y) {
+		// TODO Auto-generated constructor stub
+		posx = x;
+		posy = y;
 	}
 }

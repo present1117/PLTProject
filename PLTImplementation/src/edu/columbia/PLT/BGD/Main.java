@@ -1,7 +1,11 @@
 package edu.columbia.PLT.BGD;
 
 import java.util.Scanner;
-
+/**
+ * Main entrance of the program.
+ * @author Presenthuang
+ *
+ */
 public class Main {
 	public static void main(String[] args) {
 		System.out.println("Welcome to our greatest Tic-Tac-Toe game!");

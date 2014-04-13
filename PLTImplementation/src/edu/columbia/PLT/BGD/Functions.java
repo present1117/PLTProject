@@ -1,6 +1,9 @@
 package edu.columbia.PLT.BGD;
+
+import edu.columbia.PLT.BGD.Piece.PieceType;
+
 /**
- * Abstract class for all functions in the program
+ * class for all functions in the program
  * as well all the built-in functions
  * @author Presenthuang
  *
@@ -159,4 +162,53 @@ public class Functions {
 		
 		return total1 > total2 ? total1:total2;
 	}
+	
+	public static int getPieceType(Piece p){
+		return p.piecetype();
+	}
+	
+	public static Player getPiecePlayer(Piece p){
+		return p.owner;
+	}
+	
+	public static Pos getPiecePos(Piece p){
+		return p.pos;
+	} 
+	
+	public static Piece getPiece(Pos po){
+		Piece piece = Board.boardSlots[po.posx][po.posy].getPiece();
+		return piece;
+	}
+	
+	public static int pieceCount(){
+		return 0;
+		
+	}
+	
+	public static boolean isBoardFull(){
+		return false;
+		
+	}
+	
+	
+	public static boolean remove(Pos po){
+		Piece piece = Board.boardSlots[po.posx][po.posy].getPiece();
+		if(piece == null){
+			return false;
+		}else {
+			Board.boardSlots[po.posx][po.posy].setPiece(null);
+			//delete the piece from the player
+			return true;
+		}
+	}
+
+	void getPiecefromPlayer(){
+		
+	}
+	
+	void findNextInRow(){
+		
+	}
+	
+	
 }

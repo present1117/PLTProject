@@ -5,6 +5,5 @@ package edu.columbia.PLT.BGD;
  *
  */
 public class Rule {
-		//what should we have here
-		
+		//what should we have here?	
 }
