@@ -4,192 +4,195 @@ Unused terminals:
 
     COMMENT
     WHITESPACE
+    EMPTYLINE
 
 Grammar
 
 Rule 0     S' -> piece_stmt
 Rule 1     input_stmt -> piece_stmt board_stmt player_stmt rule_stmt function_stmt
-Rule 2     piece_stmt -> PIECE : INDENT piece_expr DEDENT
+Rule 2     piece_stmt -> PIECE : NEWLINE INDENT piece_expr DEDENT
 Rule 3     piece_expr -> STRING NUMBER NEWLINE
-Rule 4     piece_expr -> piece_expr STRING NUMBER NEWLINE
-Rule 5     board_stmt -> BOARD : NEWLINE INDENT NUMBER NUMBER DEDENT
-Rule 6     player_stmt -> PLAYER : NEWLINE INDENT NUMBER DEDENT
-Rule 7     rule_stmt -> RULE : NEWLINE INDENT action_stmt DEDENT
-Rule 8     action_stmt -> ACTION : = ID NEWLINE
-Rule 9     action_stmt -> action_stmt ACTION : = ID NEWLINE
-Rule 10    function_stmt -> FUNCTION funcdef
-Rule 11    function_stmt -> function_stmt funcdef
-Rule 12    stmt -> simple_stmt
-Rule 13    stmt -> compound_stmt
-Rule 14    simple_stmt -> assign_stmt
-Rule 15    simple_stmt -> flow_stmt
-Rule 16    compound_stmt -> funcdef
-Rule 17    compound_stmt -> for_stmt
-Rule 18    compound_stmt -> if_stmt
-Rule 19    compound_stmt -> while_stmt
-Rule 20    assign_stmt -> ID : = expr NEWLINE
-Rule 21    flow_stmt -> break_stmt
-Rule 22    flow_stmt -> continue_stmt
-Rule 23    flow_stmt -> return_stmt
-Rule 24    funcdef -> DEF ID parameters : suite
-Rule 25    funcdef -> DEF ID : suite
-Rule 26    parameters -> parameters , parameter
-Rule 27    parameters -> parameter
-Rule 28    parameter -> ID
-Rule 29    parameter -> ID : = expr
-Rule 30    expr -> or_test
-Rule 31    or_test -> and_test
-Rule 32    or_test -> or_test OR and_test
-Rule 33    and_test -> not_test
-Rule 34    and_test -> and_test AND not_test
-Rule 35    not_test -> NOT not_test
-Rule 36    not_test -> comparison
-Rule 37    comparison -> operand
-Rule 38    comparison -> comparison = operand
-Rule 39    comparison -> comparison > operand
-Rule 40    comparison -> comparison < operand
-Rule 41    comparison -> comparison > = operand
-Rule 42    comparison -> comparison < = operand
-Rule 43    comparison -> comparison ~ = operand
-Rule 44    operand -> term
-Rule 45    operand -> operand + term
-Rule 46    operand -> operand - term
-Rule 47    term -> factor
-Rule 48    term -> term * factor
-Rule 49    term -> term / factor
-Rule 50    term -> term % factor
-Rule 51    factor -> power
-Rule 52    factor -> + factor
-Rule 53    factor -> - factor
-Rule 54    power -> atom
-Rule 55    power -> power trailer
-Rule 56    atom -> ID
-Rule 57    atom -> STRING
-Rule 58    atom -> NUMBER
-Rule 59    atom -> BOOLEAN
-Rule 60    atom -> NIL
-Rule 61    atom -> func_expr
-Rule 62    atom -> ( expr )
-Rule 63    trailer -> . ID
-Rule 64    trailer -> [ expr ]
-Rule 65    func_expr -> ID ( )
-Rule 66    func_expr -> ID ( parameter_list )
-Rule 67    parameter_list -> expr
-Rule 68    parameter_list -> parameter_list , expr
-Rule 69    for_stmt -> FOR ID = NUMBER TO NUMBER : suite
-Rule 70    for_stmt -> FOR ID IN expr : suite
-Rule 71    if_stmt -> IF expr : suite
-Rule 72    if_stmt -> IF expr : suite elseif_stmt
-Rule 73    if_stmt -> IF expr : suite ELSE : suite
-Rule 74    if_stmt -> IF expr : suite elseif_stmt ELSE : suite
-Rule 75    elseif_stmt -> ELSEIF expr : suite
-Rule 76    elseif_stmt -> elseif_stmt ELSEIF expr : suite
-Rule 77    while_stmt -> WHILE expr : suite
-Rule 78    suite -> NEWLINE
-Rule 79    suite -> NEWLINE INDENT suite_stmt DEDENT
-Rule 80    suite_stmt -> stmt
-Rule 81    suite_stmt -> suite_stmt stmt
-Rule 82    return_stmt -> RETURN expr NEWLINE
-Rule 83    continue_stmt -> CONTINUE NEWLINE
-Rule 84    break_stmt -> BREAK NEWLINE
+Rule 4     piece_expr -> STRING NEWLINE
+Rule 5     piece_expr -> piece_expr STRING NUMBER NEWLINE
+Rule 6     board_stmt -> BOARD : NEWLINE INDENT NUMBER NUMBER DEDENT
+Rule 7     player_stmt -> PLAYER : NEWLINE INDENT NUMBER DEDENT
+Rule 8     rule_stmt -> RULE : NEWLINE INDENT action_stmt DEDENT
+Rule 9     action_stmt -> ACTION : = ID NEWLINE
+Rule 10    action_stmt -> action_stmt ACTION : = ID NEWLINE
+Rule 11    function_stmt -> FUNCTION funcdef
+Rule 12    function_stmt -> function_stmt funcdef
+Rule 13    stmt -> simple_stmt
+Rule 14    stmt -> compound_stmt
+Rule 15    simple_stmt -> assign_stmt
+Rule 16    simple_stmt -> flow_stmt
+Rule 17    compound_stmt -> funcdef
+Rule 18    compound_stmt -> for_stmt
+Rule 19    compound_stmt -> if_stmt
+Rule 20    compound_stmt -> while_stmt
+Rule 21    assign_stmt -> ID : = expr NEWLINE
+Rule 22    flow_stmt -> break_stmt
+Rule 23    flow_stmt -> continue_stmt
+Rule 24    flow_stmt -> return_stmt
+Rule 25    funcdef -> DEF ID parameters : suite
+Rule 26    funcdef -> DEF ID : suite
+Rule 27    parameters -> parameters , parameter
+Rule 28    parameters -> parameter
+Rule 29    parameter -> ID
+Rule 30    parameter -> ID : = expr
+Rule 31    expr -> or_test
+Rule 32    or_test -> and_test
+Rule 33    or_test -> or_test OR and_test
+Rule 34    and_test -> not_test
+Rule 35    and_test -> and_test AND not_test
+Rule 36    not_test -> NOT not_test
+Rule 37    not_test -> comparison
+Rule 38    comparison -> operand
+Rule 39    comparison -> comparison = operand
+Rule 40    comparison -> comparison > operand
+Rule 41    comparison -> comparison < operand
+Rule 42    comparison -> comparison > = operand
+Rule 43    comparison -> comparison < = operand
+Rule 44    comparison -> comparison ~ = operand
+Rule 45    operand -> term
+Rule 46    operand -> operand + term
+Rule 47    operand -> operand - term
+Rule 48    term -> factor
+Rule 49    term -> term * factor
+Rule 50    term -> term / factor
+Rule 51    term -> term % factor
+Rule 52    factor -> power
+Rule 53    factor -> + factor
+Rule 54    factor -> - factor
+Rule 55    power -> atom
+Rule 56    power -> power trailer
+Rule 57    atom -> ID
+Rule 58    atom -> STRING
+Rule 59    atom -> NUMBER
+Rule 60    atom -> BOOLEAN
+Rule 61    atom -> NIL
+Rule 62    atom -> func_expr
+Rule 63    atom -> ( expr )
+Rule 64    trailer -> . ID
+Rule 65    trailer -> [ expr ]
+Rule 66    func_expr -> ID ( )
+Rule 67    func_expr -> ID ( parameter_list )
+Rule 68    parameter_list -> expr
+Rule 69    parameter_list -> parameter_list , expr
+Rule 70    for_stmt -> FOR ID = NUMBER TO NUMBER : suite
+Rule 71    for_stmt -> FOR ID IN expr : suite
+Rule 72    if_stmt -> IF expr : suite
+Rule 73    if_stmt -> IF expr : suite elseif_stmt
+Rule 74    if_stmt -> IF expr : suite ELSE : suite
+Rule 75    if_stmt -> IF expr : suite elseif_stmt ELSE : suite
+Rule 76    elseif_stmt -> ELSEIF expr : suite
+Rule 77    elseif_stmt -> elseif_stmt ELSEIF expr : suite
+Rule 78    while_stmt -> WHILE expr : suite
+Rule 79    suite -> NEWLINE
+Rule 80    suite -> NEWLINE INDENT suite_stmt DEDENT
+Rule 81    suite_stmt -> stmt
+Rule 82    suite_stmt -> suite_stmt stmt
+Rule 83    return_stmt -> RETURN expr NEWLINE
+Rule 84    continue_stmt -> CONTINUE NEWLINE
+Rule 85    break_stmt -> BREAK NEWLINE
 
 Terminals, with rules where they appear
 
-%                    : 50
-(                    : 62 65 66
-)                    : 62 65 66
-*                    : 48
-+                    : 45 52
-,                    : 26 68
--                    : 46 53
-.                    : 63
-/                    : 49
-:                    : 2 5 6 7 8 9 20 24 25 29 69 70 71 72 73 73 74 74 75 76 77
-<                    : 40 42
-=                    : 8 9 20 29 38 41 42 43 69
->                    : 39 41
-ACTION               : 8 9
-AND                  : 34
-BOARD                : 5
-BOOLEAN              : 59
-BREAK                : 84
+%                    : 51
+(                    : 63 66 67
+)                    : 63 66 67
+*                    : 49
++                    : 46 53
+,                    : 27 69
+-                    : 47 54
+.                    : 64
+/                    : 50
+:                    : 2 6 7 8 9 10 21 25 26 30 70 71 72 73 74 74 75 75 76 77 78
+<                    : 41 43
+=                    : 9 10 21 30 39 42 43 44 70
+>                    : 40 42
+ACTION               : 9 10
+AND                  : 35
+BOARD                : 6
+BOOLEAN              : 60
+BREAK                : 85
 COMMENT              : 
-CONTINUE             : 83
-DEDENT               : 2 5 6 7 79
-DEF                  : 24 25
-ELSE                 : 73 74
-ELSEIF               : 75 76
-FOR                  : 69 70
-FUNCTION             : 10
-ID                   : 8 9 20 24 25 28 29 56 63 65 66 69 70
-IF                   : 71 72 73 74
-IN                   : 70
-INDENT               : 2 5 6 7 79
-NEWLINE              : 3 4 5 6 7 8 9 20 78 79 82 83 84
-NIL                  : 60
-NOT                  : 35
-NUMBER               : 3 4 5 5 6 58 69 69
-OR                   : 32
+CONTINUE             : 84
+DEDENT               : 2 6 7 8 80
+DEF                  : 25 26
+ELSE                 : 74 75
+ELSEIF               : 76 77
+EMPTYLINE            : 
+FOR                  : 70 71
+FUNCTION             : 11
+ID                   : 9 10 21 25 26 29 30 57 64 66 67 70 71
+IF                   : 72 73 74 75
+IN                   : 71
+INDENT               : 2 6 7 8 80
+NEWLINE              : 2 3 4 5 6 7 8 9 10 21 79 80 83 84 85
+NIL                  : 61
+NOT                  : 36
+NUMBER               : 3 5 6 6 7 59 70 70
+OR                   : 33
 PIECE                : 2
-PLAYER               : 6
-RETURN               : 82
-RULE                 : 7
-STRING               : 3 4 57
-TO                   : 69
-WHILE                : 77
+PLAYER               : 7
+RETURN               : 83
+RULE                 : 8
+STRING               : 3 4 5 58
+TO                   : 70
+WHILE                : 78
 WHITESPACE           : 
-[                    : 64
-]                    : 64
+[                    : 65
+]                    : 65
 error                : 
-~                    : 43
+~                    : 44
 
 Nonterminals, with rules where they appear
 
-action_stmt          : 7 9
-and_test             : 31 32 34
-assign_stmt          : 14
-atom                 : 54
+action_stmt          : 8 10
+and_test             : 32 33 35
+assign_stmt          : 15
+atom                 : 55
 board_stmt           : 1
-break_stmt           : 21
-comparison           : 36 38 39 40 41 42 43
-compound_stmt        : 13
-continue_stmt        : 22
-elseif_stmt          : 72 74 76
-expr                 : 20 29 62 64 67 68 70 71 72 73 74 75 76 77 82
-factor               : 47 48 49 50 52 53
-flow_stmt            : 15
-for_stmt             : 17
-func_expr            : 61
-funcdef              : 10 11 16
-function_stmt        : 1 11
-if_stmt              : 18
+break_stmt           : 22
+comparison           : 37 39 40 41 42 43 44
+compound_stmt        : 14
+continue_stmt        : 23
+elseif_stmt          : 73 75 77
+expr                 : 21 30 63 65 68 69 71 72 73 74 75 76 77 78 83
+factor               : 48 49 50 51 53 54
+flow_stmt            : 16
+for_stmt             : 18
+func_expr            : 62
+funcdef              : 11 12 17
+function_stmt        : 1 12
+if_stmt              : 19
 input_stmt           : 
-not_test             : 33 34 35
-operand              : 37 38 39 40 41 42 43 45 46
-or_test              : 30 32
-parameter            : 26 27
-parameter_list       : 66 68
-parameters           : 24 26
-piece_expr           : 2 4
+not_test             : 34 35 36
+operand              : 38 39 40 41 42 43 44 46 47
+or_test              : 31 33
+parameter            : 27 28
+parameter_list       : 67 69
+parameters           : 25 27
+piece_expr           : 2 5
 piece_stmt           : 1 0
 player_stmt          : 1
-power                : 51 55
-return_stmt          : 23
+power                : 52 56
+return_stmt          : 24
 rule_stmt            : 1
-simple_stmt          : 12
-stmt                 : 80 81
-suite                : 24 25 69 70 71 72 73 73 74 74 75 76 77
-suite_stmt           : 79 81
-term                 : 44 45 46 48 49 50
-trailer              : 55
-while_stmt           : 19
+simple_stmt          : 13
+stmt                 : 81 82
+suite                : 25 26 70 71 72 73 74 74 75 75 76 77 78
+suite_stmt           : 80 82
+term                 : 45 46 47 49 50 51
+trailer              : 56
+while_stmt           : 20
 
 Parsing method: LALR
 
 state 0
 
     (0) S' -> . piece_stmt
-    (2) piece_stmt -> . PIECE : INDENT piece_expr DEDENT
+    (2) piece_stmt -> . PIECE : NEWLINE INDENT piece_expr DEDENT
 
     PIECE           shift and go to state 1
 
@@ -197,7 +200,7 @@ state 0
 
 state 1
 
-    (2) piece_stmt -> PIECE . : INDENT piece_expr DEDENT
+    (2) piece_stmt -> PIECE . : NEWLINE INDENT piece_expr DEDENT
 
     :               shift and go to state 3
 
@@ -210,59 +213,77 @@ state 2
 
 state 3
 
-    (2) piece_stmt -> PIECE : . INDENT piece_expr DEDENT
+    (2) piece_stmt -> PIECE : . NEWLINE INDENT piece_expr DEDENT
 
-    INDENT          shift and go to state 4
+    NEWLINE         shift and go to state 4
 
 
 state 4
 
-    (2) piece_stmt -> PIECE : INDENT . piece_expr DEDENT
-    (3) piece_expr -> . STRING NUMBER NEWLINE
-    (4) piece_expr -> . piece_expr STRING NUMBER NEWLINE
+    (2) piece_stmt -> PIECE : NEWLINE . INDENT piece_expr DEDENT
 
-    STRING          shift and go to state 5
+    INDENT          shift and go to state 5
 
-    piece_expr                     shift and go to state 6
 
 state 5
 
-    (3) piece_expr -> STRING . NUMBER NEWLINE
+    (2) piece_stmt -> PIECE : NEWLINE INDENT . piece_expr DEDENT
+    (3) piece_expr -> . STRING NUMBER NEWLINE
+    (4) piece_expr -> . STRING NEWLINE
+    (5) piece_expr -> . piece_expr STRING NUMBER NEWLINE
 
-    NUMBER          shift and go to state 7
+    STRING          shift and go to state 6
 
+    piece_expr                     shift and go to state 7
 
 state 6
 
-    (2) piece_stmt -> PIECE : INDENT piece_expr . DEDENT
-    (4) piece_expr -> piece_expr . STRING NUMBER NEWLINE
+    (3) piece_expr -> STRING . NUMBER NEWLINE
+    (4) piece_expr -> STRING . NEWLINE
 
-    DEDENT          shift and go to state 8
-    STRING          shift and go to state 9
+    NUMBER          shift and go to state 9
+    NEWLINE         shift and go to state 8
 
 
 state 7
 
-    (3) piece_expr -> STRING NUMBER . NEWLINE
+    (2) piece_stmt -> PIECE : NEWLINE INDENT piece_expr . DEDENT
+    (5) piece_expr -> piece_expr . STRING NUMBER NEWLINE
 
-    NEWLINE         shift and go to state 10
+    DEDENT          shift and go to state 10
+    STRING          shift and go to state 11
 
 
 state 8
 
-    (2) piece_stmt -> PIECE : INDENT piece_expr DEDENT .
+    (4) piece_expr -> STRING NEWLINE .
 
-    $end            reduce using rule 2 (piece_stmt -> PIECE : INDENT piece_expr DEDENT .)
+    DEDENT          reduce using rule 4 (piece_expr -> STRING NEWLINE .)
+    STRING          reduce using rule 4 (piece_expr -> STRING NEWLINE .)
 
 
 state 9
 
-    (4) piece_expr -> piece_expr STRING . NUMBER NEWLINE
+    (3) piece_expr -> STRING NUMBER . NEWLINE
 
-    NUMBER          shift and go to state 11
+    NEWLINE         shift and go to state 12
 
 
 state 10
+
+    (2) piece_stmt -> PIECE : NEWLINE INDENT piece_expr DEDENT .
+
+    $end            reduce using rule 2 (piece_stmt -> PIECE : NEWLINE INDENT piece_expr DEDENT .)
+
+
+state 11
+
+    (5) piece_expr -> piece_expr STRING . NUMBER NEWLINE
+
+    NUMBER          shift and go to state 13
+
+
+state 12
 
     (3) piece_expr -> STRING NUMBER NEWLINE .
 
@@ -270,17 +291,17 @@ state 10
     STRING          reduce using rule 3 (piece_expr -> STRING NUMBER NEWLINE .)
 
 
-state 11
+state 13
 
-    (4) piece_expr -> piece_expr STRING NUMBER . NEWLINE
+    (5) piece_expr -> piece_expr STRING NUMBER . NEWLINE
 
-    NEWLINE         shift and go to state 12
+    NEWLINE         shift and go to state 14
 
 
-state 12
+state 14
 
-    (4) piece_expr -> piece_expr STRING NUMBER NEWLINE .
+    (5) piece_expr -> piece_expr STRING NUMBER NEWLINE .
 
-    DEDENT          reduce using rule 4 (piece_expr -> piece_expr STRING NUMBER NEWLINE .)
-    STRING          reduce using rule 4 (piece_expr -> piece_expr STRING NUMBER NEWLINE .)
+    DEDENT          reduce using rule 5 (piece_expr -> piece_expr STRING NUMBER NEWLINE .)
+    STRING          reduce using rule 5 (piece_expr -> piece_expr STRING NUMBER NEWLINE .)
 

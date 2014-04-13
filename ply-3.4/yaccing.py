@@ -34,13 +34,16 @@ def p_input_stmt(t):
     t[0] = Node('input_stmt', [t[1], t[2], t[3], t[4], t[5]])
 
 def p_piece_stmt(t):
-    'piece_stmt : PIECE ":" INDENT piece_expr DEDENT'
-    t[0] = Node('piece_stmt', [t[5]])
+    'piece_stmt : PIECE ":" NEWLINE INDENT piece_expr DEDENT'
+    t[0] = Node('piece_stmt', [t[6]])
 
 def p_piece_expr(t):
     '''piece_expr : STRING NUMBER NEWLINE
+                 | STRING NEWLINE
                  | piece_expr STRING NUMBER NEWLINE'''
-    if len(t) == 4:
+    if len(t) == 3:
+        t[0] = Node('piece_expr', [t[1]])
+    elif len(t) == 4:
         t[0] = Node('piece_expr', [t[1], t[2]])
     else:
         t[0] = Node('piece_expr', [t[1], t[2], t[3]])
