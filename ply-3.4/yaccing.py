@@ -15,10 +15,11 @@ def getyacc():
     return yacc.yacc()
 
 class Node(object):
-    def __init__(self, type, children = [], act=None):
+    def __init__(self, type, children = [], leaf=None, string = None):
         self.type = type #Nonterminal + termianal
         self.children = children #list of children
-        self.act = act #action at this node
+        self.leaf = leaf #action at this node
+        self.string = string
 
     ##developing...
     def __str__(self):
@@ -312,12 +313,12 @@ def p_break_stmt(t):
 
 def p_error(p):
     print "Syntax error in input!"
-
+    
 
 if __name__ == "__main__":
     m = lexing.BGDLexer()
     m.build()
     parser = yacc.yacc()
-    print 'Input a text'
-    line = raw_input()+'\n'
+    f = open('workfile')
+    line = f.read() + '\n'
     parser.parse(line, lexer = m.lexer, tokenfunc = m.token)

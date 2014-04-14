@@ -27,6 +27,7 @@ class BGDLexer(object):
         'in' : 'IN'
         }
     tokens = [
+        #'EMPTYLINE',
         'NUMBER',
         'BOOLEAN',
         'STRING',
@@ -66,9 +67,10 @@ class BGDLexer(object):
 
     t_ignore_COMMENT = r'@@.*$'
 
-    #t_ignore_EMPTYLINE = r'\n[\t ]*$'
+    #t_EMPTYLINE = r'\n[ \t]*$'
+    t_ignore = r'\n[ ]*\n'
     
-    t_WHITESPACE = r'\n[ \t]*'
+    t_WHITESPACE = r'[ \t]'
 
     def t_error(self, t):
         print "Illegal character '%s'" % t.value[0]
@@ -135,7 +137,8 @@ class BGDLexer(object):
                 raise SyntaxError("wrong indentation level")
             i -= 1
         return i
-        
+
+    
 
     def tok_str(self, data):
         self.lexer.input(data)
@@ -151,6 +154,6 @@ class BGDLexer(object):
 if __name__ == '__main__':
     lexer = BGDLexer()
     lexer.build()
-    print 'Input a text'
-    line = raw_input() + '\n'
+    f = open('workfile')
+    line = f.read() + '\n'
     lexer.tok_str(line)
