@@ -1,7 +1,5 @@
 package edu.columbia.PLT.BGD;
 
-import edu.columbia.PLT.BGD.Piece.PieceType;
-
 /**
  * class for all functions in the program
  * as well all the built-in functions
