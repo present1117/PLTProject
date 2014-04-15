@@ -1,5 +1,7 @@
 package edu.columbia.PLT.BGD;
 
+import java.util.ArrayList;
+
 /**
  * class for all functions in the program
  * as well all the built-in functions
@@ -11,8 +13,7 @@ public class Functions {
 	public static boolean add(int posx, int posy, Player currentowner) {
 		if(GameDesigner.add_res(posx, posy)){
 			Board.boardslots[posx][posy] = new Slot();
-			Board.boardslots[posx][posy].setPiece(new Piece(currentowner,new Pos(posx, posy)));
-			Board.boardslots[posx][posy].setPlayer(currentowner);
+			Board.boardslots[posx][posy].setPiece(new Piece(currentowner,new Pos(posx, posy)), currentowner);
 			return true;
 		}else {
 			return false;
@@ -189,13 +190,19 @@ public class Functions {
 	}
 	
 	
-	public static boolean remove(Pos po){
+	public static boolean remove(Pos po, ArrayList<Player> players){
 		Piece piece = Board.boardslots[po.x()][po.y()].Piece();
 		if(piece == null){
 			return false;
 		}else {
-			Board.boardslots[po.x()][po.y()].setPiece(null);
+			Player owner = piece.owner;
+			Board.boardslots[po.x()][po.y()].setPiece(null,null);
 			//delete the piece from the player
+			for(Player p : players){
+				if(p.getId() == owner.getId()){
+					p.removePiece(piece);
+				}
+			}
 			return true;
 		}
 	}

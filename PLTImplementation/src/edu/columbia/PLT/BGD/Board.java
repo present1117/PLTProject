@@ -30,14 +30,17 @@ class Slot{
 		return owner;
 	}
 	
-	boolean setPiece(Piece p) {
+	boolean setPiece(Piece p, Player player) {
 		piece = p;
+		owner = player;
 		return true;
 	}
 	
-	boolean setPlayer(Player p) {
-		owner = p;
-		return true;
+	boolean available(){
+		if(piece == null && owner == null){
+			return true;
+		}
+		return false;
 	}
 }
 
@@ -45,7 +48,6 @@ class Pos{
 	private int posx;
 	private int posy;
 	Pos(int x, int y) {
-		// TODO Auto-generated constructor stub
 		posx = x;
 		posy = y;
 	}
