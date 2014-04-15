@@ -102,7 +102,7 @@ class BGDLexer(object):
         
         try:
             t = next(self.token_stream)
-            print t
+            print t, type(t.value), isinstance(t.value, int)
             return t
         except StopIteration:
             return None
@@ -167,7 +167,6 @@ class BGDLexer(object):
             if not tok:
                 break
             tok_str += str(tok) + "\n"
-        print tok_str
         return tok_str
     
 if __name__ == '__main__':
