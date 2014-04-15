@@ -8,19 +8,29 @@ import java.util.ArrayList;
  *
  */
 public class Player {
-	int numberofpieces;
-	int identifier;
+	private int numberofpieces;
+	private int identifier;
 	ArrayList<Piece> pieceList;
-	
-	Player() {
-		// TODO Auto-generated constructor stub
-	}
-	
+
 	Player(int id){
 		identifier = id;
 		numberofpieces = 0;
 		pieceList = new ArrayList<Piece>();
 	}
 	
+	int getId(){
+		return identifier;
+	}
 	
+	int piecenumber(){
+		return numberofpieces;
+	}
+	
+	boolean addPiece(Piece newpiece){
+		if(pieceList.add(newpiece)){
+			numberofpieces++;
+			return true;
+		}
+		return false;	
+	}
 }

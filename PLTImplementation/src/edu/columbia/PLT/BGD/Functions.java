@@ -9,10 +9,10 @@ package edu.columbia.PLT.BGD;
 
 public class Functions {
 	public static boolean add(int posx, int posy, Player currentowner) {
-		if(isEmpty(posx, posy)){
-			Board.boardSlots[posx][posy] = new Slot();
-			Board.boardSlots[posx][posy].setPiece(new Piece(currentowner));
-			Board.boardSlots[posx][posy].setPlayer(currentowner);
+		if(GameDesigner.add_res(posx, posy)){
+			Board.boardslots[posx][posy] = new Slot();
+			Board.boardslots[posx][posy].setPiece(new Piece(currentowner,new Pos(posx, posy)));
+			Board.boardslots[posx][posy].setPlayer(currentowner);
 			return true;
 		}else {
 			return false;
@@ -28,7 +28,7 @@ public class Functions {
 	}
 	
 	public static boolean isEmpty(int posx, int posy) {
-		Slot currentSlot = Board.boardSlots[posx][posy];
+		Slot currentSlot = Board.boardslots[posx][posy];
 		if(currentSlot == null){
 			return true;
 		}else {
@@ -37,7 +37,7 @@ public class Functions {
 	}
 	
 	public static int numberInRow(int posx, int posy) {
-		Slot currentSlot = Board.boardSlots[posx][posy];
+		Slot currentSlot = Board.boardslots[posx][posy];
 		if(currentSlot == null){
 			return 0;
 		}
@@ -53,19 +53,19 @@ public class Functions {
 	
 	private static int CountHorizontal(int posx, int posy, Slot currentSlot){
 		int total = 1;
-		for(int i = posy+1; i < Board.parcolumn; ++i){
-			if(Board.boardSlots[posx][i] == null)
+		for(int i = posy+1; i < Board.col(); ++i){
+			if(Board.boardslots[posx][i] == null)
 				break;
-			if(Board.boardSlots[posx][i].getPlayer() == currentSlot.getPlayer()){
+			if(Board.boardslots[posx][i].Player() == currentSlot.Player()){
 				total++;
 			}else {
 				break;
 			}
 		}
 		for(int i = posy - 1; i >= 0; --i){
-			if(Board.boardSlots[posx][i] == null)
+			if(Board.boardslots[posx][i] == null)
 				break;
-			if(Board.boardSlots[posx][i].getPlayer() == currentSlot.getPlayer()){
+			if(Board.boardslots[posx][i].Player() == currentSlot.Player()){
 				total++;
 			}else {
 				break;
@@ -77,19 +77,19 @@ public class Functions {
 	
 	private static int CountVertical(int posx, int posy, Slot currentSlot){
 		int total = 1;
-		for(int i = posx+1; i < Board.parrow; ++i){
-			if(Board.boardSlots[i][posy] == null)
+		for(int i = posx+1; i < Board.row(); ++i){
+			if(Board.boardslots[i][posy] == null)
 				break;
-			if(Board.boardSlots[i][posy].getPlayer() == currentSlot.getPlayer()){
+			if(Board.boardslots[i][posy].Player() == currentSlot.Player()){
 				total++;
 			}else {
 				break;
 			}
 		}
 		for(int i = posx - 1; i >= 0; --i){
-			if(Board.boardSlots[i][posy] == null)
+			if(Board.boardslots[i][posy] == null)
 				break;
-			if(Board.boardSlots[i][posy].getPlayer() == currentSlot.getPlayer()){
+			if(Board.boardslots[i][posy].Player() == currentSlot.Player()){
 				total++;
 			}else {
 				break;
@@ -107,10 +107,10 @@ public class Functions {
 		
 		i -= 1;
 		j -= 1;
-		while(i >= 0 && i < Board.parrow && j >=0 && j < Board.parcolumn){
-			if(Board.boardSlots[i][j] == null)
+		while(i >= 0 && i < Board.row() && j >=0 && j < Board.col()){
+			if(Board.boardslots[i][j] == null)
 				break;
-			if(Board.boardSlots[i][j].getPlayer() == currentSlot.getPlayer()){
+			if(Board.boardslots[i][j].Player() == currentSlot.Player()){
 				total1++;
 			}
 			i-=1;
@@ -120,10 +120,10 @@ public class Functions {
 		j = posy;
 		i +=1;
 		j +=1;
-		while(i >= 0 && i < Board.parrow && j >=0 && j < Board.parcolumn){
-			if(Board.boardSlots[i][j] == null)
+		while(i >= 0 && i < Board.row() && j >=0 && j < Board.col()){
+			if(Board.boardslots[i][j] == null)
 				break;
-			if(Board.boardSlots[i][j].getPlayer() == currentSlot.getPlayer()){
+			if(Board.boardslots[i][j].Player() == currentSlot.Player()){
 				total1++;
 			}
 			i+=1;
@@ -134,10 +134,10 @@ public class Functions {
 		j = posy;
 		i-=1;
 		j+=1;
-		while(i >= 0 && i < Board.parrow && j >=0 && j < Board.parcolumn){
-			if(Board.boardSlots[i][j] == null)
+		while(i >= 0 && i < Board.row() && j >=0 && j < Board.col()){
+			if(Board.boardslots[i][j] == null)
 				break;
-			if(Board.boardSlots[i][j].getPlayer() == currentSlot.getPlayer()){
+			if(Board.boardslots[i][j].Player() == currentSlot.Player()){
 				total2++;
 			}
 			i-=1;
@@ -148,10 +148,10 @@ public class Functions {
 		j = posy;
 		i+=1;
 		j-=1;
-		while(i >= 0 && i < Board.parrow && j >=0 && j < Board.parcolumn){
-			if(Board.boardSlots[i][j] == null)
+		while(i >= 0 && i < Board.row() && j >=0 && j < Board.col()){
+			if(Board.boardslots[i][j] == null)
 				break;
-			if(Board.boardSlots[i][j].getPlayer() == currentSlot.getPlayer()){
+			if(Board.boardslots[i][j].Player() == currentSlot.Player()){
 				total2++;
 			}
 			i+=1;
@@ -174,7 +174,7 @@ public class Functions {
 	} 
 	
 	public static Piece getPiece(Pos po){
-		Piece piece = Board.boardSlots[po.posx][po.posy].getPiece();
+		Piece piece = Board.boardslots[po.x()][po.y()].Piece();
 		return piece;
 	}
 	
@@ -190,11 +190,11 @@ public class Functions {
 	
 	
 	public static boolean remove(Pos po){
-		Piece piece = Board.boardSlots[po.posx][po.posy].getPiece();
+		Piece piece = Board.boardslots[po.x()][po.y()].Piece();
 		if(piece == null){
 			return false;
 		}else {
-			Board.boardSlots[po.posx][po.posy].setPiece(null);
+			Board.boardslots[po.x()][po.y()].setPiece(null);
 			//delete the piece from the player
 			return true;
 		}

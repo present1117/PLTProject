@@ -5,42 +5,55 @@ package edu.columbia.PLT.BGD;
  *
  */
 public class Board {
-	static int parrow = 3;
-	static int parcolumn = 3;
-	static Slot [][] boardSlots = new Slot[parrow][parcolumn];
+	static private int parrow = GameDesigner.boardRow;
+	static private int parcol = GameDesigner.boardCol;
+	static Slot [][] boardslots = new Slot[parrow][parcol];
+	
+	static int row(){
+		return parrow;
+	}
+	
+	static int col(){
+		return parcol;
+	}
 }
 
 class Slot{
-	Piece piece;
-	Player owner;
+	private Piece piece;
+	private Player owner;
 	
-	public Piece getPiece(){
+	Piece Piece(){
 		return piece;
 	}
 	
-	public Player getPlayer() {
+	Player Player() {
 		return owner;
 	}
 	
-	public boolean setPiece(Piece p) {
+	boolean setPiece(Piece p) {
 		piece = p;
 		return true;
 	}
 	
-	public boolean setPlayer(Player p) {
+	boolean setPlayer(Player p) {
 		owner = p;
 		return true;
 	}
 }
 
-
-
 class Pos{
-	int posx;
-	int posy;
-	public Pos(int x, int y) {
+	private int posx;
+	private int posy;
+	Pos(int x, int y) {
 		// TODO Auto-generated constructor stub
 		posx = x;
 		posy = y;
+	}
+	
+	int x(){
+		return posx;
+	}
+	int y(){
+		return posy;
 	}
 }

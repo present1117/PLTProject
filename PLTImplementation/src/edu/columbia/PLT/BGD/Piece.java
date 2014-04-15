@@ -5,23 +5,22 @@ package edu.columbia.PLT.BGD;
  *
  */
 public class Piece {
-	enum PieceType {STONE};
 	Player owner;
 	Pos pos;
 	int Type = 0;
 	
-    Piece(Player p) {
+    Piece(Player p, Pos pos) {
 		// TODO Auto-generated constructor stub
 		owner = p;
-		pos = new Pos(0,0);
+		pos = new Pos(pos.x(), pos.y());
 	}
 	
-	public boolean setPiecetype(int type){
+	boolean setPiecetype(int type){
 		Type = type;
 		return true;
 	}
 	
-	public int piecetype(){
+	int piecetype(){
 		return Type;
 	}
 }
