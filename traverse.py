@@ -106,6 +106,8 @@ class Traverse(object):
             node.string = '{\n' + node.children[0].string + '}\n'
         elif node.type == 'while_stmt':
             node.string = self.gen_while_stmt(node)
+        elif node.type == 'if_stmt':
+            node.string = self.gen_if_stmt(node)
         elif node.type == 'elseif_stmt':
             node.string = self.gen_elseif_stmt(node)
         elif node.type == 'for_stmt':
@@ -214,7 +216,7 @@ class Traverse(object):
                         s = s + para_list[i] + ' ' + 'par' + str(i) + ','
                 s = s[0:-1]
                 s += ')\n'
-            s += '{\nreturn true;\n}\n'
+                s += '{\nreturn true;\n}\n'
         s += '}\n'
         return s
     

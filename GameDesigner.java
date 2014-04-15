@@ -20,13 +20,7 @@ else
 return false;
 }
 }
-{
-return true;
-}
 public static boolean move_res(int[] par1,int[] par2)
-{
-return true;
-}
 {
 return true;
 }
