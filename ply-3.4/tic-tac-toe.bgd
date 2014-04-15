@@ -17,8 +17,5 @@ FUNCTION:
        def win position:
 		if numberInRow(position) >= 3:
 			return YES
-		elseif a > 3:
-			while a <= 4:
-				return NO
 		else:
-			return YES
+			return NO

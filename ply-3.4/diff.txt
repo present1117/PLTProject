@@ -1,0 +1,74 @@
+22c22
+<         self.string = string
+---
+>         self.string = string #value of attributes
+24,29d23
+<     ##developing...
+<     def __str__(self):
+<         return ""
+<     ##developing...
+<     def traverse(self, i):
+<         return ""
+39c33
+<     t[0] = Node('piece_stmt', [t[6]])
+---
+>     t[0] = Node('piece_stmt', [t[5]])
+46c40
+<         t[0] = Node('piece_expr', [t[1]])
+---
+>         t[0] = Node('piece_expr', [t[1][1:-1]])
+48c42
+<         t[0] = Node('piece_expr', [t[1], t[2]])
+---
+>         t[0] = Node('piece_expr', [t[1][1:-1], t[2]])
+50c44
+<         t[0] = Node('piece_expr', [t[1], t[2], t[3]])
+---
+>         t[0] = Node('piece_expr', [t[1], t[2][1:-1], t[3]])
+78c72
+<         t[0] = Node('function_stmt', [t[6]])
+---
+>         t[0] = Node('function_stmt', [t[5]])
+112c106
+<     print 'In funcdef'
+---
+>     #print 'In funcdef'
+116c110
+<         t[0] = Node('funcdef', [t[1], t[3], t[5]])
+---
+>         t[0] = Node('funcdef', [t[1], t[3], t[5]], 'emptyParam')
+270c264
+<     print 'In if'
+---
+>     #print 'In if'
+274c268
+<         t[0] = Node('if_stmt', [t[2], t[4], t[5]], 'elseif')
+---
+>         t[0] = Node('if_stmt', [t[2], t[4], t[5]], 'ELSEIF')
+276c270
+<         t[0] = Node('if_stmt', [t[2], t[4], t[7]], 'else')
+---
+>         t[0] = Node('if_stmt', [t[2], t[4], t[7]], 'ELSE')
+298c292
+<         t[0] = Node('suite', t[3])
+---
+>         t[0] = Node('suite', [t[3]])
+304,305c298,299
+<         print 'In suite'
+<         t[0] = Node('suite_stmt', t[1])
+---
+>         #print 'In suite'
+>         t[0] = Node('suite_stmt', [t[1]])
+311c305
+<     print 'In return'
+---
+>     #print 'In return'
+329,330c323,325
+<     parser = yacc.yacc(debug = True)
+<     f = open('workfile')
+---
+>     #parser = yacc.yacc(debug = True)
+>     parser = yacc.yacc()
+>     f = open('tic-tac-toe.bg')
+331a327
+>     #print line
