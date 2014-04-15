@@ -13,10 +13,13 @@ import ply.lex as lex
 
 ##built-in functions##
 builtInFunc = ['isEmpty', 'numberInRow']
-actionFunc = []
+actionFunc = ['add', 'move', 'win', 'remove']
+localFunc = []
 funcParam = defaultdict(list)
 funcParam['add'] = ['boolean', 'int[]']
 funcParam['win'] = ['boolean', 'int[]']
+funcParam['move'] = ['boolean', 'int[]', 'int[]']
+funcParam['remove'] = ['boolean', 'int[]']
 
 
 class Traverse(object):
@@ -51,7 +54,7 @@ class Traverse(object):
         elif node.leaf == 'and':
             node.string = node.children[0].string + '&&' + node.children[1].string
         elif node.leaf == 'not':
-            node.string = '!' + node.children[0]
+            node.string = '!' + node.children[0].string
         elif node.leaf == '=':
             node.string = node.children[0].string + '==' + node.children[1].string
         elif node.leaf == '>':
@@ -154,14 +157,14 @@ class Traverse(object):
 
     def gen_action_stmt(self, node):
         if len(node.children) == 1:
-            actionFunc.append(node.children[0])
+            localFunc.append(node.children[0])
         else:
-            actionFunc.append(node.children[1])
+            localFunc.append(node.children[1])
         return ''
 
     def gen_rule_stmt(self, node):
-        if 'win' not in actionFunc: print "Action win is not declared.\n"
-        if 'add' not in actionFunc and 'move' not in actionFunc: "At least either action add or move should be declared in RULE. \n"
+        if 'win' not in localFunc: print "Action win is not declared.\n"
+        if 'add' not in localFunc and 'move' not in localFunc: "At least either action add or move should be declared in RULE. \n"
         return ''
 
     def gen_player_stmt(self, node):
@@ -273,7 +276,7 @@ class Traverse(object):
 if __name__ == "__main__":
     m = BGDLexer()
     #f.open(sys.argv[1])
-    inputFile = open('tic-tac-toe.bg')
+    inputFile = open('tic-tac-toe.bgd')
     inputData = inputFile.read()
     #print inputData
     m.input(inputData)
