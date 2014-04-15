@@ -174,7 +174,7 @@ class Traverse(object):
         s1 = 'enum pieceType{'
         s2 = 'static int [] pieceNum = {'
         for item in node.children[0].string:
-            s1 = s1 + item[0] + ','
+            s1 = s1 + item[0].upper() + ','
             s2 = s2 + item[1] + ','
         s1 = s1[0:-1] + '};\n'
         s2 = s2[0:-1] + '};\n'
@@ -239,7 +239,7 @@ class Traverse(object):
             s += 'public static '
             if children[0] in actionFunc:
                 para_list = funcParam[children[0]]
-                s = s + para_list[0] + ' ' + children[0] +' ('
+                s = s + para_list[0] + ' ' + children[0] + '_res' + ' ('
                 if len(funcParam[children[0]]) > 1:
                     for i in range(1,len(para_list)):
                         s = s + para_list[i] + ' ' + children[1].string[i-1] + ','
