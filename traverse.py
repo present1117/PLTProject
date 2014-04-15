@@ -10,8 +10,8 @@ from collections import defaultdict
 from lexing import BGDLexer
 from yaccing import *
 import ply.lex as lex
+import re
 
-##built-in functions##
 builtInFunc = ['isEmpty', 'numberInRow']
 actionFunc = ['add', 'move', 'win', 'remove']
 localFunc = []
@@ -20,6 +20,17 @@ funcParam['add'] = ['boolean', 'int[]']
 funcParam['win'] = ['boolean', 'int[]']
 funcParam['move'] = ['boolean', 'int[]', 'int[]']
 funcParam['remove'] = ['boolean', 'int[]']
+
+currentParam = defaultdict(dict)
+currentParam['returnValue'] = 'void'
+currentParam['paramList'] = []
+reList = {}
+reList['String'] = re.compile(r'[A-Za-z]+')
+reList['int'] = re.compile(r'[+-]?[0-9]+')
+reList['double'] = re.compile(r'[+-]?[0-9]+(\.[0-9]+)?')
+reList['boolean'] = re.compile(r'YES|NO')
+
+
 
 
 class Traverse(object):
@@ -194,6 +205,16 @@ class Traverse(object):
     def gen_input_stmt(self, node):
         s = 'package edu.columbia.PLT.BGD;\npublic class GameDesigner{\n'
         s += node.children[0].string + node.children[1].string + node.children[2].string + node.children[4].string
+        for func in actionFunc:
+            if func not in localFunc:
+                s += 'public static boolean ' + func + '_res('
+                para_list = funcParam[func]
+                if len(funcParam[func]) > 1:
+                    for i in range(1,len(para_list)):
+                        s = s + para_list[i] + ' ' + 'par' + str(i) + ','
+                s = s[0:-1]
+                s += ')\n'
+            s += '{\nreturn true;\n}\n'
         s += '}\n'
         return s
     
@@ -275,8 +296,8 @@ class Traverse(object):
 
 if __name__ == "__main__":
     m = BGDLexer()
-    #f.open(sys.argv[1])
-    inputFile = open('tic-tac-toe.bgd')
+    inputFile = open(sys.argv[1])
+    #inputFile = open('tic-tac-toe.bgd')
     inputData = inputFile.read()
     #print inputData
     m.input(inputData)
