@@ -9,6 +9,7 @@ import java.util.Scanner;
  */
 public class Main {
 	static ArrayList<Player> playerlist = new ArrayList<Player>();
+	static String[] icons = {"o", "x", "+", "#", "W"};
 	
 	public static void main(String[] args) {
 		System.out.println("Welcome to our greatest Tic-Tac-Toe game!");
@@ -34,6 +35,7 @@ public class Main {
 				int posy = Integer.parseInt(xypos[1]);
 
 				if(Functions.add(posx, posy, playerlist.get(switcher))){
+					Drawing.drawBoard(playerlist, icons);
 					System.out.println("Successfully Added!");
 					if(Functions.win(posx, posy, playerlist.get(switcher))){
 						System.out.println("Player "+switcher+" wins!");
