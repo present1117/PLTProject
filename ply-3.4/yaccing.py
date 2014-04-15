@@ -28,7 +28,7 @@ class Node(object):
     def traverse(self, i):
         return ""
 
-start = 'piece_stmt'
+start = 'input_stmt'
 
 def p_input_stmt(t):
     'input_stmt : piece_stmt board_stmt player_stmt rule_stmt function_stmt'
@@ -50,11 +50,11 @@ def p_piece_expr(t):
         t[0] = Node('piece_expr', [t[1], t[2], t[3]])
 
 def p_board_stmt(t):
-    'board_stmt : BOARD ":" NEWLINE INDENT NUMBER NUMBER DEDENT'
+    'board_stmt : BOARD ":" NEWLINE INDENT NUMBER NUMBER NEWLINE DEDENT'
     t[0] = Node('board_stmt', [t[5], t[6]])
 
 def p_player_stmt(t):
-    'player_stmt : PLAYER ":" NEWLINE INDENT NUMBER DEDENT'
+    'player_stmt : PLAYER ":" NEWLINE INDENT NUMBER NEWLINE DEDENT'
     t[0] = Node('player_stmt', [t[5]])
 
 def p_rule_stmt(t):
@@ -70,12 +70,12 @@ def p_action_stmt(t):
         t[0] = Node('action_stmt', [t[1], t[5]])
 
 def p_function_stmt(t):
-    '''function_stmt : FUNCTION funcdef
+    '''function_stmt : FUNCTION ":" NEWLINE INDENT funcdef DEDENT
                     | function_stmt funcdef'''
-    if len(t) == 2:
-        t[0] = Node('function_stmt', [t[1]])
-    else:
+    if len(t) == 3:
         t[0] = Node('function_stmt', [t[1], t[2]])
+    else:
+        t[0] = Node('function_stmt', [t[6]])
 
 def p_stmt(t):
     '''stmt : simple_stmt
@@ -106,11 +106,18 @@ def p_flow_stmt(t):
 
 def p_funcdef(t):
     '''funcdef : DEF ID parameters ":" suite
-              | DEF ID ":" suite'''
-    if len(t) == 6:
+              | DEF ID ":" suite
+              | funcdef DEF ID parameters ":" suite
+              | funcdef DEF ID ":" suite'''
+    print 'In funcdef'
+    if len(t) == 6 and t[1] == 'def':
         t[0] = Node('funcdef', [t[2], t[3], t[5]])
-    else:
+    elif len(t) == 6:
+        t[0] = Node('funcdef', [t[1], t[3], t[5]])
+    elif len(t) == 5:
         t[0] = Node('funcdef', [t[2], t[4]])
+    else:
+        t[0] = Node('funcdef', [t[1], t[3], t[4], t[6]])
         
 
 def p_parameters(t):
@@ -122,12 +129,11 @@ def p_parameters(t):
         t[0] = Node('parameters', [t[1]])
 
 def p_parameter(t):
-    '''parameter : ID
-                | ID ":" "=" expr'''
+    'parameter : ID '
     if len(t) == 2:
         t[0] = Node('parameter', [t[1]])
-    else:
-        t[0] = Node('parameter', [t[1], t[4]], 'assigned')
+    #else:
+ #       t[0] = Node('parameter', [t[1], t[4]], 'assigned')
 
 def p_expr(t):
     'expr : or_test'
@@ -251,7 +257,7 @@ def p_parameter_list(t):
 def p_for_stmt(t):
     '''for_stmt : FOR ID "=" NUMBER TO NUMBER ":" suite
                | FOR ID IN expr ":" suite'''
-    if len(t) == 9:
+    if len(t) == 10:
         t[0] = Node('for_stmt', [t[2], t[4], t[6], t[8]])
     else:
         t[0] = Node('for_stmt', [t[2], t[4], t[6]])
@@ -261,19 +267,20 @@ def p_if_stmt(t):
               | IF expr ":" suite elseif_stmt
               | IF expr ":" suite ELSE ":" suite
               | IF expr ":" suite elseif_stmt ELSE ":" suite'''
+    print 'In if'
     if len(t) == 5:
         t[0] = Node('if_stmt', [t[2], t[4]])
     elif len(t) == 6:
-        t[0] = Node('if_stmt', [t[2], t[4], t[5]])
+        t[0] = Node('if_stmt', [t[2], t[4], t[5]], 'elseif')
     elif len(t) == 8:
-        t[0] = Node('if_stmt', [t[2], t[4], t[7]])
+        t[0] = Node('if_stmt', [t[2], t[4], t[7]], 'else')
     elif len(t) == 9:
         t[0] = Node('if_stmt', [t[2], t[4], t[5], t[8]])
 
 def p_elseif_stmt(t):
     '''elseif_stmt : ELSEIF expr ":" suite
                   | elseif_stmt ELSEIF expr ":" suite'''
-    if len(t) == 5:
+    if len(t) == 6:
         t[0] = Node('elseif_stmt', [t[2], t[4]])
     else:
         t[0] = Node('elseif_stmt', [t[1], t[3], t[5]])
@@ -294,12 +301,14 @@ def p_suite_stmt(t):
     '''suite_stmt : stmt
                  | suite_stmt stmt'''
     if len(t) == 2:
+        print 'In suite'
         t[0] = Node('suite_stmt', t[1])
     else:
         t[0] = Node('suite_stmt', [t[1], t[2]])
 
 def p_return_stmt(t):
-    'return_stmt : RETURN expr NEWLINE'    
+    'return_stmt : RETURN expr NEWLINE'
+    print 'In return'
     t[0] = Node('return_stmt', [t[2]])
 
 def p_continue_stmt(t):
@@ -317,8 +326,8 @@ def p_error(p):
 
 if __name__ == "__main__":
     m = lexing.BGDLexer()
-    m.build()
-    parser = yacc.yacc()
+    parser = yacc.yacc(debug = True)
     f = open('workfile')
-    line = f.read() + '\n'
-    parser.parse(line, lexer = m.lexer, tokenfunc = m.token)
+    line = f.read()
+    m.input(line)
+    parser.parse(tokenfunc = m.token)
