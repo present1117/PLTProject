@@ -229,7 +229,7 @@ class Traverse(object):
     def gen_if_stmt(self, node):
         s = 'if(' + node.children[0].string + ')\n' + node.children[1].string
         if len(node.children) == 4:
-            s = s + node.children[2] + 'else\n' + node.children[3].string
+            s = s + node.children[2].string + 'else\n' + node.children[3].string
         elif len(node.children) == 3:
             if node.leaf == 'ELSE':
                 s = s + 'else\n' + node.children[2].string
