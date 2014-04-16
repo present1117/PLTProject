@@ -13,7 +13,9 @@ RULE:
 
 FUNCTION:
        def add position:
-		return isEmpty(position)
+		pos := (4,4)
+		array := [1,'asd',3]
+        return isEmpty(position)
        def win position:
 		if numberInRow(position) >= 3:
 			return YES

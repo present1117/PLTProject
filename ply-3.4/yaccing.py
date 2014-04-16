@@ -123,7 +123,7 @@ def p_parameters(t):
         t[0] = Node('parameters', [t[1]])
 
 def p_parameter(t):
-    'parameter : ID '
+    'parameter : ID'
     if len(t) == 2:
         t[0] = Node('parameter', [t[1]])
     #else:
@@ -211,7 +211,9 @@ def p_power(t):
         t[0] = Node('power', [t[1], t[2]])
 
 def p_atom(t):
-    '''atom : ID
+    '''atom : array
+           | position 
+           | ID
            | STRING
            | NUMBER
            | BOOLEAN
@@ -222,7 +224,14 @@ def p_atom(t):
         t[0] = Node('atom', [t[1]])
     else:
         t[0] = Node('atom', [t[2]])
-    
+
+def p_position(t):
+    'position : "(" expr "," expr ")"'
+    t[0] = Node('position', [t[2], t[4]])
+
+def p_array(t):
+    'array : "[" parameter_list "]"'
+    t[0] = Node('array', [t[2]])
 
 def p_trailer(t):
     '''trailer : "." ID
@@ -315,6 +324,7 @@ def p_break_stmt(t):
 
 
 def p_error(p):
+    print p
     print "Syntax error in input!"
     
 
