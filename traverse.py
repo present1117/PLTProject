@@ -12,25 +12,46 @@ from yaccing import *
 import ply.lex as lex
 import re
 
+
 builtInFunc = ['isEmpty', 'numberInRow']
 actionFunc = ['add', 'move', 'win', 'remove']
-localFunc = []
-funcParam = defaultdict(list)
-funcParam['add'] = ['boolean', 'int[]']
-funcParam['win'] = ['boolean', 'int[]']
-funcParam['move'] = ['boolean', 'int[]', 'int[]']
-funcParam['remove'] = ['boolean', 'int[]']
+funcParam = defaultdict(dict)
+funcParam['add']['returnValue'] = 'boolean'
+funcParam['add']['param'] = ['int[]']
+funcParam['win']['returnValue'] = 'boolean'
+funcParam['win']['param'] = ['int[]']
+funcParam['remove']['returnValue'] = 'boolean'
+funcParam['remove']['param'] = ['int[]']
+funcParam['move']['returnValue'] = 'boolean'
+funcParam['move']['param'] = ['int[]', 'int[]']
+funcParam['isEmpty']['returnValue'] = 'boolean'
+funcParam['isEmpty']['param'] = ['int[]']
+funcParam['numberInRow']['returnValue'] = 'int'
+funcParam['numberInRow']['param'] = ['int[]']
+#funcParam['add'] = ['boolean', 'int[]']
+#funcParam['win'] = ['boolean', 'int[]']
+#funcParam['move'] = ['boolean', 'int[]', 'int[]']
+#funcParam['remove'] = ['boolean', 'int[]']
 
-currentParam = defaultdict(dict)
+localFunc = []
+currentParam = {}
 currentParam['returnValue'] = 'void'
 currentParam['paramList'] = []
+
+
 reList = {}
 reList['String'] = re.compile(r'[A-Za-z]+')
 reList['int'] = re.compile(r'[+-]?[0-9]+')
 reList['double'] = re.compile(r'[+-]?[0-9]+(\.[0-9]+)?')
 reList['boolean'] = re.compile(r'YES|NO')
+#reList['Array'] = re.compile()
 
-
+def atomMatch(string, type):
+    result = reList[type].match(string)
+    if result.group() == string:
+        return True;
+    else:
+        return False;
 
 
 class Traverse(object):
@@ -52,7 +73,7 @@ class Traverse(object):
     
     def take_action(self, node):
         if node.leaf == ':=':
-            node.string = node.children[0].string + '=' + node.children[1].string
+            node.string = node.children[0] + '=' + node.children[1].string
             if node.string[-1] != '\n':
                 node.string += ';\n'
         #elif node.leaf == 'assigned':
@@ -209,10 +230,10 @@ class Traverse(object):
         s += node.children[0].string + node.children[1].string + node.children[2].string + node.children[4].string
         for func in actionFunc:
             if func not in localFunc:
-                s += 'public static boolean ' + func + '_res('
-                para_list = funcParam[func]
-                if len(funcParam[func]) > 1:
-                    for i in range(1,len(para_list)):
+                s += 'public static ' + funcParam[func]['returnValue'] + ' ' + func + '_res('
+                para_list = funcParam[func]['param']
+                if len(funcParam[func]) > 0:
+                    for i in range(0,len(para_list)):
                         s = s + para_list[i] + ' ' + 'par' + str(i) + ','
                 s = s[0:-1]
                 s += ')\n'
@@ -221,10 +242,17 @@ class Traverse(object):
         return s
     
     def gen_while_stmt(self, node):
-        return None
+        return 'while(' + node.children[0].string + ')\n'\
+            + node.children[1].string
     
     def gen_elseif_stmt(self, node):
-        return None
+        if len(node.children) == 2:
+            return 'else if(' + node.children[0].string + ')'\
+                   +node.children[1].string
+        else:
+            return node.children[0].string\
+                   + 'else if(' + node.children[1].string + '){\n'\
+                   + node.children[2].string + '}\n'
 
     def gen_if_stmt(self, node):
         s = 'if(' + node.children[0].string + ')\n' + node.children[1].string
@@ -238,7 +266,16 @@ class Traverse(object):
         return s
 
     def gen_for_stmt(self, node):
-        return None
+        if len(node.children) == 4:
+            idx = node.children[0]
+            s = 'for( int ' + idx +'='+node.children[1]+';' + idx+ '<='+node.children[2]\
+                + ';'+idx+'++)' + node.children[3].string
+        # TBDTBDTBDTBDTBDTBDTBDTBDTBDTBDTBDTBDTBDTBDTBDTBDTBDTBDTBDTBDTBDTBD
+        else:
+            array_type = 'int' # TBD by you
+            s = 'for(' + array_type +' '+ node.children[0] + ':'+\
+                node.children[1].string + ')\n'+ node.children[2].string
+        return s
 
     def gen_function_stmt(self, node):
         if len(node.children) == 1:
@@ -264,10 +301,10 @@ class Traverse(object):
                 children = list(node.children)
             s += 'public static '
             if children[0] in actionFunc:
-                para_list = funcParam[children[0]]
-                s = s + para_list[0] + ' ' + children[0] + '_res' + ' ('
-                if len(funcParam[children[0]]) > 1:
-                    for i in range(1,len(para_list)):
+                para_list = funcParam[children[0]]['param']
+                s = s + funcParam[children[0]]['returnValue'] + ' ' + children[0] + '_res' + ' ('
+                if len(funcParam[children[0]]) > 0:
+                    for i in range(0,len(para_list)):
                         s = s + para_list[i] + ' ' + children[1].string[i-1] + ','
                 s = s[0:-1]
                 s += ')\n'

@@ -8,18 +8,37 @@ __date__ = "Apr 12, 2014"
 import sys
 import ply.yacc as yacc
 import lexing
+import re
 
 tokens = lexing.BGDLexer.tokens 
 
 def getyacc():
     return yacc.yacc()
 
+
+reList = {}
+reList['String'] = re.compile(r'\'.*?\'')
+reList['int'] = re.compile(r'[+-]?[0-9]+')
+reList['double'] = re.compile(r'[+-]?[0-9]+(\.[0-9]+)?')
+reList['boolean'] = re.compile(r'YES|NO')
+
+
+def atomMatch(string, type):
+    result = reList[type].match(string)
+    if result == None: return False
+    if result.group() == string:
+        return True;
+    else:
+        return False;
+
+
 class Node(object):
-    def __init__(self, type, children = [], leaf=None, string = None):
+    def __init__(self, type, children = [], leaf=None, string = None, token = None):
         self.type = type #Nonterminal + termianal
         self.children = children #list of children
         self.leaf = leaf #action at this node
         self.string = string #value of attributes
+        self.token = token #token name (atom)
 
 
 start = 'input_stmt'
@@ -123,7 +142,7 @@ def p_parameters(t):
         t[0] = Node('parameters', [t[1]])
 
 def p_parameter(t):
-    'parameter : ID '
+    'parameter : ID'
     if len(t) == 2:
         t[0] = Node('parameter', [t[1]])
     #else:
@@ -211,7 +230,9 @@ def p_power(t):
         t[0] = Node('power', [t[1], t[2]])
 
 def p_atom(t):
-    '''atom : ID
+    '''atom : array
+           | position 
+           | ID
            | STRING
            | NUMBER
            | BOOLEAN
@@ -220,9 +241,22 @@ def p_atom(t):
            | "(" expr ")" '''
     if len(t) == 2:
         t[0] = Node('atom', [t[1]])
+        if not isinstance(t[1], Node):
+            for type in reList:
+                if atomMatch(t[1], type):
+                    t[0].token = type
+                    break
+        print t[1], t[0].token
     else:
         t[0] = Node('atom', [t[2]])
-    
+
+def p_position(t):
+    'position : "(" expr "," expr ")"'
+    t[0] = Node('position', [t[2], t[4]], token = 'int[]')
+
+def p_array(t):
+    'array : "[" parameter_list "]"'
+    t[0] = Node('array', [t[2]])
 
 def p_trailer(t):
     '''trailer : "." ID
@@ -251,7 +285,7 @@ def p_parameter_list(t):
 def p_for_stmt(t):
     '''for_stmt : FOR ID "=" NUMBER TO NUMBER ":" suite
                | FOR ID IN expr ":" suite'''
-    if len(t) == 10:
+    if len(t) == 9:
         t[0] = Node('for_stmt', [t[2], t[4], t[6], t[8]])
     else:
         t[0] = Node('for_stmt', [t[2], t[4], t[6]])
@@ -274,14 +308,14 @@ def p_if_stmt(t):
 def p_elseif_stmt(t):
     '''elseif_stmt : ELSEIF expr ":" suite
                   | elseif_stmt ELSEIF expr ":" suite'''
-    if len(t) == 6:
+    if len(t) == 5:
         t[0] = Node('elseif_stmt', [t[2], t[4]])
     else:
         t[0] = Node('elseif_stmt', [t[1], t[3], t[5]])
 
 def p_while_stmt(t):
     'while_stmt : WHILE expr ":" suite'
-    t[0] = Node('while_stmt', [t[1], t[2]])
+    t[0] = Node('while_stmt', [t[2], t[4]])
 
 def p_suite(t):
     '''suite : NEWLINE
@@ -315,6 +349,7 @@ def p_break_stmt(t):
 
 
 def p_error(p):
+    print p
     print "Syntax error in input!"
     
 
@@ -322,8 +357,8 @@ if __name__ == "__main__":
     m = lexing.BGDLexer()
     #parser = yacc.yacc(debug = True)
     parser = yacc.yacc()
-    f = open('tic-tac-toe.bg')
+    f = open('test.bgd')
     line = f.read()
-    #print line
+    print line
     m.input(line)
     parser.parse(tokenfunc = m.token)

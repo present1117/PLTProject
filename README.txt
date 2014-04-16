@@ -28,3 +28,7 @@ public static boolean move_res(int[] position, int[] position)
 
 note: 1. if the function is not defined in input code, the function will always return ture. 
 2. there may be some private functions that defined by coder
+
+Limitations:
+1. private functions must be put ahead of action functions definition
+2. only support array with same type of variables

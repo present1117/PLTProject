@@ -48,6 +48,7 @@ class BGDLexer(object):
 
     def t_NUMBER(self, t):
         r'[+-]?[0-9]+(\.[0-9]+)?'
+        
         return t
 
     def t_BOOLEAN(self, t):
@@ -56,7 +57,7 @@ class BGDLexer(object):
 
 
     def t_STRING(self, t):
-        r'\'.*\''
+        r'\'.*?\''
         return t
 
     def t_ID(self, t):
@@ -102,7 +103,6 @@ class BGDLexer(object):
         
         try:
             t = next(self.token_stream)
-            #print t
             return t
         except StopIteration:
             return None
@@ -167,7 +167,6 @@ class BGDLexer(object):
             if not tok:
                 break
             tok_str += str(tok) + "\n"
-        #print tok_str
         return tok_str
     
 if __name__ == '__main__':
