@@ -246,7 +246,6 @@ def p_atom(t):
                 if atomMatch(t[1], type):
                     t[0].token = type
                     break
-        print t[1], t[0].token
     else:
         t[0] = Node('atom', [t[2]])
 

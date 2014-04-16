@@ -10,7 +10,7 @@ from collections import defaultdict
 from lexing import BGDLexer
 from yaccing import *
 import ply.lex as lex
-import re
+#import re
 
 
 builtInFunc = ['isEmpty', 'numberInRow']
@@ -36,22 +36,7 @@ funcParam['numberInRow']['param'] = ['int[]']
 localFunc = []
 currentParam = {}
 currentParam['returnValue'] = 'void'
-currentParam['paramList'] = []
-
-
-reList = {}
-reList['String'] = re.compile(r'[A-Za-z]+')
-reList['int'] = re.compile(r'[+-]?[0-9]+')
-reList['double'] = re.compile(r'[+-]?[0-9]+(\.[0-9]+)?')
-reList['boolean'] = re.compile(r'YES|NO')
-#reList['Array'] = re.compile()
-
-def atomMatch(string, type):
-    result = reList[type].match(string)
-    if result.group() == string:
-        return True;
-    else:
-        return False;
+currentParam['param'] = {}
 
 
 class Traverse(object):
@@ -73,32 +58,46 @@ class Traverse(object):
     
     def take_action(self, node):
         if node.leaf == ':=':
-            node.string = node.children[0] + '=' + node.children[1].string
-            if node.string[-1] != '\n':
-                node.string += ';\n'
+            node.string = node.children[0] + '=' + node.children[1].string + ';\n'
+            #if node.string[-1] != '\n':
+            #    node.string += ';\n'
+            node.token = node.children[1].token
+            if node.children[0] not in currentParam['param']:
+                currentParam['param'][node.children[0]] = node.token
+                node.string = node.token + ' ' + node.string
         #elif node.leaf == 'assigned':
             ##function default parameters assignment
         #    node.string = node.children[0].string + '=' + node.children[1].string
         elif node.leaf == '*' or node.leaf == '/' or node.leaf == '%':
             node.string = node.children[0].string + node.leaf + node.children[1].string
+            node.token = node.children[0].token
         elif node.leaf == 'or':
             node.string = node.children[0].string + '||' + node.children[1].string
+            node.token = 'boolean'
         elif node.leaf == 'and':
             node.string = node.children[0].string + '&&' + node.children[1].string
+            node.token = 'boolean'
         elif node.leaf == 'not':
             node.string = '!' + node.children[0].string
+            node.token = 'boolean'
         elif node.leaf == '=':
             node.string = node.children[0].string + '==' + node.children[1].string
+            node.token = 'boolean'
         elif node.leaf == '>':
-            node.string = node.children[0].string + '>' + node.children[1].string        
+            node.string = node.children[0].string + '>' + node.children[1].string
+            node.token = 'boolean'        
         elif node.leaf == '<':
-            node.string = node.children[0].string + '<' + node.children[1].string        
+            node.string = node.children[0].string + '<' + node.children[1].string
+            node.token = 'boolean'
         elif node.leaf == '>=':
             node.string = node.children[0].string + '>=' + node.children[1].string        
+            node.token = 'boolean'
         elif node.leaf == '<=':
             node.string = node.children[0].string + '<=' + node.children[1].string        
+            node.token = 'boolean'
         elif node.leaf == '~=':
             node.string = node.children[0].string + '!=' + node.children[1].string
+            node.token = 'boolean'
         elif node.leaf == 'ATTR':
             node.string = '.' + node.children[0].string
         elif node.leaf == 'INDEX':
@@ -118,6 +117,8 @@ class Traverse(object):
             node.string = 'continue;\n'
         elif node.type == 'return_stmt':
             node.string = 'return ' + node.children[0].string +';\n'
+            node.token = node.children[0].token
+            currentParam['returnValue'] = node.token
         elif node.type == 'suite_stmt':
             if len(node.children) ==1:
                 node.string = node.children[0].string
@@ -140,6 +141,11 @@ class Traverse(object):
                 node.string = node.children[0].string +', '+node.children[1].string
         elif node.type == 'func_expr':
             node.string = self.gen_func_expr(node)
+            node.token = funcParam[node.children[0]]['returnValue']
+            vars = node.children[1].string.split(', ')
+            for i in range(0,len(vars)):
+                if vars[i] not in currentParam['param']:
+                    currentParam['param'][vars[i]] = funcParam[node.children[0]]['param'][i]
         elif node.type == 'atom':
             if isinstance(node.children[0], Node):
                 node.string = node.children[0].string
@@ -148,6 +154,13 @@ class Traverse(object):
                 if node.string == 'YES': node.string = 'true'
                 elif node.string == 'NO': node.string = 'false'
                 elif node.string == 'NIL': node.string = 'null'
+                elif node.token == 'String': node.string = '\"' + node.string[1:-1] + '\"'
+        elif node.type == 'position':
+            node.string = '{' + node.children[0].string + ', ' + node.children[1].string + '}'
+        elif node.type == 'array':
+            node.string = '{' + node.children[0].string + '}'
+            #print node.string, node.children[0].type, node.children[0].string
+            node.token = node.children[0].token + '[]'
         elif node.type == 'power':
             if len(node.children) == 1:
                 node.string = node.children[0].string
@@ -187,6 +200,8 @@ class Traverse(object):
             print node.type
             print "Error in pass_value()"
 
+        if isinstance(node.children[0], Node):
+            if node.token == None: node.token = node.children[0].token
 
 
     def gen_action_stmt(self, node):
@@ -226,7 +241,7 @@ class Traverse(object):
             return list(node.children[0].string.append([node.children[1], node.children[2]]))
 
     def gen_input_stmt(self, node):
-        s = 'package edu.columbia.PLT.BGD;\npublic class GameDesigner{\n'
+        s = 'package edu.columbia.PLT.BGD;\nimport java.lang.String;\nimport java.util.*;\npublic class GameDesigner{\n'
         s += node.children[0].string + node.children[1].string + node.children[2].string + node.children[4].string
         for func in actionFunc:
             if func not in localFunc:
@@ -270,9 +285,8 @@ class Traverse(object):
             idx = node.children[0]
             s = 'for( int ' + idx +'='+node.children[1]+';' + idx+ '<='+node.children[2]\
                 + ';'+idx+'++)' + node.children[3].string
-        # TBDTBDTBDTBDTBDTBDTBDTBDTBDTBDTBDTBDTBDTBDTBDTBDTBDTBDTBDTBDTBDTBD
         else:
-            array_type = 'int' # TBD by you
+            array_type = node.children[1].token[0:-2]
             s = 'for(' + array_type +' '+ node.children[0] + ':'+\
                 node.children[1].string + ')\n'+ node.children[2].string
         return s
@@ -283,18 +297,25 @@ class Traverse(object):
         else:
             return node.children[0].string + '\n' + node.children[1].string
 
-    #### !!!!! #####
+    
     def gen_funcdef(self, node):
         s = ''
         if len(node.children) == 2:
-            #### !!!!! ######
-            s = 'public static int ' + node.children[0] + '()\n'
+            s = 'public static ' + currentParam['returnValue']  + ' ' + node.children[0] + '()\n'
+            funcParam[node.children[0]]['returnValue'] = currentParam['returnValue']
+            funcParam[node.children[0]]['param'] = []
+            currentParam['param'] = {}
+            currentParam['returnValue'] = 'void'
             return s + node.children[1].string
         elif len(node.children) == 4:
             s = node.children[0].string
             children = list(node.children[1:len(node.children)])
         if node.leaf:
-            s = s + 'public static int ' + node.children[1] + '()\n'
+            s = s + 'public static ' + currentParam['returnValue'] + ' ' + node.children[1] + '()\n'
+            funcParam[node.children[1]]['returnValue'] = currentParam['returnValue']
+            funcParam[node.children[1]]['param'] = []
+            currentParam['param'] = {}
+            currentParam['returnValue'] = 'void'
             return s + node.children[2].string
         else:
             if len(node.children) == 3:
@@ -309,11 +330,16 @@ class Traverse(object):
                 s = s[0:-1]
                 s += ')\n'
             else:
-                #### !!! #####
-                for para in children[1].string:
-                    s = s + 'int ' + para + ', '
+                para_dict = currentParam['param']
+                s = s + currentParam['returnValue'] + ' ' + children[0] + ' ('
+                for param in children[1].string:
+                    s = s + para_dict[param] + ' ' + param + ','
+                    funcParam[children[0]]['param'].append(para_dict[param])
                 s = s[0:-1]
-                s = s + ')\n'
+                s += ')\n'
+                funcParam[children[0]]['returnValue'] = currentParam['returnValue']
+            currentParam['returnValue'] = 'void'
+            currentParam['param'] = {}
             return s + children[-1].string
 
     def gen_func_expr(self, node):
