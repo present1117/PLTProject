@@ -1,5 +1,3 @@
-package edu.columbia.PLT.BGD;
-
 import java.util.ArrayList;
 
 /**

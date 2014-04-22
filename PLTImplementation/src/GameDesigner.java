@@ -1,4 +1,3 @@
-package edu.columbia.PLT.BGD;
 public class GameDesigner{
 enum pieceType{STONE};
 static int [] pieceNum = {0};

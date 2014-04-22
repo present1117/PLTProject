@@ -1,5 +1,3 @@
-package edu.columbia.PLT.BGD;
-
 import java.util.ArrayList;
 
 /**
@@ -21,7 +19,7 @@ public class Functions {
 	}
 	
 	public static boolean win(int posx, int posy, Player currentowner) {
-		if(numberInRow(new int [] {posx, posy}) >= 3){
+		if(GameDesigner.win_res(new int [] {posx, posy})){
 			return true;
 		}else {
 			return false;

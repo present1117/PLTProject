@@ -1,4 +1,3 @@
-package edu.columbia.PLT.BGD;
 /**
  * Defination of Piece, have the properties.
  * @author Presenthuang
