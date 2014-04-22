@@ -10,7 +10,9 @@ from collections import defaultdict
 from lexing import BGDLexer
 from yaccing import *
 import ply.lex as lex
-#import re
+import re
+
+ID_pattern = re.compile(r'[A-Za-z_][A-Za-z0-9_]*')
 
 
 builtInFunc = ['isEmpty', 'numberInRow']
@@ -99,7 +101,7 @@ class Traverse(object):
             node.string = node.children[0].string + '!=' + node.children[1].string
             node.token = 'boolean'
         elif node.leaf == 'ATTR':
-            node.string = '.' + node.children[0].string
+            node.string = '.' + node.children[0]
         elif node.leaf == 'INDEX':
             node.string = '[' + node.children[0].string + ']'
         elif node.leaf == 'ELSEIF' or node.leaf == 'ELSE':
@@ -108,6 +110,10 @@ class Traverse(object):
             node.string = self.gen_funcdef(node)
         else: 
             print "Error in take_value()\n"
+        #if node.children[0].token == '':
+        #    node.children[0].token = node.children[1].token
+        #    if node.children[0].token != '' and node.children[0].string not in currentParam['param']:
+        #        currentParam['param'][node.children[0].string] = node.children[0].token
 
 
     def pass_value(self, node):
@@ -118,7 +124,8 @@ class Traverse(object):
         elif node.type == 'return_stmt':
             node.string = 'return ' + node.children[0].string +';\n'
             node.token = node.children[0].token
-            currentParam['returnValue'] = node.token
+            if node.token != '' and currentParam['returnValue'] == 'void':
+                currentParam['returnValue'] = node.token
         elif node.type == 'suite_stmt':
             if len(node.children) ==1:
                 node.string = node.children[0].string
@@ -166,6 +173,21 @@ class Traverse(object):
                 node.string = node.children[0].string
             else:
                 node.string = node.children[0].string + node.children[1].string
+                if node.children[1].leaf == 'ATTR':
+                    if node.children[1].string == '.x' or node.children[1].string == '.y':
+                        node.token = 'int'
+                        if node.children[0].token == '':
+                            if node.children[0].string not in currentParam['param']:
+                                currentParam['param'][node.children[0].string] = 'int[]'
+                            node.children[0].token = 'int[]'
+                        else:
+                            temp = ID_pattern.match(node.children[0].string)
+                            name = temp.group()
+                            currentParam['param'][name] += '[]'
+                        if node.children[1].string == '.x':
+                            node.string = node.children[0].string + '[0]'
+                        else:
+                            node.string = node.children[0].string + '[1]'
         elif node.type == 'parameters':
             if len(node.children) == 1:
                 node.string = [node.children[0].string]
@@ -201,7 +223,7 @@ class Traverse(object):
             print "Error in pass_value()"
 
         if isinstance(node.children[0], Node):
-            if node.token == None: node.token = node.children[0].token
+            if node.token == '': node.token = node.children[0].token
 
 
     def gen_action_stmt(self, node):
@@ -224,7 +246,7 @@ class Traverse(object):
 
     def gen_piece_stmt(self, node):
         s1 = 'enum pieceType{'
-        s2 = 'static int [] pieceNum = {'
+        s2 = 'static int[] pieceNum = {'
         for item in node.children[0].string:
             s1 = s1 + item[0].upper() + ','
             s2 = s2 + item[1] + ','
@@ -332,10 +354,13 @@ class Traverse(object):
             else:
                 para_dict = currentParam['param']
                 s = s + currentParam['returnValue'] + ' ' + children[0] + ' ('
-                for param in children[1].string:
+                for param in node.children[1].string:
                     s = s + para_dict[param] + ' ' + param + ','
+                    if 'param' not in funcParam[children[0]]:
+                        funcParam[children[0]]['param'] = []
                     funcParam[children[0]]['param'].append(para_dict[param])
-                s = s[0:-1]
+                if s[-1] == ',':
+                    s = s[0:-1]
                 s += ')\n'
                 funcParam[children[0]]['returnValue'] = currentParam['returnValue']
             currentParam['returnValue'] = 'void'

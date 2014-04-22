@@ -70,7 +70,7 @@ class BGDLexer(object):
       t.lexer.lineno += 1
       return t
 
-    t_ignore_COMMENT = r'@@.*$'
+    t_ignore_COMMENT = r'@@.*'
     
     t_WHITESPACE = r'[\ \t]'
 

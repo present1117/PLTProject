@@ -33,7 +33,7 @@ def atomMatch(string, type):
 
 
 class Node(object):
-    def __init__(self, type, children = [], leaf=None, string = None, token = None):
+    def __init__(self, type, children = [], leaf=None, string = None, token = ''):
         self.type = type #Nonterminal + termianal
         self.children = children #list of children
         self.leaf = leaf #action at this node
