@@ -34,8 +34,8 @@ class BGDLexer(object):
         'EMPTYLINE',
         'INDENT',
         'DEDENT',
-        'ID',
         'COMMENT',
+        'ID',
         'NEWLINE',
         
         'WHITESPACE'
@@ -70,7 +70,7 @@ class BGDLexer(object):
       t.lexer.lineno += 1
       return t
 
-    t_ignore_COMMENT = r'@@.*$'
+    t_ignore_COMMENT = r'@@(.*)'
     
     t_WHITESPACE = r'[\ \t]'
 
@@ -167,6 +167,7 @@ class BGDLexer(object):
             if not tok:
                 break
             tok_str += str(tok) + "\n"
+        print tok_str
         return tok_str
     
 if __name__ == '__main__':

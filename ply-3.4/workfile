@@ -1,5 +1,5 @@
 PIECE:
-	'stone'
+	'stone' 
 
 BOARD:
 	3 3
@@ -12,8 +12,9 @@ RULE:
 	action := win
 
 FUNCTION:
-       def add position:
+       def add position: 
 		pos := (4,4)
+@@asdasd
 		array := [1,'asd',3]
         return isEmpty(position)
        def win position:
