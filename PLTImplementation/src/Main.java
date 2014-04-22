@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import javax.xml.transform.Templates;
 /**
  * Main entrance of the program.
  * @author Presenthuang
@@ -21,13 +19,13 @@ public class Main {
 			Player newplayer = new Player(i);
 			playerlist.add(newplayer);
 		}
-		int switcher = 0;
+		int playerid = 0;
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 		
 		while(true){
-			switcher = switcher % playerlist.size();
-			System.out.println("Player" + switcher + " Action:");
+			playerid = playerid % playerlist.size();
+			System.out.println("Player" + playerid + " Action:");
 			String movement = sc.nextLine();
 			String [] spliter = movement.split(" ");
 			if(spliter[0].equalsIgnoreCase("add")){
@@ -35,14 +33,14 @@ public class Main {
 				int posx = Integer.parseInt(xypos[0]);
 				int posy = Integer.parseInt(xypos[1]);
 
-				if(Functions.add(posx, posy, playerlist.get(switcher))){
+				if(Functions.add(posx, posy, playerlist.get(playerid))){
 					Drawing.drawBoard(playerlist, icons);
 					System.out.println("Successfully Added!");
-					if(Functions.win(posx, posy, playerlist.get(switcher))){
-						System.out.println("Player "+switcher+" wins!");
+					if(Functions.win(posx, posy, playerlist.get(playerid))){
+						System.out.println("Player "+playerid+" wins!");
 						break;
 					}
-					switcher++;
+					playerid++;
 				}else {
 					System.out.println("Error value!");
 				}
