@@ -46,7 +46,8 @@ public class Main {
 				}else {
 					System.out.println("Error value!");
 				}
-			}else {
+			}
+			else {
 				System.out.println("Error input!");
 			}
 		}
