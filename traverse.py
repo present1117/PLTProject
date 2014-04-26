@@ -40,6 +40,30 @@ currentParam = {}
 currentParam['returnValue'] = 'void'
 currentParam['param'] = {}
 
+def transform(str):
+    if str == 'int':
+        return '(int)(Integer)'
+    elif str == 'double':
+        return '(double)(Double)'
+    elif str == 'boolean':
+        return '(boolean)(Boolean)'
+    elif str == 'String':
+        return '(String)'
+    else:
+        return str
+
+def cTransform(str):
+    if str == '(int)(Integer)':
+        return 'int'
+    elif str == '(double)(Double)':
+        return 'double'
+    elif str == '(boolean)(Boolean)':
+        return 'boolean'
+    elif str == '(String)':
+        return 'String'
+    else:
+        return str
+
 
 class Traverse(object):
     def __init__(self, tree, output = sys.stdout): 
@@ -64,15 +88,33 @@ class Traverse(object):
             #if node.string[-1] != '\n':
             #    node.string += ';\n'
             node.token = node.children[1].token
+            #if node.token == '':
+            #    node.token = 'Object'
             if node.children[0] not in currentParam['param']:
                 currentParam['param'][node.children[0]] = node.token
+                node.token = cTransform(node.token)
                 node.string = node.token + ' ' + node.string
+            else:
+                if node.token != 'Object' and cTransform(node.token) != cTransform(currentParam['param'][node.children[0]]):
+#                if node.token != '' and node.token != 'Object' and node.token != currentParam['param'][node.children[0]]:
+                    print 'Warning: %s: \'%s\' is changed to \'%s\'. ' % (node.string.strip(), cTransform(currentParam['param'][node.children[0]]), cTransform(node.token))
+                    #else:                       
         #elif node.leaf == 'assigned':
             ##function default parameters assignment
         #    node.string = node.children[0].string + '=' + node.children[1].string
-        elif node.leaf == '*' or node.leaf == '/' or node.leaf == '%':
-            node.string = node.children[0].string + node.leaf + node.children[1].string
+        elif node.leaf == '+' or node.leaf == '-' or node.leaf == '*' or node.leaf == '/' or node.leaf == '%':
             node.token = node.children[0].token
+            wflag = 0
+            if node.token == 'Object' and node.children[1].token != 'Object':
+                node.token = node.children[1].token
+                node.children[0].string = transform(node.token) + node.children[0].string
+            elif node.token != 'Object' and node.children[1].token == 'Object':
+                node.children[1].string = transform(node.token) + node.children[0].string
+            elif node.children[0].token != node.children[1].token:
+                wflag = 1
+            node.string = node.children[0].string + node.leaf + node.children[1].string
+            if wflag:
+                print 'Warning: %s: \'%s\' and \'%s\' are not the same data type. ' % (node.string, node.children[0].string, node.children[1].string)
         elif node.leaf == 'or':
             node.string = node.children[0].string + '||' + node.children[1].string
             node.token = 'boolean'
@@ -104,6 +146,8 @@ class Traverse(object):
             node.string = '.' + node.children[0]
         elif node.leaf == 'INDEX':
             node.string = '[' + node.children[0].string + ']'
+            if cTransform(node.children[0].token) != 'int':
+                print 'Warning: %s: \'%s\' is not an integer. ' % (node.string, node.children[0].string)
         elif node.leaf == 'ELSEIF' or node.leaf == 'ELSE':
             node.string = self.gen_if_stmt(node)
         elif node.leaf == 'emptyParam':
@@ -124,8 +168,12 @@ class Traverse(object):
         elif node.type == 'return_stmt':
             node.string = 'return ' + node.children[0].string +';\n'
             node.token = node.children[0].token
-            if node.token != '' and currentParam['returnValue'] == 'void':
-                currentParam['returnValue'] = node.token
+            if node.token != 'Object': #if node.token != '':
+                if  currentParam['returnValue'] == 'void' or  currentParam['returnValue'] == 'Object':
+                    currentParam['returnValue'] = node.token
+            if node.token == 'Object' and  currentParam['returnValue'] == 'void':
+            #if node.token == '' and  currentParam['returnValue'] == 'void':
+                currentParam['returnValue'] = 'Object'
         elif node.type == 'suite_stmt':
             if len(node.children) ==1:
                 node.string = node.children[0].string
@@ -146,6 +194,9 @@ class Traverse(object):
                 node.string = node.children[0].string
             else:
                 node.string = node.children[0].string +', '+node.children[1].string
+                if node.children[0].token == 'Object' and node.children[1].token != 'Object':
+#                if node.children[0].token == '' and node.children[1].token != '':
+                    node.token = node.children[1].token
         elif node.type == 'func_expr':
             node.string = self.gen_func_expr(node)
             node.token = funcParam[node.children[0]]['returnValue']
@@ -153,12 +204,18 @@ class Traverse(object):
             for i in range(0,len(vars)):
                 if vars[i] not in currentParam['param']:
                     currentParam['param'][vars[i]] = funcParam[node.children[0]]['param'][i]
+                else:
+                    if funcParam[node.children[0]]['param'][i] != 'Object':
+                        if currentParam['param'][vars[i]]!=funcParam[node.children[0]]['param'][i] and currentParam['param'][vars[i]]!='Object':
+                            print 'Warning: %s: \'%s\' is not \'%s\'. ' % (node.string, vars[i], funcParam[node.children[0]]['param'][i])
         elif node.type == 'atom':
             if isinstance(node.children[0], Node):
                 node.string = node.children[0].string
             else:
                 node.string = node.children[0]
-                if node.string == 'YES': node.string = 'true'
+                if node.string in currentParam['param']:
+                    node.token = currentParam['param'][node.string]
+                elif node.string == 'YES': node.string = 'true'
                 elif node.string == 'NO': node.string = 'false'
                 elif node.string == 'NIL': node.string = 'null'
                 elif node.token == 'String': node.string = '\"' + node.string[1:-1] + '\"'
@@ -167,32 +224,39 @@ class Traverse(object):
         elif node.type == 'array':
             node.string = '{' + node.children[0].string + '}'
             #print node.string, node.children[0].type, node.children[0].string
-            node.token = node.children[0].token + '[]'
+            if node.children[0].token != 'Object':
+                node.token = node.children[0].token + '[]'
         elif node.type == 'power':
             if len(node.children) == 1:
                 node.string = node.children[0].string
-            else:
+            else:#power->power trailer
                 node.string = node.children[0].string + node.children[1].string
                 if node.children[1].leaf == 'ATTR':
                     if node.children[1].string == '.x' or node.children[1].string == '.y':
                         node.token = 'int'
-                        if node.children[0].token == '':
+                        if node.children[0].token == 'Object': #or node.children[0].token == '':
                             if node.children[0].string not in currentParam['param']:
-                                currentParam['param'][node.children[0].string] = 'int[]'
-                            node.children[0].token = 'int[]'
+                                currentParam['param'][node.children[0].string] = 'Object'
+                            node.token = transform('int')
+                            #node.children[0].token = '(Integer[])'
                         else:
                             temp = ID_pattern.match(node.children[0].string)
                             name = temp.group()
-                            currentParam['param'][name] += '[]'
+                            if name not in currentParam['param']:
+                                currentParam['param'][name] = 'Object'
+                            else:
+                                currentParam['param'][name] += '[]'
                         if node.children[1].string == '.x':
-                            node.string = node.children[0].string + '[0]'
+                            node.string = node.string[0:-2] + '[0]'
                         else:
-                            node.string = node.children[0].string + '[1]'
+                            node.string = node.string[0:-2] + '[1]'
         elif node.type == 'parameters':
             if len(node.children) == 1:
                 node.string = [node.children[0].string]
             else:
-                node.string = list(node.children[0].string.append(node.children[1].string))
+                node.string = list(node.children[0].string)
+                node.string.append(node.children[1].string)
+                #node.string = list(node.children[0].string.append(node.children[1].string))
         elif node.type == 'funcdef':
             node.string = self.gen_funcdef(node)
         elif node.type == 'function_stmt':
@@ -223,7 +287,8 @@ class Traverse(object):
             print "Error in pass_value()"
 
         if isinstance(node.children[0], Node):
-            if node.token == '': node.token = node.children[0].token
+            if node.token == 'Object': node.token = node.children[0].token
+#            if node.token == '': node.token = node.children[0].token
 
 
     def gen_action_stmt(self, node):
@@ -234,14 +299,16 @@ class Traverse(object):
         return ''
 
     def gen_rule_stmt(self, node):
-        if 'win' not in localFunc: print "Action win is not declared.\n"
-        if 'add' not in localFunc and 'move' not in localFunc: "At least either action add or move should be declared in RULE. \n"
+        if 'win' not in localFunc: print "Warning: Action \'win\' is not declared.\n"
+        if 'add' not in localFunc and 'move' not in localFunc: "Warning: Either action \'add\' or \'move\' should be declared in RULE. \n"
         return ''
 
     def gen_player_stmt(self, node):
+        if int(node.children[0]) <= 0: print 'Warning: the number of players should be greater than 0. '
         return 'static int playerNum = ' + node.children[0] + ';\n'
 
     def gen_board_stmt(self, node):
+        if int(node.children[0]) <=0 or int(node.children[1])<=0: print 'Warning: the size of board should be greater than 0. '
         return 'static int boardRow = ' + node.children[0] + ';\n' + 'static int boardCol = ' + node.children[1] + ';\n'
 
     def gen_piece_stmt(self, node):
@@ -258,12 +325,17 @@ class Traverse(object):
         if len(node.children) == 1:
             return [[node.children[0], '0']]
         elif len(node.children) == 2:
-            return [[node.children[0], node.children[1]]]
+            if isinstance(node.children[0], Node):
+                l = list(node.children[0].string)
+                l.append([node.children[1], '0'])
+                return l
+            else:
+                return [[node.children[0], node.children[1]]]
         else:
             return list(node.children[0].string.append([node.children[1], node.children[2]]))
 
     def gen_input_stmt(self, node):
-        s = 'package edu.columbia.PLT.BGD;\nimport java.lang.String;\nimport java.util.*;\npublic class GameDesigner{\n'
+        s = 'import java.lang.*;\nimport java.util.*;\npublic class GameDesigner{\n'
         s += node.children[0].string + node.children[1].string + node.children[2].string + node.children[4].string
         for func in actionFunc:
             if func not in localFunc:
@@ -355,6 +427,8 @@ class Traverse(object):
                 para_dict = currentParam['param']
                 s = s + currentParam['returnValue'] + ' ' + children[0] + ' ('
                 for param in node.children[1].string:
+                    if param not in para_dict:
+                        para_dict[param] = 'Object'
                     s = s + para_dict[param] + ' ' + param + ','
                     if 'param' not in funcParam[children[0]]:
                         funcParam[children[0]]['param'] = []
@@ -375,7 +449,19 @@ class Traverse(object):
         if len(node.children) == 1:
             return s + '()'
         else:
-            return s + '(' + node.children[1].string + ')'
+            s += '('
+            vars = node.children[1].string.split(', ')
+            for i in range(0,len(vars)):
+                if vars[i] in currentParam['param'] and currentParam['param'][vars[i]] == 'Object':
+                    type = funcParam[node.children[0]]['param'][i]
+                    if type != 'Object':
+                        s = s + '('+transform(type)+')' + vars[i] + ', '
+                else:
+                    s = s + vars[i] + ', '
+            s = s[0:-2]
+            s += ')'
+            return s
+            #return s + '(' + node.children[1].string + ')'
 
     def getJava(self):
         self.traverse(self.root)

@@ -21,6 +21,7 @@ reList['String'] = re.compile(r'\'.*?\'')
 reList['int'] = re.compile(r'[+-]?[0-9]+')
 reList['double'] = re.compile(r'[+-]?[0-9]+(\.[0-9]+)?')
 reList['boolean'] = re.compile(r'YES|NO')
+#reList['Object'] = re.compile(r'[A-Za-z_][A-Za-z0-9_]*')
 
 
 def atomMatch(string, type):
@@ -33,7 +34,7 @@ def atomMatch(string, type):
 
 
 class Node(object):
-    def __init__(self, type, children = [], leaf=None, string = None, token = ''):
+    def __init__(self, type, children = [], leaf=None, string = None, token = 'Object'):
         self.type = type #Nonterminal + termianal
         self.children = children #list of children
         self.leaf = leaf #action at this node
@@ -54,11 +55,15 @@ def p_piece_stmt(t):
 def p_piece_expr(t):
     '''piece_expr : STRING NUMBER NEWLINE
                  | STRING NEWLINE
+                 | piece_expr STRING NEWLINE
                  | piece_expr STRING NUMBER NEWLINE'''
     if len(t) == 3:
         t[0] = Node('piece_expr', [t[1][1:-1]])
     elif len(t) == 4:
-        t[0] = Node('piece_expr', [t[1][1:-1], t[2]])
+        if isinstance(t[1], Node):
+            t[0] = Node('piece_expr', [t[1], t[2][1:-1]])
+        else:
+            t[0] = Node('piece_expr', [t[1][1:-1], t[2]])
     else:
         t[0] = Node('piece_expr', [t[1], t[2][1:-1], t[3]])
 
