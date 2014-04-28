@@ -1,14 +1,17 @@
 public class GameDesigner {
 	enum pieceType {
-		STONE
+		RED, YELLOW, GREEN, BLUE
 	};
 
 	static int[] pieceNum = { 0 };
-	static int boardRow = 5;
-	static int boardCol = 5;
-	static int playerNum = 2;
+	static int boardRow = 8;
+	static int boardCol = 8;
+	static int playerNum = 1;
 
 	public static boolean add_res(int[] position) {
+		if(Board.boardslots[position[0]][position[1]].Piece() == null){
+			return false;
+		}
 		return Functions.isEmpty(position);
 	}
 
