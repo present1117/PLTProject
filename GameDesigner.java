@@ -1,18 +1,33 @@
 import java.lang.*;
 import java.util.*;
 public class GameDesigner{
-enum pieceType{STONE};
-static int[] pieceNum = {0};
-static int boardRow = 3;
-static int boardCol = 3;
-static int playerNum = 2;
-public static boolean add_res (int[] position)
+enum pieceType{RED,YELLOW,GREEN,BLUE};
+static int[] pieceNum = {0,0,0,0};
+static int boardRow = 8;
+static int boardCol = 8;
+static int playerNum = 1;
+public static boolean add_res (int piece,int[] position)
+{
+int PIECE_TYPE=Functions.getPieceType(piece);
+
+if(PIECE_TYPE==RED||PIECE_TYPE==YELLOW)
 {
 return Functions.isEmpty(position);
 }
+
+if(PIECE_TYPE==GREEN)
+{
+return Functions.isEmpty(position)&&Functions.getPieceType(Functions.getPiece({position[0], position[1]-1}))==RED&&Functions.getPieceType(Functions.getPiece({position[0], position[1]+1}))==RED&&Functions.getPieceType(Functions.getPiece({position[0]-1, position[1]}))==RED&&Functions.getPieceType(Functions.getPiece({position[0]+1, position[1]}))==RED;
+}
+
+if(PIECE_TYPE==BLUE)
+{
+return Functions.isEmpty(position)&&Functions.getPieceType(Functions.getPiece({position[0], position[1]-1}))==RED&&Functions.getPieceType(Functions.getPiece({position[0]-1, position[1]}))==RED&&Functions.getPieceType(Functions.getPiece({position[0], position[1]+1}))==YELLOW&&Functions.getPieceType(Functions.getPiece({position[0]+1, position[1]}))==YELLOW;
+}
+}
 public static boolean win_res (int[] position)
 {
-if(Functions.numberInRow(position)>=3)
+if(Functions.pieceCount(GREEN)+Functions.pieceCount(BLUE)==15)
 {
 return true;
 }

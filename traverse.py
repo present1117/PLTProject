@@ -15,11 +15,11 @@ import re
 ID_pattern = re.compile(r'[A-Za-z_][A-Za-z0-9_]*')
 
 
-builtInFunc = ['isEmpty', 'numberInRow']
+builtInFunc = ['isEmpty', 'numberInRow', 'getPieceType', 'getPiece', 'pieceCount']
 actionFunc = ['add', 'move', 'win', 'remove']
 funcParam = defaultdict(dict)
 funcParam['add']['returnValue'] = 'boolean'
-funcParam['add']['param'] = ['int[]']
+funcParam['add']['param'] = ['int', 'int[]']
 funcParam['win']['returnValue'] = 'boolean'
 funcParam['win']['param'] = ['int[]']
 funcParam['remove']['returnValue'] = 'boolean'
@@ -30,6 +30,12 @@ funcParam['isEmpty']['returnValue'] = 'boolean'
 funcParam['isEmpty']['param'] = ['int[]']
 funcParam['numberInRow']['returnValue'] = 'int'
 funcParam['numberInRow']['param'] = ['int[]']
+funcParam['getPieceType']['returnValue'] = 'int'
+funcParam['getPieceType']['param'] = ['Piece']
+funcParam['getPiece']['returnValue'] = 'Piece'
+funcParam['getPiece']['param'] = ['int[]']
+funcParam['pieceCount']['returnValue'] = 'int'
+funcParam['pieceCount']['param'] = ['int']
 #funcParam['add'] = ['boolean', 'int[]']
 #funcParam['win'] = ['boolean', 'int[]']
 #funcParam['move'] = ['boolean', 'int[]', 'int[]']
@@ -202,12 +208,14 @@ class Traverse(object):
             node.token = funcParam[node.children[0]]['returnValue']
             vars = node.children[1].string.split(', ')
             for i in range(0,len(vars)):
-                if vars[i] not in currentParam['param']:
-                    currentParam['param'][vars[i]] = funcParam[node.children[0]]['param'][i]
-                else:
-                    if funcParam[node.children[0]]['param'][i] != 'Object':
-                        if currentParam['param'][vars[i]]!=funcParam[node.children[0]]['param'][i] and currentParam['param'][vars[i]]!='Object':
-                            print 'Warning: %s: \'%s\' is not \'%s\'. ' % (node.string, vars[i], funcParam[node.children[0]]['param'][i])
+                id = ID_pattern.match(vars[i])
+                if id != None and id.group() == vars[i]:
+                    if vars[i] not in currentParam['param']:
+                        currentParam['param'][vars[i]] = funcParam[node.children[0]]['param'][i]
+                    else:
+                        if funcParam[node.children[0]]['param'][i] != 'Object':
+                            if currentParam['param'][vars[i]]!=funcParam[node.children[0]]['param'][i] and currentParam['param'][vars[i]]!='Object':
+                                print 'Warning: %s: \'%s\' is not \'%s\'. ' % (node.string, vars[i], funcParam[node.children[0]]['param'][i])
         elif node.type == 'atom':
             if isinstance(node.children[0], Node):
                 node.string = node.children[0].string
@@ -420,7 +428,7 @@ class Traverse(object):
                 s = s + funcParam[children[0]]['returnValue'] + ' ' + children[0] + '_res' + ' ('
                 if len(funcParam[children[0]]) > 0:
                     for i in range(0,len(para_list)):
-                        s = s + para_list[i] + ' ' + children[1].string[i-1] + ','
+                        s = s + para_list[i] + ' ' + children[1].string[i] + ','
                 s = s[0:-1]
                 s += ')\n'
             else:

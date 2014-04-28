@@ -39,7 +39,7 @@ class Node(object):
         self.children = children #list of children
         self.leaf = leaf #action at this node
         self.string = string #value of attributes
-        self.token = token #token name (atom)
+        self.token = token #data type (atom)
 
 
 start = 'input_stmt'
