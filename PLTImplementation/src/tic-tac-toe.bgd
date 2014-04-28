@@ -12,7 +12,7 @@ RULE:
 	action := win
 
 FUNCTION:
-       def add position:
+       def add piece, position:
 		return isEmpty(position)
        def win position:
 		if numberInRow(position) >= 3:
