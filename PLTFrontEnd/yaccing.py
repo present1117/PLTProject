@@ -360,7 +360,7 @@ def p_error(p):
 if __name__ == "__main__":
     m = lexing.BGDLexer()
     #parser = yacc.yacc(debug = True)
-    parser = yacc.yacc()
+    parser = yacc.yacc(debug = False)
     f = open('test.bgd')
     line = f.read()
     print line
