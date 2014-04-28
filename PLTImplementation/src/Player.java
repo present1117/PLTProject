@@ -29,7 +29,7 @@ public class Player {
 			numberofpieces++;
 			return true;
 		}
-		return false;	
+		return false;
 	}
 	
 	boolean removePiece(Piece p){
