@@ -9,7 +9,7 @@ public class GameDesigner {
 	static int boardCol = 8;
 	static int playerNum = 1;
 
-	public static boolean add_res (String piece,int[] position){
+	public static boolean add_res (String piece,Pos position){
 		String PIECE_TYPE= piece;
 		
 		if(PIECE_TYPE.equals(RED)||PIECE_TYPE.equals(YELLOW))
@@ -19,18 +19,18 @@ public class GameDesigner {
 		
 		if(PIECE_TYPE.equals(GREEN))
 		{
-			return Functions.isEmpty(position)&&Functions.getPieceType(Functions.getPiece(position[0], position[1]-1)).equals(RED)
-				&&Functions.getPieceType(Functions.getPiece(position[0], position[1]+1)).equals(RED)
-				&&Functions.getPieceType(Functions.getPiece(position[0]-1, position[1])).equals(RED)
-				&&Functions.getPieceType(Functions.getPiece(position[0]+1, position[1])).equals(RED);
+			return Functions.isEmpty(position)&&Functions.getPieceType(Functions.getPiece(position.x(), position.y()-1)).equals(RED)
+				&&Functions.getPieceType(Functions.getPiece(position.x(), position.y()+1)).equals(RED)
+				&&Functions.getPieceType(Functions.getPiece(position.x()-1, position.y())).equals(RED)
+				&&Functions.getPieceType(Functions.getPiece(position.x()+1, position.y())).equals(RED);
 		}
 		
 		if(PIECE_TYPE.equals(BLUE))
 		{
-			return Functions.isEmpty(position)&&Functions.getPieceType(Functions.getPiece(position[0], position[1]-1)).equals(RED)
-				&&Functions.getPieceType(Functions.getPiece(position[0]-1, position[1])).equals(RED)
-				&&Functions.getPieceType(Functions.getPiece(position[0], position[1]+1)).equals(YELLOW)
-				&&Functions.getPieceType(Functions.getPiece(position[0]+1, position[1])).equals(YELLOW);
+			return Functions.isEmpty(position)&&Functions.getPieceType(Functions.getPiece(position.x(), position.y()-1)).equals(RED)
+				&&Functions.getPieceType(Functions.getPiece(position.x()-1, position.y())).equals(RED)
+				&&Functions.getPieceType(Functions.getPiece(position.x(), position.y()+1)).equals(YELLOW)
+				&&Functions.getPieceType(Functions.getPiece(position.x()+1, position.y())).equals(YELLOW);
 		}
 		return false;
 	}

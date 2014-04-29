@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class Functions {
 	public static boolean add(int posx, int posy, Player currentowner, String ptype) {
-		if (GameDesigner.add_res(ptype, new int[] { posx, posy })) {
+		if (GameDesigner.add_res(ptype, new Pos(posx, posy))) {
 			Board.boardslots[posx][posy] = new Slot();
 			Board.boardslots[posx][posy].setPiece(new Piece(currentowner,
 					new Pos(posx, posy)), currentowner);
@@ -28,15 +28,13 @@ public class Functions {
 		}
 	}
 
-	public static boolean isEmpty(int[] position) {
-		if (position.length < 2)
+	public static boolean isEmpty(Pos position) {
+		if (position == null)
 			return false;
-		int posx = position[0];
-		int posy = position[1];
-		if (posx >= Board.boardslots.length
-				|| posy >= Board.boardslots[0].length || posx < 0 || posy < 0)
+		if (position.x() >= Board.boardslots.length
+				|| position.y() >= Board.boardslots[0].length || position.x() < 0 || position.y() < 0)
 			return false;
-		Slot currentSlot = Board.boardslots[posx][posy];
+		Slot currentSlot = Board.boardslots[position.x()][position.y()];
 		if (currentSlot == null) {
 			return true;
 		} else {
@@ -209,7 +207,6 @@ public class Functions {
 
 	public static boolean isBoardFull() {
 		return false;
-
 	}
 
 	public static boolean remove(Pos po, ArrayList<Player> players) {
