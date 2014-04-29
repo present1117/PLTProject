@@ -27,19 +27,28 @@ funcParam['remove']['param'] = ['int[]']
 funcParam['move']['returnValue'] = 'boolean'
 funcParam['move']['param'] = ['int[]', 'int[]']
 funcParam['isEmpty']['returnValue'] = 'boolean'
-funcParam['isEmpty']['param'] = ['int[]']
+funcParam['isEmpty']['param'] = ['Pos']
 funcParam['numberInRow']['returnValue'] = 'int'
 funcParam['numberInRow']['param'] = ['int[]']
-funcParam['getPieceType']['returnValue'] = 'int'
+funcParam['getPieceType']['returnValue'] = 'String'
 funcParam['getPieceType']['param'] = ['Piece']
+funcParam['getPiecePlayer']['returnValue'] = 'Player'
+funcParam['getPiecePlayer']['param'] = ['Piece']
+funcParam['getPiecePos']['returnValue'] = 'Pos'
+funcParam['getPiecePos']['param'] = ['Piece']
 funcParam['getPiece']['returnValue'] = 'Piece'
-funcParam['getPiece']['param'] = ['int[]']
+funcParam['getPiece']['param'] = ['Pos']
+funcParam['isBoardFull']['returnValue'] = 'boolean'
+funcParam['isBoardFull']['param'] = []
+funcParam['getPiecefromPlayer']['returnValue'] = 
 funcParam['pieceCount']['returnValue'] = 'int'
-funcParam['pieceCount']['param'] = ['int']
+funcParam['pieceCount']['param'] = ['String']
+
 #funcParam['add'] = ['boolean', 'int[]']
 #funcParam['win'] = ['boolean', 'int[]']
 #funcParam['move'] = ['boolean', 'int[]', 'int[]']
 #funcParam['remove'] = ['boolean', 'int[]']
+
 
 localFunc = []
 currentParam = {}
