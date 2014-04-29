@@ -9,8 +9,8 @@ import java.util.ArrayList;
  */
 
 public class Functions {
-	public static boolean add(int posx, int posy, Player currentowner, int ptype) {
-		if (GameDesigner.add_res(ptype, new int[] { posx, posy })) {
+	public static boolean add(int posx, int posy, Player currentowner, String ptype) {
+		if (GameDesigner.add_res(ptype, new Pos(posx, posy))) {
 			Board.boardslots[posx][posy] = new Slot();
 			Board.boardslots[posx][posy].setPiece(new Piece(currentowner,
 					new Pos(posx, posy)), currentowner);
@@ -28,15 +28,13 @@ public class Functions {
 		}
 	}
 
-	public static boolean isEmpty(int[] position) {
-		if (position.length < 2)
+	public static boolean isEmpty(Pos position) {
+		if (position == null)
 			return false;
-		int posx = position[0];
-		int posy = position[1];
-		if (posx >= Board.boardslots.length
-				|| posy >= Board.boardslots[0].length || posx < 0 || posy < 0)
+		if (position.x() >= Board.boardslots.length
+				|| position.y() >= Board.boardslots[0].length || position.x() < 0 || position.y() < 0)
 			return false;
-		Slot currentSlot = Board.boardslots[posx][posy];
+		Slot currentSlot = Board.boardslots[position.x()][position.y()];
 		if (currentSlot == null) {
 			return true;
 		} else {
@@ -173,12 +171,25 @@ public class Functions {
 		return total1 > total2 ? total1 : total2;
 	}
 
-	public static int getPieceType(Piece p) {
+	public static String getPieceType(Piece p) {
 		return p.piecetype();
 	}
 
 	public static Player getPiecePlayer(Piece p) {
 		return p.owner;
+	}
+	
+	public static ArrayList<Piece> getPiecefromPlayer(Player p, String type){
+		ArrayList<Piece> myList = new ArrayList<Piece>();
+		for(Piece pi : p.pieceList){
+			if(pi.Type.equals(type))
+				myList.add(pi);
+		}
+		return myList;
+	}
+	
+	public static ArrayList<Piece> getPiecefromPlayer(Player p){
+		return p.pieceList;
 	}
 
 	public static Pos getPiecePos(Piece p) {
@@ -202,16 +213,27 @@ public class Functions {
 		return null;
 	}
 
-	public static int pieceCount(int piecetype) {
-		return 0;
-
+	public static int pieceCount(String piecetype) {
+		int count = 0;
+		for (int x = 0; x < Board.boardslots.length; x++) {
+			for (int y = 0; y < Board.boardslots[0].length; y ++) {
+				if (Board.boardslots[x][y] != null && Board.boardslots[x][y].Piece() != null && Board.boardslots[x][y].Piece().piecetype().equals(piecetype))
+					count ++;
+			}
+		}
+		return count;
 	}
 
 	public static boolean isBoardFull() {
-		return false;
-
+		for (int x = 0; x < Board.boardslots.length; x++) {
+			for (int y = 0; y < Board.boardslots[0].length; y ++) {
+				if (Board.boardslots[x][y].available())
+					return false;
+			}
+		}
+		return true;
 	}
-
+	
 	public static boolean remove(Pos po, ArrayList<Player> players) {
 		Piece piece = Board.boardslots[po.x()][po.y()].Piece();
 		if (piece == null) {
@@ -228,15 +250,5 @@ public class Functions {
 			return true;
 		}
 	}
-
-	void getPiecefromPlayer() {
-
-	}
-
-	void findNextInRow() {
-
-	}
-
-
 
 }
