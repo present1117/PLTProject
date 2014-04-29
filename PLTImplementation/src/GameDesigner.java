@@ -1,11 +1,6 @@
 public class GameDesigner {
 	static String[] TYPE = { "RED", "YELLOW", "GREEN", "BLUE" };
-	// TYPE RED = new TYPE("RED",0);
-	// static String RED = "RED";
-	// static String YELLOW = "YELLOW";
-	// static String GREEN = "GREEN";
-	// static String BLUE = "BLUE";
-	//
+
 	static int[] pieceNum = { 0, 0, 0, 0 };
 	static int boardRow = 8;
 	static int boardCol = 8;

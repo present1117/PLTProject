@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class Functions {
 	public static boolean add(int posx, int posy, Player currentowner, String ptype) {
 		if (GameDesigner.add_res(ptype, new Pos(posx, posy))) {
+			
 			Board.boardslots[posx][posy] = new Slot();
 			Board.boardslots[posx][posy].setPiece(new Piece(currentowner,
 					new Pos(posx, posy)), currentowner);
