@@ -178,6 +178,19 @@ public class Functions {
 	public static Player getPiecePlayer(Piece p) {
 		return p.owner;
 	}
+	
+	public static ArrayList<Piece> getPiecefromPlayer(Player p, String type){
+		ArrayList<Piece> myList = new ArrayList<Piece>();
+		for(Piece pi : p.pieceList){
+			if(pi.Type.equals(type))
+				myList.add(pi);
+		}
+		return myList;
+	}
+	
+	public static ArrayList<Piece> getPiecefromPlayer(Player p){
+		return p.pieceList;
+	}
 
 	public static Pos getPiecePos(Piece p) {
 		return p.pos;
@@ -201,12 +214,33 @@ public class Functions {
 	}
 
 	public static int pieceCount(String piecetype) {
+<<<<<<< HEAD
 		return 0;
 
 	}
 
 	public static boolean isBoardFull() {
 		return false;
+=======
+		int count = 0;
+		for (int x = 0; x < Board.boardslots.length; x++) {
+			for (int y = 0; y < Board.boardslots[0].length; y ++) {
+				if (Board.boardslots[x][y] != null && Board.boardslots[x][y].Piece() != null && Board.boardslots[x][y].Piece().piecetype().equals(piecetype))
+					count ++;
+			}
+		}
+		return count;
+	}
+
+	public static boolean isBoardFull() {
+		for (int x = 0; x < Board.boardslots.length; x++) {
+			for (int y = 0; y < Board.boardslots[0].length; y ++) {
+				if (Board.boardslots[x][y].available())
+					return false;
+			}
+		}
+		return true;
+>>>>>>> FETCH_HEAD
 	}
 
 	public static boolean remove(Pos po, ArrayList<Player> players) {
@@ -225,15 +259,4 @@ public class Functions {
 			return true;
 		}
 	}
-
-	void getPiecefromPlayer() {
-
-	}
-
-	void findNextInRow() {
-
-	}
-
-
-
 }
