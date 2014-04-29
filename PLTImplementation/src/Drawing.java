@@ -3,14 +3,19 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+<<<<<<< HEAD
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+=======
+>>>>>>> FETCH_HEAD
 /**
  * Defination of drawing, to draw the graph of the chess board just in time.
+ * 
  * @author Presenthuang
- *
+ * 
  */
 public class Drawing {
+<<<<<<< HEAD
 	public static void drawBoard(BoardGUI board, ArrayList<Player> pl, String[] icons)
 	{
 		Slot[][] slots = Board.boardslots;
@@ -43,6 +48,27 @@ public class Drawing {
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			return null;
+=======
+	public static void drawBoard(ArrayList<Player> pl, String[] icons) {
+		Slot[][] slots = Board.boardslots;
+		int numOfRows = Board.row();
+		int numOfColumns = Board.col();
+
+		for (int i = 0; i < numOfRows; i++) {
+			for (int j = 0; j < numOfColumns; j++) {
+				try {
+					// if(slots[i][j].Player().getId() == 0)
+					// System.out.print("o ");
+					// else
+					// System.out.print("x ");
+					System.out.print(icons[slots[i][j].Player().getId()] + " ");
+				} catch (NullPointerException e) {
+					System.out.print(". ");
+				}
+
+			}
+			System.out.println("");
+>>>>>>> FETCH_HEAD
 		}
 		
 
