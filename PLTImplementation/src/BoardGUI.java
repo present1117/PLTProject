@@ -1,5 +1,6 @@
 import java.awt.*;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -45,8 +46,8 @@ public class BoardGUI extends JFrame {
     private void addComponentsToPane(Container contentPane) {
 
         GridLayout gridLayout = new GridLayout(numOfRows, numOfColumns);
-        gridLayout.setHgap(1);
-        gridLayout.setVgap(1);
+        //gridLayout.setHgap(1);
+        //gridLayout.setVgap(1);
         centerPanel.setLayout(gridLayout);
         centerPanel.setBackground(Color.black);
 
@@ -105,7 +106,8 @@ public class BoardGUI extends JFrame {
 
         for (int row = 0; row < numOfRows; row++) {
             for (int col = 0; col < numOfColumns; col++) {            
-                    panels[count] = new ImagePanel(boardImage);
+                panels[count] = new ImagePanel(boardImage);
+                panels[count].setBorder(BorderFactory.createLineBorder(Color.black));
                 panels[count].setName(row + "" + col);
                 count++;
             }
@@ -116,6 +118,8 @@ public class BoardGUI extends JFrame {
     public void addPiece(ImageIcon img, String block) {
         for (int s = 0; s < labels.length; s++) {
             if (labels[s].getName().equalsIgnoreCase(block)) {
+            	Image scaledImage = img.getImage().getScaledInstance((int)(panels[s].getWidth()/1.2), (int)(panels[s].getHeight()/1.2), Image.SCALE_SMOOTH);
+            	img.setImage(scaledImage);
                 labels[s].setIcon(img);
             }
         }
@@ -126,10 +130,8 @@ public class BoardGUI extends JFrame {
     	private static final long serialVersionUID = 1L;
 		private Image image;
 
-        /**
-         * Default constructor used to set the image for the background for the
-         * instance
-         */
+        //Default constructor used to set the image for the background for the
+        //instance
         public ImagePanel(Image img) {
             image = img;
         }
@@ -138,6 +140,7 @@ public class BoardGUI extends JFrame {
         protected void paintComponent(Graphics g) {
             //draws image to background to scale of frame
             g.drawImage(image, 0, 0, null);
+            
         }
     }
 }

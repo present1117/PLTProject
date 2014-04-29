@@ -28,8 +28,7 @@ public class Drawing {
 				catch(NullPointerException e)
 				{
 					
-				}
-					
+				}		
 			}	
 		}
 	}
@@ -38,7 +37,7 @@ public class Drawing {
 	public static BoardGUI drawInitialBoard()
 	{
 		try{
-			Image whiteBlock = ImageIO.read(new File("/Users/xingyuwang/Desktop/wood.jpeg"));
+			Image whiteBlock = ImageIO.read(new File("/Users/xingyuwang/Desktop/wood.jpg"));
 			BoardGUI board = new BoardGUI(whiteBlock);
 			return board;
 		} catch (IOException ex) {
