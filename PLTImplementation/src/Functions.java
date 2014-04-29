@@ -233,7 +233,7 @@ public class Functions {
 		}
 		return true;
 	}
-	
+
 	public static boolean remove(Pos po, ArrayList<Player> players) {
 		Piece piece = Board.boardslots[po.x()][po.y()].Piece();
 		if (piece == null) {
@@ -250,5 +250,4 @@ public class Functions {
 			return true;
 		}
 	}
-
 }
