@@ -257,13 +257,13 @@ public class Functions {
 	}
 
 	public static Piece findNextInRow(Pos pos, int mode) {
+
 		int x = pos.x();
 		int y = pos.y();
 		Slot currentSlot = Board.boardslots[x][y];
 		if (currentSlot == null || currentSlot.Piece() == null) return null;
 		if (mode < 0 || mode > 7) return null;
 
-		
 		int x_min = 0;
 		int y_min = 0;
 		int x_max = Board.boardslots.length - 1;
@@ -280,5 +280,4 @@ public class Functions {
 		}
 		return null;
 	}
-
 }
