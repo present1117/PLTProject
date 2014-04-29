@@ -1,48 +1,42 @@
 public class GameDesigner {
-	public enum TYPE {
-		RED(0), YELLOW(1), GREEN(2), BLUE(3);
-		private final int value;
-		
-        private TYPE(final int newValue) {
-            value = newValue;
-        }
-        public int getValue() { return value; }
-	};
-	
+	static String RED = "RED";
+	static String YELLOW = "YELLOW";
+	static String GREEN = "GREEN";
+	static String BLUE = "BLUE";
 
 	static int[] pieceNum = { 0, 0, 0, 0 };
 	static int boardRow = 8;
 	static int boardCol = 8;
 	static int playerNum = 1;
 
-	public static boolean add_res (int piece,int[] position){
-		int PIECE_TYPE=piece;
+	public static boolean add_res (String piece,int[] position){
+		String PIECE_TYPE= piece;
 		
-		if(PIECE_TYPE==TYPE.RED.getValue()||PIECE_TYPE==TYPE.YELLOW.getValue())
+		if(PIECE_TYPE.equals(RED)||PIECE_TYPE.equals(YELLOW))
 		{
 			return Functions.isEmpty(position);
 		}
 		
-		if(PIECE_TYPE==TYPE.GREEN.getValue())
+		if(PIECE_TYPE.equals(GREEN))
 		{
-			return Functions.isEmpty(position)&&Functions.getPieceType(Functions.getPiece(position[0], position[1]-1))==TYPE.RED.getValue()
-				&&Functions.getPieceType(Functions.getPiece(position[0], position[1]+1))==TYPE.RED.getValue()
-				&&Functions.getPieceType(Functions.getPiece(position[0]-1, position[1]))==TYPE.RED.getValue()
-				&&Functions.getPieceType(Functions.getPiece(position[0]+1, position[1]))==TYPE.RED.getValue();
+			return Functions.isEmpty(position)&&Functions.getPieceType(Functions.getPiece(position[0], position[1]-1)).equals(RED)
+				&&Functions.getPieceType(Functions.getPiece(position[0], position[1]+1)).equals(RED)
+				&&Functions.getPieceType(Functions.getPiece(position[0]-1, position[1])).equals(RED)
+				&&Functions.getPieceType(Functions.getPiece(position[0]+1, position[1])).equals(RED);
 		}
 		
-		if(PIECE_TYPE==TYPE.BLUE.getValue())
+		if(PIECE_TYPE.equals(BLUE))
 		{
-			return Functions.isEmpty(position)&&Functions.getPieceType(Functions.getPiece(position[0], position[1]-1))==TYPE.RED.getValue()
-				&&Functions.getPieceType(Functions.getPiece(position[0]-1, position[1]))==TYPE.RED.getValue()
-				&&Functions.getPieceType(Functions.getPiece(position[0], position[1]+1))==TYPE.YELLOW.getValue()
-				&&Functions.getPieceType(Functions.getPiece(position[0]+1, position[1]))==TYPE.YELLOW.getValue();
+			return Functions.isEmpty(position)&&Functions.getPieceType(Functions.getPiece(position[0], position[1]-1)).equals(RED)
+				&&Functions.getPieceType(Functions.getPiece(position[0]-1, position[1])).equals(RED)
+				&&Functions.getPieceType(Functions.getPiece(position[0], position[1]+1)).equals(YELLOW)
+				&&Functions.getPieceType(Functions.getPiece(position[0]+1, position[1])).equals(YELLOW);
 		}
 		return false;
 	}
 
 	public static boolean win_res(int[] position) {
-		if (Functions.pieceCount(TYPE.GREEN.getValue()) + Functions.pieceCount(TYPE.BLUE.getValue()) == 15) {
+		if (Functions.pieceCount(GREEN) + Functions.pieceCount(BLUE) == 15) {
 			return true;
 		} else {
 			return false;

@@ -7,7 +7,7 @@
 public class Piece {
 	Player owner;
 	Pos pos;
-	int Type = 0;
+	String Type = "";
 
 	Piece(Player p, Pos pos) {
 		// TODO Auto-generated constructor stub
@@ -15,12 +15,12 @@ public class Piece {
 		pos = new Pos(pos.x(), pos.y());
 	}
 
-	boolean setPiecetype(int type) {
+	boolean setPiecetype(String type) {
 		Type = type;
 		return true;
 	}
 
-	int piecetype() {
+	String piecetype() {
 		return Type;
 	}
 }

@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
 /**
  * Main entrance of the program.
  * 
@@ -33,19 +34,47 @@ public class Main {
 			String[] spliter = movement.split(" ");
 			if (spliter[0].equalsIgnoreCase("add")) {
 				String[] xypos = spliter[1].split(",");
-				int posx = Integer.parseInt(xypos[0]);
-				int posy = Integer.parseInt(xypos[1]);
-
-				if (Functions.add(posx, posy, playerlist.get(playerid), 0)) {
-					Drawing.drawBoard(playerlist, icons);
-					System.out.println("Successfully Added!");
-					if (Functions.win(posx, posy, playerlist.get(playerid))) {
-						System.out.println("Player " + playerid + " wins!");
+				if(xypos.length < 3){
+					System.out.println("Error input!");
+					break;
+				}
+				try{
+					int posx = Integer.parseInt(xypos[0]);
+					int posy = Integer.parseInt(xypos[1]);	
+					String ptype  = "";
+					switch (xypos[2]) {
+					case "GREEN":
+						ptype = GameDesigner.GREEN;
+						break;
+					case "RED":
+						ptype = GameDesigner.RED;
+						break;
+					case "YELLOW":
+						ptype = GameDesigner.YELLOW;
+						break;
+					case "BLUE":
+						ptype = GameDesigner.BLUE;
+						break;
+					default:
+						System.out.println("Error input!");
 						break;
 					}
-					playerid++;
-				} else {
-					System.out.println("Error value!");
+					if(ptype == "")
+						break;
+					if (Functions.add(posx, posy, playerlist.get(playerid), ptype)) {
+						Drawing.drawBoard(playerlist, icons);
+						System.out.println("Successfully Added!");
+						if (Functions.win(posx, posy, playerlist.get(playerid))) {
+							System.out.println("Player " + playerid + " wins!");
+							break;
+						}
+						playerid++;
+					} else {
+						System.out.println("Error value!");
+					}
+				}catch(Exception e){
+					System.out.println("Error input!");
+					break;
 				}
 			} else {
 				System.out.println("Error input!");

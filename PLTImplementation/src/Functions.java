@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 
 public class Functions {
-	public static boolean add(int posx, int posy, Player currentowner, int ptype) {
+	public static boolean add(int posx, int posy, Player currentowner, String ptype) {
 		if (GameDesigner.add_res(ptype, new int[] { posx, posy })) {
 			Board.boardslots[posx][posy] = new Slot();
 			Board.boardslots[posx][posy].setPiece(new Piece(currentowner,
@@ -173,7 +173,7 @@ public class Functions {
 		return total1 > total2 ? total1 : total2;
 	}
 
-	public static int getPieceType(Piece p) {
+	public static String getPieceType(Piece p) {
 		return p.piecetype();
 	}
 
@@ -202,7 +202,7 @@ public class Functions {
 		return null;
 	}
 
-	public static int pieceCount(int piecetype) {
+	public static int pieceCount(String piecetype) {
 		return 0;
 
 	}
