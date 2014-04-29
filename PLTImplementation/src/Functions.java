@@ -214,14 +214,6 @@ public class Functions {
 	}
 
 	public static int pieceCount(String piecetype) {
-<<<<<<< HEAD
-		return 0;
-
-	}
-
-	public static boolean isBoardFull() {
-		return false;
-=======
 		int count = 0;
 		for (int x = 0; x < Board.boardslots.length; x++) {
 			for (int y = 0; y < Board.boardslots[0].length; y ++) {
@@ -240,7 +232,6 @@ public class Functions {
 			}
 		}
 		return true;
->>>>>>> FETCH_HEAD
 	}
 
 	public static boolean remove(Pos po, ArrayList<Player> players) {
@@ -260,19 +251,32 @@ public class Functions {
 		}
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+
+>>>>>>> FETCH_HEAD
 
 	void getPiecefromPlayer() {
 		
 	}
 
 	public static Piece findNextInRow(Pos pos, int mode) {
+<<<<<<< HEAD
+=======
+
+		int x = pos.x();
+		int y = pos.y();
+>>>>>>> FETCH_HEAD
 		Slot currentSlot = Board.boardslots[x][y];
 		if (currentSlot == null || currentSlot.Piece() == null) return null;
 		if (mode < 0 || mode > 7) return null;
 
+<<<<<<< HEAD
 		int x = pos.x();
 		int y = pos.y();
+=======
+>>>>>>> FETCH_HEAD
 		int x_min = 0;
 		int y_min = 0;
 		int x_max = Board.boardslots.length - 1;
@@ -280,13 +284,22 @@ public class Functions {
 		
 		while (x >= x_min && x <= x_max && y >= y_min && y <= y_max) {
 			Slot slot = Board.boardslots[x][y];
+<<<<<<< HEAD
 			if (slot != null && slot.Piece() != null && slot.Piece().piecetype == currentSlot.Piece.piecetype() && slot.Piece().owner.getID() == currentSlot.Piece().owner.getID())
+=======
+			if (slot != null && slot.Piece() != null && slot.Piece().Type == currentSlot.Piece().piecetype() && slot.Piece().owner.getId() == currentSlot.Piece().owner.getId())
+>>>>>>> FETCH_HEAD
 					return Board.boardslots[x][y].Piece();
 			if (mode <= 1 || mode == 7) x --;
 			if (mode >= 3 && mode <= 5) x ++;
 			if (mode >= 5 && mode <= 7) y --;
 			if (mode >= 1 && mode <= 3) y ++;
 		}
+<<<<<<< HEAD
+	}
+>>>>>>> FETCH_HEAD
+=======
+		return null;
 	}
 >>>>>>> FETCH_HEAD
 }
