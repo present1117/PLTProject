@@ -1,5 +1,3 @@
-package edu.columbia.PLT.BGD;
-
 import java.util.ArrayList;
 
 /**
@@ -32,5 +30,18 @@ public class Player {
 			return true;
 		}
 		return false;	
+	}
+	
+	boolean removePiece(Piece p){
+		Pos pos = p.pos;
+		for (Piece one : pieceList){
+			Pos onepos = one.pos;
+			if(onepos.x() == pos.x() && onepos.y() == pos.y()){
+				pieceList.remove(one);
+				numberofpieces--;
+				break;
+			}
+		}
+		return true;
 	}
 }

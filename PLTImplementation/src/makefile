@@ -3,9 +3,9 @@ JC = javac
 .SUFFIXES: .java .class
 .java.class:
 	$(JC) $(JFLAGS) $*.java
-
+	
 CLASSES = \
-	*.java \
+	  *.java \
 
 default: classes
 

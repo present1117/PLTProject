@@ -1,4 +1,4 @@
-package edu.columbia.PLT.BGD;
+import java.util.ArrayList;
 
 /**
  * class for all functions in the program
@@ -9,10 +9,9 @@ package edu.columbia.PLT.BGD;
 
 public class Functions {
 	public static boolean add(int posx, int posy, Player currentowner) {
-		if(GameDesigner.add_res(posx, posy)){
+		if(GameDesigner.add_res(new int [] {posx, posy})){
 			Board.boardslots[posx][posy] = new Slot();
-			Board.boardslots[posx][posy].setPiece(new Piece(currentowner,new Pos(posx, posy)));
-			Board.boardslots[posx][posy].setPlayer(currentowner);
+			Board.boardslots[posx][posy].setPiece(new Piece(currentowner,new Pos(posx, posy)), currentowner);
 			return true;
 		}else {
 			return false;
@@ -20,14 +19,20 @@ public class Functions {
 	}
 	
 	public static boolean win(int posx, int posy, Player currentowner) {
-		if(numberInRow(posx, posy) >= 3){
+		if(GameDesigner.win_res(new int [] {posx, posy})){
 			return true;
 		}else {
 			return false;
 		}
 	}
 	
-	public static boolean isEmpty(int posx, int posy) {
+	public static boolean isEmpty(int [] position) {
+		if(position.length < 2)
+			return false;
+		int posx = position[0];
+		int posy = position[1];
+		if(posx >= Board.boardslots.length || posy >= Board.boardslots[0].length || posx < 0 || posy < 0)
+			return false;
 		Slot currentSlot = Board.boardslots[posx][posy];
 		if(currentSlot == null){
 			return true;
@@ -36,7 +41,11 @@ public class Functions {
 		}
 	}
 	
-	public static int numberInRow(int posx, int posy) {
+	public static int numberInRow(int [] position) {
+		if(position.length < 2)
+			return 0;
+		int posx = position[0];
+		int posy = position[1];
 		Slot currentSlot = Board.boardslots[posx][posy];
 		if(currentSlot == null){
 			return 0;
@@ -189,13 +198,19 @@ public class Functions {
 	}
 	
 	
-	public static boolean remove(Pos po){
+	public static boolean remove(Pos po, ArrayList<Player> players){
 		Piece piece = Board.boardslots[po.x()][po.y()].Piece();
 		if(piece == null){
 			return false;
 		}else {
-			Board.boardslots[po.x()][po.y()].setPiece(null);
+			Player owner = piece.owner;
+			Board.boardslots[po.x()][po.y()].setPiece(null,null);
 			//delete the piece from the player
+			for(Player p : players){
+				if(p.getId() == owner.getId()){
+					p.removePiece(piece);
+				}
+			}
 			return true;
 		}
 	}

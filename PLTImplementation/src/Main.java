@@ -1,21 +1,24 @@
-package edu.columbia.PLT.BGD;
-
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import javax.xml.transform.Templates;
 /**
  * Main entrance of the program.
  * @author Presenthuang
  *
  */
+
 public class Main {
 	static ArrayList<Player> playerlist = new ArrayList<Player>();
-	static String[] icons = {"o", "x", "+", "#", "W"};
-	
+	//static String[] icons = {"o", "x", "+", "#", "W"};
+	static String[] icons = {"/Users/xingyuwang/Desktop/bp.png", "/Users/xingyuwang/Desktop/wp.png"};
 	public static void main(String[] args) {
+		BoardGUI board = Drawing.drawInitialBoard();
 		System.out.println("Welcome to our greatest Tic-Tac-Toe game!");
 		System.out.println("This is the start of the game!");
 		System.out.println("Player 0 and Player 1 is competing for the 3-in-row!");
 		System.out.println("Input roles: \"add posx,posy\"");
+		
 		for(int i = 0; i < GameDesigner.playerNum; ++i){
 			Player newplayer = new Player(i);
 			playerlist.add(newplayer);
@@ -35,7 +38,7 @@ public class Main {
 				int posy = Integer.parseInt(xypos[1]);
 
 				if(Functions.add(posx, posy, playerlist.get(switcher))){
-					Drawing.drawBoard(playerlist, icons);
+					Drawing.drawBoard(board, playerlist, icons);
 					System.out.println("Successfully Added!");
 					if(Functions.win(posx, posy, playerlist.get(switcher))){
 						System.out.println("Player "+switcher+" wins!");
