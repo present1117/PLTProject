@@ -19,7 +19,7 @@ builtInFunc = ['isEmpty', 'numberInRow', 'getPieceType', 'getPiece', 'pieceCount
 actionFunc = ['add', 'move', 'win', 'remove']
 funcParam = defaultdict(dict)
 funcParam['add']['returnValue'] = 'boolean'
-funcParam['add']['param'] = ['Pos', 'String']
+funcParam['add']['param'] = ['String', 'Pos']
 funcParam['win']['returnValue'] = 'boolean'
 funcParam['win']['param'] = ['Pos']
 funcParam['remove']['returnValue'] = 'boolean'
@@ -49,11 +49,11 @@ funcParam['findNextInRow']['param'] = ['Pos', 'int']
 funcParam['findSameInCircle']['returnValue'] = 'Piece[]'
 funcParam['findSameInCircle']['param'] = ['Pos']
 
+
 #funcParam['add'] = ['boolean', 'int[]']
 #funcParam['win'] = ['boolean', 'int[]']
 #funcParam['move'] = ['boolean', 'int[]', 'int[]']
 #funcParam['remove'] = ['boolean', 'int[]']
-
 
 localFunc = []
 currentParam = {}
@@ -235,12 +235,15 @@ class Traverse(object):
                 node.string = node.children[0].string
             else:
                 node.string = node.children[0]
+                #print node.string
+                #print node.token
                 if node.string in currentParam['param']:
                     node.token = currentParam['param'][node.string]
                 elif node.string == 'YES': node.string = 'true'
                 elif node.string == 'NO': node.string = 'false'
                 elif node.string == 'NIL': node.string = 'null'
-                elif node.token == 'String': node.string = '\"' + node.string[1:-1] + '\"'
+                elif node.token == 'String':
+                    node.string = '\"' + node.string[1:-1] + '\"'
         elif node.type == 'position':
             node.string = '{' + node.children[0].string + ', ' + node.children[1].string + '}'
         elif node.type == 'array':
@@ -256,22 +259,33 @@ class Traverse(object):
                 if node.children[1].leaf == 'ATTR':
                     if node.children[1].string == '.x' or node.children[1].string == '.y':
                         node.token = 'int'
-                        if node.children[0].token == 'Object': #or node.children[0].token == '':
-                            if node.children[0].string not in currentParam['param']:
-                                currentParam['param'][node.children[0].string] = 'Object'
-                            node.token = transform('int')
+#                        if node.children[0].token == 'Object': #or node.children[0].token == '':
+#                            if node.children[0].string not in currentParam['param']:
+#                                currentParam['param'][node.children[0].string] = 'Object'
+#                            node.token = transform('int')
                             #node.children[0].token = '(Integer[])'
+#                        else:
+#                            temp = ID_pattern.match(node.children[0].string)
+#                            name = temp.group()
+#                            if name not in currentParam['param']:
+#                                currentParam['param'][name] = 'Object'
+#                            else:
+#                                currentParam['param'][name] += '[]'
+                        if node.children[0].string in currentParam['param']:
+                            if currentParam['param'][node.children[0].string] == 'Object':
+                                string0 = 'Pos('+node.children[0].string+')'
                         else:
                             temp = ID_pattern.match(node.children[0].string)
                             name = temp.group()
-                            if name not in currentParam['param']:
-                                currentParam['param'][name] = 'Object'
+                            if name != node.children[0].string:
+                                if name in currentParam['param'] and currentParam['param'][name] == 'Object':
+                                    string0 = 'Pos('+node.children[0].string+')'
                             else:
-                                currentParam['param'][name] += '[]'
+                                currentParam['param'][name] = 'Pos'
                         if node.children[1].string == '.x':
-                            node.string = node.string[0:-2] + '[0]'
+                            node.string = node.string[0:-2] + '.x()'
                         else:
-                            node.string = node.string[0:-2] + '[1]'
+                            node.string = node.string[0:-2] + '.y()'
         elif node.type == 'parameters':
             if len(node.children) == 1:
                 node.string = [node.children[0].string]
@@ -334,10 +348,10 @@ class Traverse(object):
         return 'static int boardRow = ' + node.children[0] + ';\n' + 'static int boardCol = ' + node.children[1] + ';\n'
 
     def gen_piece_stmt(self, node):
-        s1 = 'enum pieceType{'
+        s1 = 'static String[] pieceType = {'
         s2 = 'static int[] pieceNum = {'
         for item in node.children[0].string:
-            s1 = s1 + item[0].upper() + ','
+            s1 = s1 + '\"' + item[0].upper() + '\"' + ','
             s2 = s2 + item[1] + ','
         s1 = s1[0:-1] + '};\n'
         s2 = s2[0:-1] + '};\n'
