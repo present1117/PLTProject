@@ -206,7 +206,7 @@ public class Functions {
 		int count = 0;
 		for (int x = 0; x < Board.boardslots.length; x++) {
 			for (int y = 0; y < Board.boardslots[0].length; y ++) {
-				if (Board.boardslots[x][y].Piece().piecetype() == piecetype)
+				if (Board.boardslots[x][y] != null && Board.boardslots[x][y].Piece() != null && Board.boardslots[x][y].Piece().piecetype() == piecetype)
 					count ++;
 			}
 		}
