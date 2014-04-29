@@ -203,15 +203,25 @@ public class Functions {
 	}
 
 	public static int pieceCount(int piecetype) {
-		return 0;
-
+		int count = 0;
+		for (int x = 0; x < Board.boardslots.length; x++) {
+			for (int y = 0; y < Board.boardslots[0].length; y ++) {
+				if (Board.boardslots[x][y].Piece().piecetype() == piecetype)
+					count ++;
+			}
+		}
+		return count;
 	}
 
 	public static boolean isBoardFull() {
-		return false;
-
+		for (int x = 0; x < Board.boardslots.length; x++) {
+			for (int y = 0; y < Board.boardslots[0].length; y ++) {
+				if (Board.boardslots[x][y].available())
+					return false;
+			}
+		}			
+		return true;
 	}
-
 	public static boolean remove(Pos po, ArrayList<Player> players) {
 		Piece piece = Board.boardslots[po.x()][po.y()].Piece();
 		if (piece == null) {
