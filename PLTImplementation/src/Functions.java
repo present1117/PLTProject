@@ -250,9 +250,6 @@ public class Functions {
 			return true;
 		}
 	}
-	void getPiecefromPlayer() {
-		
-	}
 
 	public static Piece findNextInRow(Pos pos, int mode) {
 		int x = pos.x();

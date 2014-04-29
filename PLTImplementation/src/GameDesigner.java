@@ -1,42 +1,51 @@
 public class GameDesigner {
-	static String RED = "RED";
-	static String YELLOW = "YELLOW";
-	static String GREEN = "GREEN";
-	static String BLUE = "BLUE";
-
+	static String[] TYPE = { "RED", "YELLOW", "GREEN", "BLUE" };
+	// TYPE RED = new TYPE("RED",0);
+	// static String RED = "RED";
+	// static String YELLOW = "YELLOW";
+	// static String GREEN = "GREEN";
+	// static String BLUE = "BLUE";
+	//
 	static int[] pieceNum = { 0, 0, 0, 0 };
 	static int boardRow = 8;
 	static int boardCol = 8;
 	static int playerNum = 1;
 
-	public static boolean add_res (String piece,Pos position){
-		String PIECE_TYPE= piece;
-		
-		if(PIECE_TYPE.equals(RED)||PIECE_TYPE.equals(YELLOW))
-		{
+	public static boolean add_res(String piece, Pos position) {
+		String PIECE_TYPE = piece;
+
+		if (PIECE_TYPE == "RED" || PIECE_TYPE == "YELLOW") {
 			return Functions.isEmpty(position);
 		}
-		
-		if(PIECE_TYPE.equals(GREEN))
-		{
-			return Functions.isEmpty(position)&&Functions.getPieceType(Functions.getPiece(position.x(), position.y()-1)).equals(RED)
-				&&Functions.getPieceType(Functions.getPiece(position.x(), position.y()+1)).equals(RED)
-				&&Functions.getPieceType(Functions.getPiece(position.x()-1, position.y())).equals(RED)
-				&&Functions.getPieceType(Functions.getPiece(position.x()+1, position.y())).equals(RED);
+
+		if (PIECE_TYPE == "GREEN") {
+			return Functions.isEmpty(position)
+					&& Functions.getPieceType(Functions.getPiece(position.x(),
+							position.y() - 1)) == "RED"
+					&& Functions.getPieceType(Functions.getPiece(position.x(),
+							position.y() + 1)) == "RED"
+					&& Functions.getPieceType(Functions.getPiece(
+							position.x() - 1, position.y())) == "RED"
+					&& Functions.getPieceType(Functions.getPiece(
+							position.x() + 1, position.y())) == "RED";
 		}
-		
-		if(PIECE_TYPE.equals(BLUE))
-		{
-			return Functions.isEmpty(position)&&Functions.getPieceType(Functions.getPiece(position.x(), position.y()-1)).equals(RED)
-				&&Functions.getPieceType(Functions.getPiece(position.x()-1, position.y())).equals(RED)
-				&&Functions.getPieceType(Functions.getPiece(position.x(), position.y()+1)).equals(YELLOW)
-				&&Functions.getPieceType(Functions.getPiece(position.x()+1, position.y())).equals(YELLOW);
+
+		if (PIECE_TYPE == "BLUE") {
+			return Functions.isEmpty(position)
+					&& Functions.getPieceType(Functions.getPiece(position.x(),
+							position.y() - 1)) == "RED"
+					&& Functions.getPieceType(Functions.getPiece(
+							position.x() - 1, position.y())) == "RED"
+					&& Functions.getPieceType(Functions.getPiece(position.x(),
+							position.y() + 1)) == "YELLOW"
+					&& Functions.getPieceType(Functions.getPiece(
+							position.x() + 1, position.y())) == "YELLOW";
 		}
 		return false;
 	}
 
 	public static boolean win_res(int[] position) {
-		if (Functions.pieceCount(GREEN) + Functions.pieceCount(BLUE) == 15) {
+		if (Functions.pieceCount("GREEN") + Functions.pieceCount("BLUE") == 15) {
 			return true;
 		} else {
 			return false;

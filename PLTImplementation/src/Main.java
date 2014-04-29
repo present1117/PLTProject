@@ -42,25 +42,15 @@ public class Main {
 					int posx = Integer.parseInt(xypos[0]);
 					int posy = Integer.parseInt(xypos[1]);	
 					String ptype  = "";
-					switch (xypos[2]) {
-					case "GREEN":
-						ptype = GameDesigner.GREEN;
-						break;
-					case "RED":
-						ptype = GameDesigner.RED;
-						break;
-					case "YELLOW":
-						ptype = GameDesigner.YELLOW;
-						break;
-					case "BLUE":
-						ptype = GameDesigner.BLUE;
-						break;
-					default:
+					for(String t : GameDesigner.TYPE){
+						if(xypos[2].equals(t))
+							ptype = t;
+					}
+					if(ptype == ""){
 						System.out.println("Error input!");
 						break;
 					}
-					if(ptype == "")
-						break;
+					
 					if (Functions.add(posx, posy, playerlist.get(playerid), ptype)) {
 						Drawing.drawBoard(playerlist, icons);
 						System.out.println("Successfully Added!");
