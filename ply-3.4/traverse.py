@@ -20,6 +20,11 @@ funcParam['add'] = ['boolean', 'int[]']
 funcParam['win'] = ['boolean', 'int[]']
 funcParam['move'] = ['boolean', 'int[]', 'int[]']
 funcParam['remove'] = ['boolean', 'int[]']
+funcParam['getPieceType'] = []
+funcParam['isEmpty'] = ['boolean', 'int[]']
+funcParam['isBoardFull'] = ['boolean']
+funcParam['remove'] = ['int[]']
+funcParam['numberInRow'] = ['boolean', 'int[]']
 
 
 class Traverse(object):
