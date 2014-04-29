@@ -240,7 +240,7 @@ public class Functions {
 	}
 
 	void getPiecefromPlayer() {
-
+		
 	}
 
 	void findNextInRow() {
