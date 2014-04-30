@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class Main {
 	static ArrayList<Player> playerlist = new ArrayList<Player>();
 	//static String[] icons = {"o", "x", "+", "#", "W"};
-	static String[] icons = {"/Users/xingyuwang/Desktop/bp.png", "/Users/xingyuwang/Desktop/wp.png"};
+	static String[] icons = {"bp.png", "wp.png"};
 	public static void main(String[] args) {
 		BoardGUI board = Drawing.drawInitialBoard();
 		System.out.println("Welcome to our greatest Board game!");
