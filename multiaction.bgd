@@ -1,0 +1,41 @@
+GLOBAL Remove[19][19]
+PIECE:
+	STONE
+BOARD:
+	19 19
+PLAYER:
+	2
+RULE:
+	action	:= add
+	action	:= remove
+	action	:= win
+	
+	restriction	:= add add_res
+	restriction	:= remove remove_res
+	restriction	:= win win_res
+FUNCTION:
+	def add_res position:
+		return isEmpty OR piece.type
+
+	def remove_res:
+		for position in BOARD
+			if Remove[position.x-1][position.y] = YES AND Remove[position.x+1][position.y] = YES AND Remove[position.x][position.y+1] = YES and Remove[position.x][position.y-1] = YES Remove[position.x][position.y] = YES AND position.piece ~= NIL
+				mySet := findSameInCircle(position)
+					for point in mySet
+						Remove[point.x][point.y]:= YES
+			for position in BOARD
+				if Remove[position.x][position.y] = YES
+					remove(position)
+
+	def win_res:
+		if isBoardFull():
+			totalplayer1 := 0, totalplayer2 := 0
+			for position in BOARD
+				if getPiecePlayer(getPiece(position)) = player1
+					totalplayer1:=totalplayer1+1
+				else if getPiecePlayer(getPiece(position)) = player2
+					totalplayer2:=totalplayer2+1
+			if totalplayer1 > totalplayer2
+				return player1
+			else
+				return player2
