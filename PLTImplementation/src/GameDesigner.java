@@ -1,21 +1,4 @@
 public class GameDesigner {
-<<<<<<< HEAD
-	enum pieceType {
-		STONE
-	};
-
-	static int[] pieceNum = { 0 };
-	static int boardRow = 5;
-	static int boardCol = 5;
-	static int playerNum = 2;
-
-	public static boolean add_res(int[] position) {
-		return Functions.isEmpty(position);
-	}
-
-	public static boolean win_res(int[] position) {
-		if (Functions.numberInRow(position) >= 5) {
-=======
 	static String[] TYPE = { "RED", "YELLOW", "GREEN", "BLUE" };
 
 	static int[] pieceNum = { 0, 0, 0, 0 };
@@ -58,23 +41,12 @@ public class GameDesigner {
 
 	public static boolean win_res(int[] position) {
 		if (Functions.pieceCount("GREEN") + Functions.pieceCount("BLUE") == 15) {
->>>>>>> FETCH_HEAD
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-<<<<<<< HEAD
-	public static boolean move_res(int[] par1, int[] par2) {
-		return true;
-	}
-
-	public static boolean remove_res(int[] par1) {
-		return true;
-	}
-}
-=======
 	public static boolean move_res(int[] par0, int[] par1) {
 		return true;
 	}
@@ -83,4 +55,3 @@ public class GameDesigner {
 		return true;
 	}
 }
->>>>>>> FETCH_HEAD
