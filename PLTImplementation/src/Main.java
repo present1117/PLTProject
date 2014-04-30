@@ -11,18 +11,11 @@ import java.util.Scanner;
 
 public class Main {
 	static ArrayList<Player> playerlist = new ArrayList<Player>();
-<<<<<<< HEAD
 	//static String[] icons = {"o", "x", "+", "#", "W"};
 	static String[] icons = {"/Users/xingyuwang/Desktop/bp.png", "/Users/xingyuwang/Desktop/wp.png"};
 	public static void main(String[] args) {
 		BoardGUI board = Drawing.drawInitialBoard();
-		System.out.println("Welcome to our greatest Tic-Tac-Toe game!");
-=======
-	static String[] icons = { "o", "x", "+", "#", "W" };
-
-	public static void main(String[] args) {
 		System.out.println("Welcome to our greatest Board game!");
->>>>>>> FETCH_HEAD
 		System.out.println("This is the start of the game!");
 		// System.out.println("Player 0 and Player 1 is competing for the 3-in-row!");
 		// System.out.println("Input roles: \"add posx,posy\"");
@@ -34,14 +27,6 @@ public class Main {
 		int playerid = 0;
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
-
-<<<<<<< HEAD
-				if(Functions.add(posx, posy, playerlist.get(switcher))){
-					Drawing.drawBoard(board, playerlist, icons);
-					System.out.println("Successfully Added!");
-					if(Functions.win(posx, posy, playerlist.get(switcher))){
-						System.out.println("Player "+switcher+" wins!");
-=======
 		while (true) {
 			playerid = playerid % playerlist.size();
 			System.out.println("Player" + playerid + " Action:");
@@ -63,7 +48,6 @@ public class Main {
 					}
 					if(ptype == ""){
 						System.out.println("Error input!");
->>>>>>> FETCH_HEAD
 						break;
 					}
 					
