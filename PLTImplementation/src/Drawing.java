@@ -37,7 +37,7 @@ public class Drawing {
 	public static BoardGUI drawInitialBoard()
 	{
 		try{
-			Image whiteBlock = ImageIO.read(new File("/../wood.jpg"));
+			Image whiteBlock = ImageIO.read(new File("../wood.jpg"));
 			BoardGUI board = new BoardGUI(whiteBlock);
 			return board;
 		} catch (IOException ex) {
