@@ -52,7 +52,7 @@ public class Main {
 					}
 					
 					if (Functions.add(posx, posy, playerlist.get(playerid), ptype)) {
-						Drawing.drawBoard(playerlist, icons);
+						Drawing.drawBoard(board, playerlist, icons);
 						System.out.println("Successfully Added!");
 						if (Functions.win(posx, posy, playerlist.get(playerid))) {
 							System.out.println("Player " + playerid + " wins!");
