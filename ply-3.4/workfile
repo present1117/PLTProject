@@ -1,0 +1,27 @@
+PIECE:
+	'stone' 
+
+BOARD:
+	3 3
+
+PLAYER:
+	2
+
+RULE:
+	action := add
+	action := win
+
+FUNCTION:
+       def add position: 
+		pos := (4,4)
+@@asdasd
+		array := [1,'asd',3]
+        return isEmpty(position)
+       def win position:
+		if numberInRow(position) >= 3:
+			return YES
+		elseif a > 3:
+			while a <= 4:
+				return NO
+		else:
+			return YES

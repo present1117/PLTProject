@@ -1,0 +1,290 @@
+#!/usr/bin/python
+
+""" traverse AST (abstract syntax tree). 
+"""
+__teamNo__ = 7
+__date__ = "Apr 12, 2014"
+
+import sys
+from collections import defaultdict
+from lexing import BGDLexer
+from yaccing import *
+import ply.lex as lex
+
+##built-in functions##
+builtInFunc = ['isEmpty', 'numberInRow']
+actionFunc = ['add', 'move', 'win', 'remove']
+localFunc = []
+funcParam = defaultdict(list)
+funcParam['add'] = ['boolean', 'int[]']
+funcParam['win'] = ['boolean', 'int[]']
+funcParam['move'] = ['boolean', 'int[]', 'int[]']
+funcParam['remove'] = ['boolean', 'int[]']
+
+
+class Traverse(object):
+    def __init__(self, tree, output = sys.stdout): 
+        self.output = output
+        self.root = tree
+
+    def traverse(self, node):
+        if isinstance(node, Node):
+            for subtree in node.children:
+                self.traverse(subtree)
+            self.visit(node)
+    
+    def visit(self, node):
+        if node.leaf:
+            self.take_action(node)
+        else:
+            self.pass_value(node)
+    
+    def take_action(self, node):
+        if node.leaf == ':=':
+            node.string = node.children[0].string + '=' + node.children[1].string
+            if node.string[-1] != '\n':
+                node.string += ';\n'
+        #elif node.leaf == 'assigned':
+            ##function default parameters assignment
+        #    node.string = node.children[0].string + '=' + node.children[1].string
+        elif node.leaf == '*' or node.leaf == '/' or node.leaf == '%':
+            node.string = node.children[0].string + node.leaf + node.children[1].string
+        elif node.leaf == 'or':
+            node.string = node.children[0].string + '||' + node.children[1].string
+        elif node.leaf == 'and':
+            node.string = node.children[0].string + '&&' + node.children[1].string
+        elif node.leaf == 'not':
+            node.string = '!' + node.children[0].string
+        elif node.leaf == '=':
+            node.string = node.children[0].string + '==' + node.children[1].string
+        elif node.leaf == '>':
+            node.string = node.children[0].string + '>' + node.children[1].string        
+        elif node.leaf == '<':
+            node.string = node.children[0].string + '<' + node.children[1].string        
+        elif node.leaf == '>=':
+            node.string = node.children[0].string + '>=' + node.children[1].string        
+        elif node.leaf == '<=':
+            node.string = node.children[0].string + '<=' + node.children[1].string        
+        elif node.leaf == '~=':
+            node.string = node.children[0].string + '!=' + node.children[1].string
+        elif node.leaf == 'ATTR':
+            node.string = '.' + node.children[0].string
+        elif node.leaf == 'INDEX':
+            node.string = '[' + node.children[0].string + ']'
+        elif node.leaf == 'ELSEIF' or node.leaf == 'ELSE':
+            node.string = self.gen_if_stmt(node)
+        elif node.leaf == 'emptyParam':
+            node.string = self.gen_funcdef(node)
+        else: 
+            print "Error in take_value()\n"
+
+
+    def pass_value(self, node):
+        if node.type == 'break_stmt':
+            node.string = 'break;\n'
+        elif node.type == 'continue_stmt':
+            node.string = 'continue;\n'
+        elif node.type == 'return_stmt':
+            node.string = 'return ' + node.children[0].string +';\n'
+        elif node.type == 'suite_stmt':
+            if len(node.children) ==1:
+                node.string = node.children[0].string
+            else:
+                node.string = node.children[0].string + '\n' + node.children[1].string
+        elif node.type == 'suite':
+            node.string = '{\n' + node.children[0].string + '}\n'
+        elif node.type == 'while_stmt':
+            node.string = self.gen_while_stmt(node)
+        elif node.type == 'elseif_stmt':
+            node.string = self.gen_elseif_stmt(node)
+        elif node.type == 'for_stmt':
+            node.string = self.gen_for_stmt(node)
+        elif node.type == 'parameter_list':
+            if len(node.children) == 1:
+                node.string = node.children[0].string
+            else:
+                node.string = node.children[0].string +', '+node.children[1].string
+        elif node.type == 'func_expr':
+            node.string = self.gen_func_expr(node)
+        elif node.type == 'atom':
+            if isinstance(node.children[0], Node):
+                node.string = node.children[0].string
+            else:
+                node.string = node.children[0]
+                if node.string == 'YES': node.string = 'true'
+                elif node.string == 'NO': node.string = 'false'
+                elif node.string == 'NIL': node.string = 'null'
+        elif node.type == 'power':
+            if len(node.children) == 1:
+                node.string = node.children[0].string
+            else:
+                node.string = node.children[0].string + node.children[1].string
+        elif node.type == 'parameters':
+            if len(node.children) == 1:
+                node.string = [node.children[0].string]
+            else:
+                node.string = list(node.children[0].string.append(node.children[1].string))
+        elif node.type == 'funcdef':
+            node.string = self.gen_funcdef(node)
+        elif node.type == 'function_stmt':
+            node.string = self.gen_function_stmt(node)
+        elif node.type == 'action_stmt':
+            node.string = self.gen_action_stmt(node)
+        elif node.type == 'rule_stmt':
+            node.string = self.gen_rule_stmt(node)
+        elif node.type == 'player_stmt':
+            node.string = self.gen_player_stmt(node)
+        elif node.type == 'board_stmt':
+            node.string = self.gen_board_stmt(node)
+        elif node.type == 'piece_expr':
+            node.string = self.gen_piece_expr(node)
+        elif node.type == 'piece_stmt':
+            node.string = self.gen_piece_stmt(node)
+        elif node.type == 'input_stmt':
+            node.string = self.gen_input_stmt(node)
+        elif node.type == 'factor' or node.type == 'term' or node.type == 'operand' or node.type == 'comparison' or node.type == 'not_test' or node.type == 'and_test' or node.type == 'or_test' or node.type == 'expr' or node.type == 'parameter' or node.type == 'flow_stmt' or node.type == 'compound_stmt' or node.type == 'simple_stmt' or node.type == 'stmt':
+            if isinstance(node.children[0], Node):
+                node.string = node.children[0].string
+            else:
+                node.string = node.children[0]
+            
+
+        else:
+            print node.type
+            print "Error in pass_value()"
+
+
+
+    def gen_action_stmt(self, node):
+        if len(node.children) == 1:
+            localFunc.append(node.children[0])
+        else:
+            localFunc.append(node.children[1])
+        return ''
+
+    def gen_rule_stmt(self, node):
+        if 'win' not in localFunc: print "Action win is not declared.\n"
+        if 'add' not in localFunc and 'move' not in localFunc: "At least either action add or move should be declared in RULE. \n"
+        return ''
+
+    def gen_player_stmt(self, node):
+        return 'static int playerNum = ' + node.children[0] + ';\n'
+
+    def gen_board_stmt(self, node):
+        return 'static int boardRow = ' + node.children[0] + ';\n' + 'static int boardCol = ' + node.children[1] + ';\n'
+
+    def gen_piece_stmt(self, node):
+        s1 = 'enum pieceType{'
+        s2 = 'static int [] pieceNum = {'
+        for item in node.children[0].string:
+            s1 = s1 + item[0].upper() + ','
+            s2 = s2 + item[1] + ','
+        s1 = s1[0:-1] + '};\n'
+        s2 = s2[0:-1] + '};\n'
+        return s1 + s2
+
+    def gen_piece_expr(self, node):
+        if len(node.children) == 1:
+            return [[node.children[0], '0']]
+        elif len(node.children) == 2:
+            return [[node.children[0], node.children[1]]]
+        else:
+            return list(node.children[0].string.append([node.children[1], node.children[2]]))
+
+    def gen_input_stmt(self, node):
+        s = 'package edu.columbia.PLT.BGD;\npublic class GameDesigner{\n'
+        s += node.children[0].string + node.children[1].string + node.children[2].string + node.children[4].string
+        s += '}\n'
+        return s
+    
+    def gen_while_stmt(self, node):
+        return None
+    
+    def gen_elseif_stmt(self, node):
+        return None
+
+    def gen_if_stmt(self, node):
+        s = 'if(' + node.children[0].string + ')\n' + node.children[1].string
+        if len(node.children) == 4:
+            s = s + node.children[2] + 'else\n' + node.children[3].string
+        elif len(node.children) == 3:
+            if node.leaf == 'ELSE':
+                s = s + 'else\n' + node.children[2].string
+            else:
+                s = s + node.children[2].string
+        return s
+
+    def gen_for_stmt(self, node):
+        return None
+
+    def gen_function_stmt(self, node):
+        if len(node.children) == 1:
+            return node.children[0].string
+        else:
+            return node.children[0].string + '\n' + node.children[1].string
+
+    #### !!!!! #####
+    def gen_funcdef(self, node):
+        s = ''
+        if len(node.children) == 2:
+            #### !!!!! ######
+            s = 'public static int ' + node.children[0] + '()\n'
+            return s + node.children[1].string
+        elif len(node.children) == 4:
+            s = node.children[0].string
+            children = list(node.children[1:len(node.children)])
+        if node.leaf:
+            s = s + 'public static int ' + node.children[1] + '()\n'
+            return s + node.children[2].string
+        else:
+            if len(node.children) == 3:
+                children = list(node.children)
+            s += 'public static '
+            if children[0] in actionFunc:
+                para_list = funcParam[children[0]]
+                s = s + para_list[0] + ' ' + children[0] + '_res' + ' ('
+                if len(funcParam[children[0]]) > 1:
+                    for i in range(1,len(para_list)):
+                        s = s + para_list[i] + ' ' + children[1].string[i-1] + ','
+                s = s[0:-1]
+                s += ')\n'
+            else:
+                #### !!! #####
+                for para in children[1].string:
+                    s = s + 'int ' + para + ', '
+                s = s[0:-1]
+                s = s + ')\n'
+            return s + children[-1].string
+
+    def gen_func_expr(self, node):
+        if node.children[0] in builtInFunc:
+            s = 'Functions.' + node.children[0]
+        else:
+            s = node.children[0]
+        if len(node.children) == 1:
+            return s + '()'
+        else:
+            return s + '(' + node.children[1].string + ')'
+
+    def getJava(self):
+        self.traverse(self.root)
+        return self.root.string
+
+
+
+
+if __name__ == "__main__":
+    m = BGDLexer()
+    #f.open(sys.argv[1])
+    inputFile = open('tic-tac-toe.bgd')
+    inputData = inputFile.read()
+    #print inputData
+    m.input(inputData)
+    parser = yacc.yacc()
+    result = parser.parse(tokenfunc = m.token)
+    code = Traverse(result).getJava()
+    #print code
+    outputFile = open('GameDesigner.java','w')
+    outputFile.write(code)
+    inputFile.close()
+    outputFile.close()
