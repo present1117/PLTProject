@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class Main {
 	static ArrayList<Player> playerlist = new ArrayList<Player>();
-	static String[] icons = { "../bp.png", "../wp.png" };
+	static String[] icons = { "bp.png", "wp.png" };
 	static private BoardGUI board = Drawing.drawInitialBoard(); 
 	static int playerid = 0;
 	
@@ -31,10 +31,21 @@ public class Main {
 			String[] spliter = movement.split(" ");
 			
 			if (spliter[0].equalsIgnoreCase("add")) {
-				if (!add(spliter[1])) 
+				if (spliter.length != 3) {
+					System.out.println("Input Length != 3!");
+					break;
+				}
+				else if (!add(spliter[1],spliter[2])) 
 					break;
 			} else if (spliter[0].equalsIgnoreCase("remove")) {
+				if (spliter.length != 2) {
+					System.out.println("Input Length != 2");
+					break;
+				}
 				if (!remove(spliter[1]))
+					break;
+			} else if (spliter[0].equalsIgnoreCase("move")) {
+				if (!move(spliter[1]))
 					break;
 			} else {
 				System.out.println("Error input!");
@@ -43,17 +54,18 @@ public class Main {
 		System.out.println("Game ends!");
 	}
 
-	private static boolean add(String parameters) {
-		String[] xypos = parameters.split(",");
-		if (xypos.length != 3) {
-			System.out.println("Input length != 3!");
+	private static boolean add(String addPos, String type) {
+		String[] _addPos = addPos.split(",");
+		String ptype = "";
+		
+		if (_addPos.length != 2) {
+			System.out.println("Invalid Position!");
 			return false;
 		}
 		try {
-			Pos pos = new Pos(Integer.parseInt(xypos[0]),Integer.parseInt(xypos[1]));
-			String ptype = "";
+			Pos pos = new Pos(Integer.parseInt(_addPos[0]),Integer.parseInt(_addPos[1]));
 			for (String t : GameDesigner.pieceType) {
-				if (xypos[2].equals(t))
+				if (type.equals(t))
 					ptype = t;
 			}
 			if (ptype == "") {
@@ -81,18 +93,37 @@ public class Main {
 		}
 		return true;
 	}
-	private static boolean remove(String parameters) {
-		String[] pos = parameters.split(",");
-		if (pos.length != 2) {
+	private static boolean remove(String removePos) {
+		String[] _removePos = removePos.split(",");
+		if (_removePos.length != 2) {
 			System.out.println("Input Length != 2");
 			return false;
 		}
 		try {
-			int posx = Integer.parseInt(pos[0]);
-			int posy = Integer.parseInt(pos[1]);
+			Pos pos = new Pos(Integer.parseInt(_removePos[0]),Integer.parseInt(_removePos[1]));
+			if (Functions.remove(pos, playerlist)) {
+				Drawing.drawBoard(board, playerlist, icons);
+				
+				System.out.println("Successfully Removed");
+				
+				if (Functions.win(pos, playerlist.get(playerid))) {
+					System.out.println("Player " + playerid + " wins!");
+					return false;
+				} else {
+					System.out.println("Invalid Position!");
+					return false;
+				}
+			}
 		} catch (Exception e) {
-			// TODO: handle exception
+			System.out.println("Error input!");
+			return false;
 		}
+		return true;
+	}
+	private static boolean move(String parameters) {
+		String[] split = parameters.split(" ");
+		String[] fromPos = split[0].split(",");
+		String[] toPos = split[1].split(",");
 		return true;
 	}
 }

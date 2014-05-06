@@ -235,13 +235,13 @@ public class Functions {
 		return true;
 	}
 
-	public static boolean remove(Pos po, ArrayList<Player> players) {
-		Piece piece = Board.getBoardSlots()[po.getX()][po.getY()].Piece();
+	public static boolean remove(Pos pos, ArrayList<Player> players) {
+		Piece piece = Board.getSlot(pos).Piece();
 		if (piece == null) {
 			return false;
 		} else {
 			Player owner = piece.owner;
-			Board.getBoardSlots()[po.getX()][po.getY()].setPiece(null, null);
+			Board.getSlot(pos).setPiece(null, null);
 			// delete the piece from the player
 			for (Player p : players) {
 				if (p.getId() == owner.getId()) {

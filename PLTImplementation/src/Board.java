@@ -72,6 +72,12 @@ class Pos {
 		x = pos.getX();
 		y = pos.getY();
 	}
+	Pos(String s){
+		String[] pos = s.split(",");
+		if (pos.length != 2) {
+			
+		}
+	}
 
 	int getX() {
 		return x;
