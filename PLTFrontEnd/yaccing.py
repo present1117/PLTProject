@@ -88,12 +88,8 @@ def p_action_stmt(t):
         t[0] = Node('action_stmt', [t[1], t[5]])
 
 def p_function_stmt(t):
-    '''function_stmt : global_assign_stmt function_stmt
-                    | FUNCTION ":" NEWLINE INDENT global_assign_stmt funcdef DEDENT'''
-    if len(t) == 3:
-        t[0] = Node('function_stmt', [t[1], t[2]])
-    else:
-        t[0] = Node('function_stmt', [t[5]])
+    '''function_stmt : FUNCTION ":" NEWLINE INDENT global_assign_stmt funcdef DEDENT'''
+    t[0] = Node('function_stmt', [t[5], t[6]])
 
 def p_stmt(t):
     '''stmt : simple_stmt
@@ -119,12 +115,10 @@ def p_assign_stmt(t):
 def p_global_assign_stmt(t):
     '''global_assign_stmt : global_assign_stmt GLOBAL ID ":" "=" expr NEWLINE
                           | empty'''
-
-    print 'global_assign_stmt'
     if len(t) == 2:
         t[0] = Node('global_assign_stmt', [], 'empty')
     else:
-        t[0] = Node('global_assign_stmt', [t[2], t[5]])
+        t[0] = Node('global_assign_stmt', [t[1], t[3], t[6]])
 
 def p_flow_stmt(t):
     '''flow_stmt : break_stmt
