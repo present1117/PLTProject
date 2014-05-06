@@ -116,7 +116,7 @@ def p_global_assign_stmt(t):
     '''global_assign_stmt : global_assign_stmt GLOBAL assign_stmt
                           | empty'''
     if len(t) == 2:
-        t[0] = Node('global_assign_stmt', [], 'empty')
+        t[0] = Node('global_assign_stmt', [], string='')
     else:
         t[0] = Node('global_assign_stmt', [t[1], t[3]])
 
