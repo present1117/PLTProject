@@ -14,6 +14,7 @@ RULE:
 FUNCTION:
 	global ddd := 1
 	def add piece, position:
+		asd := (1 ~= 2)
 		return isEmpty(position)
 	def win position:
 		if numberInRow(position) >= 3:
