@@ -113,12 +113,12 @@ def p_assign_stmt(t):
     t[0] = Node('assign_stmt',[t[1], t[4]], ':=')
 
 def p_global_assign_stmt(t):
-    '''global_assign_stmt : global_assign_stmt GLOBAL ID ":" "=" expr NEWLINE
+    '''global_assign_stmt : global_assign_stmt GLOBAL assign_stmt
                           | empty'''
     if len(t) == 2:
         t[0] = Node('global_assign_stmt', [], 'empty')
     else:
-        t[0] = Node('global_assign_stmt', [t[1], t[3], t[6]])
+        t[0] = Node('global_assign_stmt', [t[1], t[3]])
 
 def p_flow_stmt(t):
     '''flow_stmt : break_stmt

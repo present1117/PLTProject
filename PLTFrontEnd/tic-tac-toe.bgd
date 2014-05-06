@@ -13,6 +13,7 @@ RULE:
 
 FUNCTION:
 	global ddd := 1
+	global asdadsadasdas := 123
 	def add piece, position:
 		asd := (1 ~= 2)
 		return isEmpty(position)
