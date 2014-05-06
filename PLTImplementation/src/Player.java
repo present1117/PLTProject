@@ -37,7 +37,7 @@ public class Player {
 		Pos pos = p.pos;
 		for (Piece one : pieceList) {
 			Pos onepos = one.pos;
-			if (onepos.x() == pos.x() && onepos.y() == pos.y()) {
+			if (onepos.getX() == pos.getX() && onepos.getY() == pos.getY()) {
 				pieceList.remove(one);
 				numberofpieces--;
 				break;

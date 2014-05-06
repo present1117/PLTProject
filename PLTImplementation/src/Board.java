@@ -7,14 +7,29 @@
 public class Board {
 	static private int parrow = GameDesigner.boardRow;
 	static private int parcol = GameDesigner.boardCol;
-	static Slot[][] boardslots = new Slot[parrow][parcol];
+	static private Slot[][] boardSlots = new Slot[parrow][parcol];
 
-	static int row() {
+	public static int getRow() {
 		return parrow;
 	}
 
-	static int col() {
+	public static int getCol() {
 		return parcol;
+	}
+
+	public static Slot[][] getBoardSlots() {
+		return boardSlots;
+	}
+
+	public static Slot getSlot(Pos pos) {
+		return boardSlots[pos.getX()][pos.getY()];
+	}
+
+	public static boolean initSlot(Pos pos) {
+		if ((boardSlots[pos.getX()][pos.getY()] = new Slot()) != null)
+			return true;
+		else
+			return false;
 	}
 }
 
@@ -45,19 +60,24 @@ class Slot {
 }
 
 class Pos {
-	private int posx;
-	private int posy;
+	private int x;
+	private int y;
 
-	Pos(int x, int y) {
-		posx = x;
-		posy = y;
+	Pos(int _x, int _y) {
+		x = _x;
+		y = _y;
 	}
 
-	int x() {
-		return posx;
+	Pos(Pos pos) {
+		x = pos.getX();
+		y = pos.getY();
 	}
 
-	int y() {
-		return posy;
+	int getX() {
+		return x;
+	}
+
+	int getY() {
+		return y;
 	}
 }
