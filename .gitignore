@@ -8,3 +8,5 @@ bin/
 PLTFrontEnd/ply/yacc.pyc
 
 *.pyc
+
+PLTFrontEnd/ply/yacc.pyc

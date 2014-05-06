@@ -42,7 +42,7 @@ public class Main {
 					int posx = Integer.parseInt(xypos[0]);
 					int posy = Integer.parseInt(xypos[1]);	
 					String ptype  = "";
-					for(String t : GameDesigner.TYPE){
+					for(String t : GameDesigner.pieceType){
 						if(xypos[2].equals(t))
 							ptype = t;
 					}

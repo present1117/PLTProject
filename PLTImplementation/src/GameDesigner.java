@@ -1,13 +1,15 @@
-public class GameDesigner {
-	static String[] TYPE = { "RED", "YELLOW", "GREEN", "BLUE" };
+import java.lang.*;
+import java.util.*;
 
+public class GameDesigner {
+	static String[] pieceType = { "RED", "YELLOW", "GREEN", "BLUE" };
 	static int[] pieceNum = { 0, 0, 0, 0 };
 	static int boardRow = 8;
 	static int boardCol = 8;
 	static int playerNum = 1;
 
-	public static boolean add_res(String piece, Pos position) {
-		String PIECE_TYPE = piece;
+	public static boolean add_res(String pieceType, Pos position) {
+		Object PIECE_TYPE = pieceType;
 
 		if (PIECE_TYPE == "RED" || PIECE_TYPE == "YELLOW") {
 			return Functions.isEmpty(position);
@@ -36,10 +38,11 @@ public class GameDesigner {
 					&& Functions.getPieceType(Functions.getPiece(
 							position.x() + 1, position.y())) == "YELLOW";
 		}
+
 		return false;
 	}
 
-	public static boolean win_res(int[] position) {
+	public static boolean win_res(Pos position) {
 		if (Functions.pieceCount("GREEN") + Functions.pieceCount("BLUE") == 15) {
 			return true;
 		} else {
@@ -47,11 +50,11 @@ public class GameDesigner {
 		}
 	}
 
-	public static boolean move_res(int[] par0, int[] par1) {
+	public static boolean move_res(Pos par0, Pos par1) {
 		return true;
 	}
 
-	public static boolean remove_res(int[] par0) {
+	public static boolean remove_res(Pos par0) {
 		return true;
 	}
 }

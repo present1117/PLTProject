@@ -22,7 +22,7 @@ public class Functions {
 	}
 
 	public static boolean win(int posx, int posy, Player currentowner) {
-		if (GameDesigner.win_res(new int[] { posx, posy })) {
+		if (GameDesigner.win_res(new Pos(posx, posy))) {
 			return true;
 		} else {
 			return false;
