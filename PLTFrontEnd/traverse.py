@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+
 """ traverse AST (abstract syntax tree). 
 """
 __teamNo__ = 7
@@ -309,6 +310,11 @@ class Traverse(object):
             node.string = self.gen_piece_expr(node)
         elif node.type == 'piece_stmt':
             node.string = self.gen_piece_stmt(node)
+        elif node.type == 'global_assign_stmt':
+            if len(node.children) == 0:
+                node.string = ''
+            else:
+                node.string = node.children[0].string + node.children[1].string
         elif node.type == 'input_stmt':
             node.string = self.gen_input_stmt(node)
         elif node.type == 'factor' or node.type == 'term' or node.type == 'operand' or node.type == 'comparison' or node.type == 'not_test' or node.type == 'and_test' or node.type == 'or_test' or node.type == 'expr' or node.type == 'parameter' or node.type == 'flow_stmt' or node.type == 'compound_stmt' or node.type == 'simple_stmt' or node.type == 'stmt':
@@ -322,7 +328,7 @@ class Traverse(object):
             print node.type
             print "Error in pass_value()"
 
-        if isinstance(node.children[0], Node):
+        if len(node.children) > 0 and isinstance(node.children[0], Node):
             if node.token == 'Object': node.token = node.children[0].token
 #            if node.token == '': node.token = node.children[0].token
 
@@ -422,10 +428,7 @@ class Traverse(object):
         return s
 
     def gen_function_stmt(self, node):
-        if len(node.children) == 1:
-            return node.children[0].string
-        else:
-            return node.children[0].string + '\n' + node.children[1].string
+        return node.children[0].string + '\n' + node.children[1].string
 
     
     def gen_funcdef(self, node):
@@ -515,7 +518,6 @@ if __name__ == "__main__":
     m.input(inputData)
     parser = yacc.yacc()
     result = parser.parse(tokenfunc = m.token)
-    print result.type
     code = Traverse(result).getJava()
     #print code
     outputFile = open('GameDesigner.java','w')
