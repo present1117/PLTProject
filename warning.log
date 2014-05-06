@@ -1,0 +1,5 @@
+LexToken(ID,'GLOBAL',1,0)
+Syntax error in input!
+LexToken(ID,'STONE',3,30)
+Syntax error in input!
+Illegal character '~'

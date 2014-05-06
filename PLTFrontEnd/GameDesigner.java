@@ -6,9 +6,9 @@ static int[] pieceNum = {0,0,0,0};
 static int boardRow = 8;
 static int boardCol = 8;
 static int playerNum = 1;
-public static boolean add_res (String piece,Pos position)
+public static boolean add_res (String pieceType,Pos position)
 {
-String PIECE_TYPE=Functions.getPieceType(piece);
+Object PIECE_TYPE=pieceType;
 
 if(PIECE_TYPE=="RED"||PIECE_TYPE=="YELLOW")
 {
@@ -17,15 +17,15 @@ return Functions.isEmpty(position);
 
 if(PIECE_TYPE=="GREEN")
 {
-return Functions.isEmpty(position)&&Functions.getPieceType(Functions.getPiece({position.x(), position.y()-1}))=="RED"&&Functions.getPieceType(Functions.getPiece({position.x(), position.y()+1}))=="RED"&&Functions.getPieceType(Functions.getPiece({position.x()-1, position.y()}))=="RED"&&Functions.getPieceType(Functions.getPiece({position.x()+1, position.y()}))=="RED";
+return Functions.isEmpty(position)&&Functions.getPieceType(Functions.getPiece(position.x(), position.y()-1))=="RED"&&Functions.getPieceType(Functions.getPiece(position.x(), position.y()+1))=="RED"&&Functions.getPieceType(Functions.getPiece(position.x()-1, position.y()))=="RED"&&Functions.getPieceType(Functions.getPiece(position.x()+1, position.y()))=="RED";
 }
 
 if(PIECE_TYPE=="BLUE")
 {
-return Functions.isEmpty(position)&&Functions.getPieceType(Functions.getPiece({position.x(), position.y()-1}))=="RED"&&Functions.getPieceType(Functions.getPiece({position.x()-1, position.y()}))=="RED"&&Functions.getPieceType(Functions.getPiece({position.x(), position.y()+1}))=="YELLOW"&&Functions.getPieceType(Functions.getPiece({position.x()+1, position.y()}))=="YELLOW";
+return Functions.isEmpty(position)&&Functions.getPieceType(Functions.getPiece(position.x(), position.y()-1))=="RED"&&Functions.getPieceType(Functions.getPiece(position.x()-1, position.y()))=="RED"&&Functions.getPieceType(Functions.getPiece(position.x(), position.y()+1))=="YELLOW"&&Functions.getPieceType(Functions.getPiece(position.x()+1, position.y()))=="YELLOW";
 }
 
-return False;
+return false;
 }
 public static boolean win_res (Pos position)
 {
