@@ -1,2 +1,12 @@
 bin/
 .DS_Store
+
+*.pyc
+
+*.pyc
+
+PLTFrontEnd/ply/yacc.pyc
+
+*.pyc
+
+PLTFrontEnd/ply/yacc.pyc
