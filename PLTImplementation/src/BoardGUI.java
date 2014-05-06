@@ -16,8 +16,8 @@ public class BoardGUI extends JFrame {
     private JPanel westPanel = new JPanel();
     private JPanel northPanel = new JPanel();
     //initialize arrays to hold panels and images of the board
-    private int numOfRows = Board.row();
-    private int numOfColumns = Board.col();
+    private int numOfRows = Board.getRow();
+    private int numOfColumns = Board.getCol();
     private JLabel[] labels = new JLabel[numOfRows*numOfColumns];
     private ImagePanel[] panels = new ImagePanel[numOfRows*numOfColumns];
     
