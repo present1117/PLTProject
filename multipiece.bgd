@@ -15,16 +15,16 @@ RULE:
 	action := win
 
 FUNCTION:
-	def add piece, position:
-		PIECE_TYPE := getPieceType(piece)
+	def add pieceType, position:
+		PIECE_TYPE := pieceType
 		if PIECE_TYPE='RED' OR PIECE_TYPE='YELLOW':
 			return isEmpty(position)
 		if PIECE_TYPE='GREEN':
-			return isEmpty(position) AND getPieceType(getPiece((position.x,position.y- 1)))='RED' AND getPieceType(getPiece((position.x,position.y + 1)))='RED' AND getPieceType(getPiece((position.x - 1,position.y)))='RED' AND getPieceType(getPiece((position.x + 1,position.y)))='RED'
+			return isEmpty(position) AND getPieceType(getPiece(position.x,position.y- 1))='RED' AND getPieceType(getPiece(position.x,position.y + 1))='RED' AND getPieceType(getPiece(position.x - 1,position.y))='RED' AND getPieceType(getPiece(position.x + 1,position.y))='RED'
 		
 		if PIECE_TYPE='BLUE':
-			return isEmpty(position) AND getPieceType(getPiece((position.x,position.y - 1)))='RED' AND getPieceType(getPiece((position.x - 1,position.y)))='RED' AND getPieceType(getPiece((position.x,position.y + 1)))='YELLOW' AND getPieceType(getPiece((position.x + 1,position.y)))='YELLOW'
-		return False
+			return isEmpty(position) AND getPieceType(getPiece(position.x,position.y - 1))='RED' AND getPieceType(getPiece(position.x - 1,position.y))='RED' AND getPieceType(getPiece(position.x,position.y + 1))='YELLOW' AND getPieceType(getPiece(position.x + 1,position.y))='YELLOW'
+		return NO
 
 
 	def win position: 
