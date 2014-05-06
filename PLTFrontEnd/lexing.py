@@ -24,7 +24,8 @@ class BGDLexer(object):
         'AND' : 'AND',
         'NOT' : 'NOT',
         'to' : 'TO',
-        'in' : 'IN'
+        'in' : 'IN',
+        'global' : 'GLOBAL'
         }
     tokens = [
         #'EMPTYLINE',
@@ -167,12 +168,13 @@ class BGDLexer(object):
             if not tok:
                 break
             tok_str += str(tok) + "\n"
+        print tok_str
         return tok_str
     
 if __name__ == '__main__':
     m = BGDLexer()
     #var = raw_input("Please enter something: ")
-    f = open('workfile')
+    f = open('tic-tac-toe.bgd')
     line = f.read()
     m.input(line)
     m.tok_str(line)

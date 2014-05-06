@@ -515,6 +515,7 @@ if __name__ == "__main__":
     m.input(inputData)
     parser = yacc.yacc()
     result = parser.parse(tokenfunc = m.token)
+    print result.type
     code = Traverse(result).getJava()
     #print code
     outputFile = open('GameDesigner.java','w')

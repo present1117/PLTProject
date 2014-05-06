@@ -1,0 +1,4275 @@
+Created by PLY version 3.4 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    COMMENT
+    WHITESPACE
+    EMPTYLINE
+
+Grammar
+
+Rule 0     S' -> input_stmt
+Rule 1     input_stmt -> piece_stmt board_stmt player_stmt rule_stmt function_stmt
+Rule 2     piece_stmt -> PIECE : NEWLINE INDENT piece_expr DEDENT
+Rule 3     piece_expr -> STRING NUMBER NEWLINE
+Rule 4     piece_expr -> STRING NEWLINE
+Rule 5     piece_expr -> piece_expr STRING NEWLINE
+Rule 6     piece_expr -> piece_expr STRING NUMBER NEWLINE
+Rule 7     board_stmt -> BOARD : NEWLINE INDENT NUMBER NUMBER NEWLINE DEDENT
+Rule 8     player_stmt -> PLAYER : NEWLINE INDENT NUMBER NEWLINE DEDENT
+Rule 9     rule_stmt -> RULE : NEWLINE INDENT action_stmt DEDENT
+Rule 10    action_stmt -> ACTION : = ID NEWLINE
+Rule 11    action_stmt -> action_stmt ACTION : = ID NEWLINE
+Rule 12    function_stmt -> FUNCTION : NEWLINE INDENT funcdef DEDENT
+Rule 13    function_stmt -> function_stmt funcdef
+Rule 14    stmt -> simple_stmt
+Rule 15    stmt -> compound_stmt
+Rule 16    simple_stmt -> assign_stmt
+Rule 17    simple_stmt -> flow_stmt
+Rule 18    compound_stmt -> funcdef
+Rule 19    compound_stmt -> for_stmt
+Rule 20    compound_stmt -> if_stmt
+Rule 21    compound_stmt -> while_stmt
+Rule 22    assign_stmt -> ID : = expr NEWLINE
+Rule 23    flow_stmt -> break_stmt
+Rule 24    flow_stmt -> continue_stmt
+Rule 25    flow_stmt -> return_stmt
+Rule 26    funcdef -> DEF ID parameters : suite
+Rule 27    funcdef -> DEF ID : suite
+Rule 28    funcdef -> funcdef DEF ID parameters : suite
+Rule 29    funcdef -> funcdef DEF ID : suite
+Rule 30    parameters -> parameters , parameter
+Rule 31    parameters -> parameter
+Rule 32    parameter -> ID
+Rule 33    expr -> or_test
+Rule 34    or_test -> and_test
+Rule 35    or_test -> or_test OR and_test
+Rule 36    and_test -> not_test
+Rule 37    and_test -> and_test AND not_test
+Rule 38    not_test -> NOT not_test
+Rule 39    not_test -> comparison
+Rule 40    comparison -> operand
+Rule 41    comparison -> comparison = operand
+Rule 42    comparison -> comparison > operand
+Rule 43    comparison -> comparison < operand
+Rule 44    comparison -> comparison > = operand
+Rule 45    comparison -> comparison < = operand
+Rule 46    comparison -> comparison ~ = operand
+Rule 47    operand -> term
+Rule 48    operand -> operand + term
+Rule 49    operand -> operand - term
+Rule 50    term -> factor
+Rule 51    term -> term * factor
+Rule 52    term -> term / factor
+Rule 53    term -> term % factor
+Rule 54    factor -> power
+Rule 55    factor -> + factor
+Rule 56    factor -> - factor
+Rule 57    power -> atom
+Rule 58    power -> power trailer
+Rule 59    atom -> array
+Rule 60    atom -> position
+Rule 61    atom -> ID
+Rule 62    atom -> STRING
+Rule 63    atom -> NUMBER
+Rule 64    atom -> BOOLEAN
+Rule 65    atom -> NIL
+Rule 66    atom -> func_expr
+Rule 67    atom -> ( expr )
+Rule 68    position -> ( expr , expr )
+Rule 69    array -> [ parameter_list ]
+Rule 70    trailer -> . ID
+Rule 71    trailer -> [ expr ]
+Rule 72    func_expr -> ID ( )
+Rule 73    func_expr -> ID ( parameter_list )
+Rule 74    parameter_list -> expr
+Rule 75    parameter_list -> parameter_list , expr
+Rule 76    for_stmt -> FOR ID = NUMBER TO NUMBER : suite
+Rule 77    for_stmt -> FOR ID IN expr : suite
+Rule 78    if_stmt -> IF expr : suite
+Rule 79    if_stmt -> IF expr : suite elseif_stmt
+Rule 80    if_stmt -> IF expr : suite ELSE : suite
+Rule 81    if_stmt -> IF expr : suite elseif_stmt ELSE : suite
+Rule 82    elseif_stmt -> ELSEIF expr : suite
+Rule 83    elseif_stmt -> elseif_stmt ELSEIF expr : suite
+Rule 84    while_stmt -> WHILE expr : suite
+Rule 85    suite -> NEWLINE
+Rule 86    suite -> NEWLINE INDENT suite_stmt DEDENT
+Rule 87    suite_stmt -> stmt
+Rule 88    suite_stmt -> suite_stmt stmt
+Rule 89    return_stmt -> RETURN expr NEWLINE
+Rule 90    continue_stmt -> CONTINUE NEWLINE
+Rule 91    break_stmt -> BREAK NEWLINE
+
+Terminals, with rules where they appear
+
+%                    : 53
+(                    : 67 68 72 73
+)                    : 67 68 72 73
+*                    : 51
++                    : 48 55
+,                    : 30 68 75
+-                    : 49 56
+.                    : 70
+/                    : 52
+:                    : 2 7 8 9 10 11 12 22 26 27 28 29 76 77 78 79 80 80 81 81 82 83 84
+<                    : 43 45
+=                    : 10 11 22 41 44 45 46 76
+>                    : 42 44
+ACTION               : 10 11
+AND                  : 37
+BOARD                : 7
+BOOLEAN              : 64
+BREAK                : 91
+COMMENT              : 
+CONTINUE             : 90
+DEDENT               : 2 7 8 9 12 86
+DEF                  : 26 27 28 29
+ELSE                 : 80 81
+ELSEIF               : 82 83
+EMPTYLINE            : 
+FOR                  : 76 77
+FUNCTION             : 12
+ID                   : 10 11 22 26 27 28 29 32 61 70 72 73 76 77
+IF                   : 78 79 80 81
+IN                   : 77
+INDENT               : 2 7 8 9 12 86
+NEWLINE              : 2 3 4 5 6 7 7 8 8 9 10 11 12 22 85 86 89 90 91
+NIL                  : 65
+NOT                  : 38
+NUMBER               : 3 6 7 7 8 63 76 76
+OR                   : 35
+PIECE                : 2
+PLAYER               : 8
+RETURN               : 89
+RULE                 : 9
+STRING               : 3 4 5 6 62
+TO                   : 76
+WHILE                : 84
+WHITESPACE           : 
+[                    : 69 71
+]                    : 69 71
+error                : 
+~                    : 46
+
+Nonterminals, with rules where they appear
+
+action_stmt          : 9 11
+and_test             : 34 35 37
+array                : 59
+assign_stmt          : 16
+atom                 : 57
+board_stmt           : 1
+break_stmt           : 23
+comparison           : 39 41 42 43 44 45 46
+compound_stmt        : 15
+continue_stmt        : 24
+elseif_stmt          : 79 81 83
+expr                 : 22 67 68 68 71 74 75 77 78 79 80 81 82 83 84 89
+factor               : 50 51 52 53 55 56
+flow_stmt            : 17
+for_stmt             : 19
+func_expr            : 66
+funcdef              : 12 13 18 28 29
+function_stmt        : 1 13
+if_stmt              : 20
+input_stmt           : 0
+not_test             : 36 37 38
+operand              : 40 41 42 43 44 45 46 48 49
+or_test              : 33 35
+parameter            : 30 31
+parameter_list       : 69 73 75
+parameters           : 26 28 30
+piece_expr           : 2 5 6
+piece_stmt           : 1
+player_stmt          : 1
+position             : 60
+power                : 54 58
+return_stmt          : 25
+rule_stmt            : 1
+simple_stmt          : 14
+stmt                 : 87 88
+suite                : 26 27 28 29 76 77 78 79 80 80 81 81 82 83 84
+suite_stmt           : 86 88
+term                 : 47 48 49 51 52 53
+trailer              : 58
+while_stmt           : 21
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . input_stmt
+    (1) input_stmt -> . piece_stmt board_stmt player_stmt rule_stmt function_stmt
+    (2) piece_stmt -> . PIECE : NEWLINE INDENT piece_expr DEDENT
+
+    PIECE           shift and go to state 2
+
+    piece_stmt                     shift and go to state 1
+    input_stmt                     shift and go to state 3
+
+state 1
+
+    (1) input_stmt -> piece_stmt . board_stmt player_stmt rule_stmt function_stmt
+    (7) board_stmt -> . BOARD : NEWLINE INDENT NUMBER NUMBER NEWLINE DEDENT
+
+    BOARD           shift and go to state 5
+
+    board_stmt                     shift and go to state 4
+
+state 2
+
+    (2) piece_stmt -> PIECE . : NEWLINE INDENT piece_expr DEDENT
+
+    :               shift and go to state 6
+
+
+state 3
+
+    (0) S' -> input_stmt .
+
+
+
+state 4
+
+    (1) input_stmt -> piece_stmt board_stmt . player_stmt rule_stmt function_stmt
+    (8) player_stmt -> . PLAYER : NEWLINE INDENT NUMBER NEWLINE DEDENT
+
+    PLAYER          shift and go to state 7
+
+    player_stmt                    shift and go to state 8
+
+state 5
+
+    (7) board_stmt -> BOARD . : NEWLINE INDENT NUMBER NUMBER NEWLINE DEDENT
+
+    :               shift and go to state 9
+
+
+state 6
+
+    (2) piece_stmt -> PIECE : . NEWLINE INDENT piece_expr DEDENT
+
+    NEWLINE         shift and go to state 10
+
+
+state 7
+
+    (8) player_stmt -> PLAYER . : NEWLINE INDENT NUMBER NEWLINE DEDENT
+
+    :               shift and go to state 11
+
+
+state 8
+
+    (1) input_stmt -> piece_stmt board_stmt player_stmt . rule_stmt function_stmt
+    (9) rule_stmt -> . RULE : NEWLINE INDENT action_stmt DEDENT
+
+    RULE            shift and go to state 12
+
+    rule_stmt                      shift and go to state 13
+
+state 9
+
+    (7) board_stmt -> BOARD : . NEWLINE INDENT NUMBER NUMBER NEWLINE DEDENT
+
+    NEWLINE         shift and go to state 14
+
+
+state 10
+
+    (2) piece_stmt -> PIECE : NEWLINE . INDENT piece_expr DEDENT
+
+    INDENT          shift and go to state 15
+
+
+state 11
+
+    (8) player_stmt -> PLAYER : . NEWLINE INDENT NUMBER NEWLINE DEDENT
+
+    NEWLINE         shift and go to state 16
+
+
+state 12
+
+    (9) rule_stmt -> RULE . : NEWLINE INDENT action_stmt DEDENT
+
+    :               shift and go to state 17
+
+
+state 13
+
+    (1) input_stmt -> piece_stmt board_stmt player_stmt rule_stmt . function_stmt
+    (12) function_stmt -> . FUNCTION : NEWLINE INDENT funcdef DEDENT
+    (13) function_stmt -> . function_stmt funcdef
+
+    FUNCTION        shift and go to state 18
+
+    function_stmt                  shift and go to state 19
+
+state 14
+
+    (7) board_stmt -> BOARD : NEWLINE . INDENT NUMBER NUMBER NEWLINE DEDENT
+
+    INDENT          shift and go to state 20
+
+
+state 15
+
+    (2) piece_stmt -> PIECE : NEWLINE INDENT . piece_expr DEDENT
+    (3) piece_expr -> . STRING NUMBER NEWLINE
+    (4) piece_expr -> . STRING NEWLINE
+    (5) piece_expr -> . piece_expr STRING NEWLINE
+    (6) piece_expr -> . piece_expr STRING NUMBER NEWLINE
+
+    STRING          shift and go to state 21
+
+    piece_expr                     shift and go to state 22
+
+state 16
+
+    (8) player_stmt -> PLAYER : NEWLINE . INDENT NUMBER NEWLINE DEDENT
+
+    INDENT          shift and go to state 23
+
+
+state 17
+
+    (9) rule_stmt -> RULE : . NEWLINE INDENT action_stmt DEDENT
+
+    NEWLINE         shift and go to state 24
+
+
+state 18
+
+    (12) function_stmt -> FUNCTION . : NEWLINE INDENT funcdef DEDENT
+
+    :               shift and go to state 25
+
+
+state 19
+
+    (1) input_stmt -> piece_stmt board_stmt player_stmt rule_stmt function_stmt .
+    (13) function_stmt -> function_stmt . funcdef
+    (26) funcdef -> . DEF ID parameters : suite
+    (27) funcdef -> . DEF ID : suite
+    (28) funcdef -> . funcdef DEF ID parameters : suite
+    (29) funcdef -> . funcdef DEF ID : suite
+
+    $end            reduce using rule 1 (input_stmt -> piece_stmt board_stmt player_stmt rule_stmt function_stmt .)
+    DEF             shift and go to state 26
+
+    funcdef                        shift and go to state 27
+
+state 20
+
+    (7) board_stmt -> BOARD : NEWLINE INDENT . NUMBER NUMBER NEWLINE DEDENT
+
+    NUMBER          shift and go to state 28
+
+
+state 21
+
+    (3) piece_expr -> STRING . NUMBER NEWLINE
+    (4) piece_expr -> STRING . NEWLINE
+
+    NUMBER          shift and go to state 30
+    NEWLINE         shift and go to state 29
+
+
+state 22
+
+    (2) piece_stmt -> PIECE : NEWLINE INDENT piece_expr . DEDENT
+    (5) piece_expr -> piece_expr . STRING NEWLINE
+    (6) piece_expr -> piece_expr . STRING NUMBER NEWLINE
+
+    DEDENT          shift and go to state 31
+    STRING          shift and go to state 32
+
+
+state 23
+
+    (8) player_stmt -> PLAYER : NEWLINE INDENT . NUMBER NEWLINE DEDENT
+
+    NUMBER          shift and go to state 33
+
+
+state 24
+
+    (9) rule_stmt -> RULE : NEWLINE . INDENT action_stmt DEDENT
+
+    INDENT          shift and go to state 34
+
+
+state 25
+
+    (12) function_stmt -> FUNCTION : . NEWLINE INDENT funcdef DEDENT
+
+    NEWLINE         shift and go to state 35
+
+
+state 26
+
+    (26) funcdef -> DEF . ID parameters : suite
+    (27) funcdef -> DEF . ID : suite
+
+    ID              shift and go to state 36
+
+
+state 27
+
+    (13) function_stmt -> function_stmt funcdef .
+    (28) funcdef -> funcdef . DEF ID parameters : suite
+    (29) funcdef -> funcdef . DEF ID : suite
+
+  ! shift/reduce conflict for DEF resolved as shift
+    $end            reduce using rule 13 (function_stmt -> function_stmt funcdef .)
+    DEF             shift and go to state 37
+
+  ! DEF             [ reduce using rule 13 (function_stmt -> function_stmt funcdef .) ]
+
+
+state 28
+
+    (7) board_stmt -> BOARD : NEWLINE INDENT NUMBER . NUMBER NEWLINE DEDENT
+
+    NUMBER          shift and go to state 38
+
+
+state 29
+
+    (4) piece_expr -> STRING NEWLINE .
+
+    DEDENT          reduce using rule 4 (piece_expr -> STRING NEWLINE .)
+    STRING          reduce using rule 4 (piece_expr -> STRING NEWLINE .)
+
+
+state 30
+
+    (3) piece_expr -> STRING NUMBER . NEWLINE
+
+    NEWLINE         shift and go to state 39
+
+
+state 31
+
+    (2) piece_stmt -> PIECE : NEWLINE INDENT piece_expr DEDENT .
+
+    BOARD           reduce using rule 2 (piece_stmt -> PIECE : NEWLINE INDENT piece_expr DEDENT .)
+
+
+state 32
+
+    (5) piece_expr -> piece_expr STRING . NEWLINE
+    (6) piece_expr -> piece_expr STRING . NUMBER NEWLINE
+
+    NEWLINE         shift and go to state 40
+    NUMBER          shift and go to state 41
+
+
+state 33
+
+    (8) player_stmt -> PLAYER : NEWLINE INDENT NUMBER . NEWLINE DEDENT
+
+    NEWLINE         shift and go to state 42
+
+
+state 34
+
+    (9) rule_stmt -> RULE : NEWLINE INDENT . action_stmt DEDENT
+    (10) action_stmt -> . ACTION : = ID NEWLINE
+    (11) action_stmt -> . action_stmt ACTION : = ID NEWLINE
+
+    ACTION          shift and go to state 43
+
+    action_stmt                    shift and go to state 44
+
+state 35
+
+    (12) function_stmt -> FUNCTION : NEWLINE . INDENT funcdef DEDENT
+
+    INDENT          shift and go to state 45
+
+
+state 36
+
+    (26) funcdef -> DEF ID . parameters : suite
+    (27) funcdef -> DEF ID . : suite
+    (30) parameters -> . parameters , parameter
+    (31) parameters -> . parameter
+    (32) parameter -> . ID
+
+    :               shift and go to state 47
+    ID              shift and go to state 49
+
+    parameter                      shift and go to state 48
+    parameters                     shift and go to state 46
+
+state 37
+
+    (28) funcdef -> funcdef DEF . ID parameters : suite
+    (29) funcdef -> funcdef DEF . ID : suite
+
+    ID              shift and go to state 50
+
+
+state 38
+
+    (7) board_stmt -> BOARD : NEWLINE INDENT NUMBER NUMBER . NEWLINE DEDENT
+
+    NEWLINE         shift and go to state 51
+
+
+state 39
+
+    (3) piece_expr -> STRING NUMBER NEWLINE .
+
+    DEDENT          reduce using rule 3 (piece_expr -> STRING NUMBER NEWLINE .)
+    STRING          reduce using rule 3 (piece_expr -> STRING NUMBER NEWLINE .)
+
+
+state 40
+
+    (5) piece_expr -> piece_expr STRING NEWLINE .
+
+    DEDENT          reduce using rule 5 (piece_expr -> piece_expr STRING NEWLINE .)
+    STRING          reduce using rule 5 (piece_expr -> piece_expr STRING NEWLINE .)
+
+
+state 41
+
+    (6) piece_expr -> piece_expr STRING NUMBER . NEWLINE
+
+    NEWLINE         shift and go to state 52
+
+
+state 42
+
+    (8) player_stmt -> PLAYER : NEWLINE INDENT NUMBER NEWLINE . DEDENT
+
+    DEDENT          shift and go to state 53
+
+
+state 43
+
+    (10) action_stmt -> ACTION . : = ID NEWLINE
+
+    :               shift and go to state 54
+
+
+state 44
+
+    (9) rule_stmt -> RULE : NEWLINE INDENT action_stmt . DEDENT
+    (11) action_stmt -> action_stmt . ACTION : = ID NEWLINE
+
+    DEDENT          shift and go to state 55
+    ACTION          shift and go to state 56
+
+
+state 45
+
+    (12) function_stmt -> FUNCTION : NEWLINE INDENT . funcdef DEDENT
+    (26) funcdef -> . DEF ID parameters : suite
+    (27) funcdef -> . DEF ID : suite
+    (28) funcdef -> . funcdef DEF ID parameters : suite
+    (29) funcdef -> . funcdef DEF ID : suite
+
+    DEF             shift and go to state 26
+
+    funcdef                        shift and go to state 57
+
+state 46
+
+    (26) funcdef -> DEF ID parameters . : suite
+    (30) parameters -> parameters . , parameter
+
+    :               shift and go to state 59
+    ,               shift and go to state 58
+
+
+state 47
+
+    (27) funcdef -> DEF ID : . suite
+    (85) suite -> . NEWLINE
+    (86) suite -> . NEWLINE INDENT suite_stmt DEDENT
+
+    NEWLINE         shift and go to state 60
+
+    suite                          shift and go to state 61
+
+state 48
+
+    (31) parameters -> parameter .
+
+    :               reduce using rule 31 (parameters -> parameter .)
+    ,               reduce using rule 31 (parameters -> parameter .)
+
+
+state 49
+
+    (32) parameter -> ID .
+
+    :               reduce using rule 32 (parameter -> ID .)
+    ,               reduce using rule 32 (parameter -> ID .)
+
+
+state 50
+
+    (28) funcdef -> funcdef DEF ID . parameters : suite
+    (29) funcdef -> funcdef DEF ID . : suite
+    (30) parameters -> . parameters , parameter
+    (31) parameters -> . parameter
+    (32) parameter -> . ID
+
+    :               shift and go to state 63
+    ID              shift and go to state 49
+
+    parameter                      shift and go to state 48
+    parameters                     shift and go to state 62
+
+state 51
+
+    (7) board_stmt -> BOARD : NEWLINE INDENT NUMBER NUMBER NEWLINE . DEDENT
+
+    DEDENT          shift and go to state 64
+
+
+state 52
+
+    (6) piece_expr -> piece_expr STRING NUMBER NEWLINE .
+
+    DEDENT          reduce using rule 6 (piece_expr -> piece_expr STRING NUMBER NEWLINE .)
+    STRING          reduce using rule 6 (piece_expr -> piece_expr STRING NUMBER NEWLINE .)
+
+
+state 53
+
+    (8) player_stmt -> PLAYER : NEWLINE INDENT NUMBER NEWLINE DEDENT .
+
+    RULE            reduce using rule 8 (player_stmt -> PLAYER : NEWLINE INDENT NUMBER NEWLINE DEDENT .)
+
+
+state 54
+
+    (10) action_stmt -> ACTION : . = ID NEWLINE
+
+    =               shift and go to state 65
+
+
+state 55
+
+    (9) rule_stmt -> RULE : NEWLINE INDENT action_stmt DEDENT .
+
+    FUNCTION        reduce using rule 9 (rule_stmt -> RULE : NEWLINE INDENT action_stmt DEDENT .)
+
+
+state 56
+
+    (11) action_stmt -> action_stmt ACTION . : = ID NEWLINE
+
+    :               shift and go to state 66
+
+
+state 57
+
+    (12) function_stmt -> FUNCTION : NEWLINE INDENT funcdef . DEDENT
+    (28) funcdef -> funcdef . DEF ID parameters : suite
+    (29) funcdef -> funcdef . DEF ID : suite
+
+    DEDENT          shift and go to state 67
+    DEF             shift and go to state 37
+
+
+state 58
+
+    (30) parameters -> parameters , . parameter
+    (32) parameter -> . ID
+
+    ID              shift and go to state 49
+
+    parameter                      shift and go to state 68
+
+state 59
+
+    (26) funcdef -> DEF ID parameters : . suite
+    (85) suite -> . NEWLINE
+    (86) suite -> . NEWLINE INDENT suite_stmt DEDENT
+
+    NEWLINE         shift and go to state 60
+
+    suite                          shift and go to state 69
+
+state 60
+
+    (85) suite -> NEWLINE .
+    (86) suite -> NEWLINE . INDENT suite_stmt DEDENT
+
+    DEF             reduce using rule 85 (suite -> NEWLINE .)
+    $end            reduce using rule 85 (suite -> NEWLINE .)
+    DEDENT          reduce using rule 85 (suite -> NEWLINE .)
+    ID              reduce using rule 85 (suite -> NEWLINE .)
+    FOR             reduce using rule 85 (suite -> NEWLINE .)
+    IF              reduce using rule 85 (suite -> NEWLINE .)
+    WHILE           reduce using rule 85 (suite -> NEWLINE .)
+    BREAK           reduce using rule 85 (suite -> NEWLINE .)
+    CONTINUE        reduce using rule 85 (suite -> NEWLINE .)
+    RETURN          reduce using rule 85 (suite -> NEWLINE .)
+    ELSE            reduce using rule 85 (suite -> NEWLINE .)
+    ELSEIF          reduce using rule 85 (suite -> NEWLINE .)
+    INDENT          shift and go to state 70
+
+
+state 61
+
+    (27) funcdef -> DEF ID : suite .
+
+    DEF             reduce using rule 27 (funcdef -> DEF ID : suite .)
+    DEDENT          reduce using rule 27 (funcdef -> DEF ID : suite .)
+    ID              reduce using rule 27 (funcdef -> DEF ID : suite .)
+    FOR             reduce using rule 27 (funcdef -> DEF ID : suite .)
+    IF              reduce using rule 27 (funcdef -> DEF ID : suite .)
+    WHILE           reduce using rule 27 (funcdef -> DEF ID : suite .)
+    BREAK           reduce using rule 27 (funcdef -> DEF ID : suite .)
+    CONTINUE        reduce using rule 27 (funcdef -> DEF ID : suite .)
+    RETURN          reduce using rule 27 (funcdef -> DEF ID : suite .)
+    $end            reduce using rule 27 (funcdef -> DEF ID : suite .)
+
+
+state 62
+
+    (28) funcdef -> funcdef DEF ID parameters . : suite
+    (30) parameters -> parameters . , parameter
+
+    :               shift and go to state 71
+    ,               shift and go to state 58
+
+
+state 63
+
+    (29) funcdef -> funcdef DEF ID : . suite
+    (85) suite -> . NEWLINE
+    (86) suite -> . NEWLINE INDENT suite_stmt DEDENT
+
+    NEWLINE         shift and go to state 60
+
+    suite                          shift and go to state 72
+
+state 64
+
+    (7) board_stmt -> BOARD : NEWLINE INDENT NUMBER NUMBER NEWLINE DEDENT .
+
+    PLAYER          reduce using rule 7 (board_stmt -> BOARD : NEWLINE INDENT NUMBER NUMBER NEWLINE DEDENT .)
+
+
+state 65
+
+    (10) action_stmt -> ACTION : = . ID NEWLINE
+
+    ID              shift and go to state 73
+
+
+state 66
+
+    (11) action_stmt -> action_stmt ACTION : . = ID NEWLINE
+
+    =               shift and go to state 74
+
+
+state 67
+
+    (12) function_stmt -> FUNCTION : NEWLINE INDENT funcdef DEDENT .
+
+    DEF             reduce using rule 12 (function_stmt -> FUNCTION : NEWLINE INDENT funcdef DEDENT .)
+    $end            reduce using rule 12 (function_stmt -> FUNCTION : NEWLINE INDENT funcdef DEDENT .)
+
+
+state 68
+
+    (30) parameters -> parameters , parameter .
+
+    :               reduce using rule 30 (parameters -> parameters , parameter .)
+    ,               reduce using rule 30 (parameters -> parameters , parameter .)
+
+
+state 69
+
+    (26) funcdef -> DEF ID parameters : suite .
+
+    DEF             reduce using rule 26 (funcdef -> DEF ID parameters : suite .)
+    DEDENT          reduce using rule 26 (funcdef -> DEF ID parameters : suite .)
+    ID              reduce using rule 26 (funcdef -> DEF ID parameters : suite .)
+    FOR             reduce using rule 26 (funcdef -> DEF ID parameters : suite .)
+    IF              reduce using rule 26 (funcdef -> DEF ID parameters : suite .)
+    WHILE           reduce using rule 26 (funcdef -> DEF ID parameters : suite .)
+    BREAK           reduce using rule 26 (funcdef -> DEF ID parameters : suite .)
+    CONTINUE        reduce using rule 26 (funcdef -> DEF ID parameters : suite .)
+    RETURN          reduce using rule 26 (funcdef -> DEF ID parameters : suite .)
+    $end            reduce using rule 26 (funcdef -> DEF ID parameters : suite .)
+
+
+state 70
+
+    (86) suite -> NEWLINE INDENT . suite_stmt DEDENT
+    (87) suite_stmt -> . stmt
+    (88) suite_stmt -> . suite_stmt stmt
+    (14) stmt -> . simple_stmt
+    (15) stmt -> . compound_stmt
+    (16) simple_stmt -> . assign_stmt
+    (17) simple_stmt -> . flow_stmt
+    (18) compound_stmt -> . funcdef
+    (19) compound_stmt -> . for_stmt
+    (20) compound_stmt -> . if_stmt
+    (21) compound_stmt -> . while_stmt
+    (22) assign_stmt -> . ID : = expr NEWLINE
+    (23) flow_stmt -> . break_stmt
+    (24) flow_stmt -> . continue_stmt
+    (25) flow_stmt -> . return_stmt
+    (26) funcdef -> . DEF ID parameters : suite
+    (27) funcdef -> . DEF ID : suite
+    (28) funcdef -> . funcdef DEF ID parameters : suite
+    (29) funcdef -> . funcdef DEF ID : suite
+    (76) for_stmt -> . FOR ID = NUMBER TO NUMBER : suite
+    (77) for_stmt -> . FOR ID IN expr : suite
+    (78) if_stmt -> . IF expr : suite
+    (79) if_stmt -> . IF expr : suite elseif_stmt
+    (80) if_stmt -> . IF expr : suite ELSE : suite
+    (81) if_stmt -> . IF expr : suite elseif_stmt ELSE : suite
+    (84) while_stmt -> . WHILE expr : suite
+    (91) break_stmt -> . BREAK NEWLINE
+    (90) continue_stmt -> . CONTINUE NEWLINE
+    (89) return_stmt -> . RETURN expr NEWLINE
+
+    ID              shift and go to state 89
+    DEF             shift and go to state 26
+    FOR             shift and go to state 84
+    IF              shift and go to state 90
+    WHILE           shift and go to state 76
+    BREAK           shift and go to state 92
+    CONTINUE        shift and go to state 94
+    RETURN          shift and go to state 75
+
+    flow_stmt                      shift and go to state 79
+    break_stmt                     shift and go to state 83
+    if_stmt                        shift and go to state 91
+    simple_stmt                    shift and go to state 85
+    while_stmt                     shift and go to state 93
+    stmt                           shift and go to state 86
+    assign_stmt                    shift and go to state 81
+    for_stmt                       shift and go to state 87
+    return_stmt                    shift and go to state 77
+    continue_stmt                  shift and go to state 80
+    funcdef                        shift and go to state 88
+    compound_stmt                  shift and go to state 82
+    suite_stmt                     shift and go to state 78
+
+state 71
+
+    (28) funcdef -> funcdef DEF ID parameters : . suite
+    (85) suite -> . NEWLINE
+    (86) suite -> . NEWLINE INDENT suite_stmt DEDENT
+
+    NEWLINE         shift and go to state 60
+
+    suite                          shift and go to state 95
+
+state 72
+
+    (29) funcdef -> funcdef DEF ID : suite .
+
+    DEF             reduce using rule 29 (funcdef -> funcdef DEF ID : suite .)
+    DEDENT          reduce using rule 29 (funcdef -> funcdef DEF ID : suite .)
+    ID              reduce using rule 29 (funcdef -> funcdef DEF ID : suite .)
+    FOR             reduce using rule 29 (funcdef -> funcdef DEF ID : suite .)
+    IF              reduce using rule 29 (funcdef -> funcdef DEF ID : suite .)
+    WHILE           reduce using rule 29 (funcdef -> funcdef DEF ID : suite .)
+    BREAK           reduce using rule 29 (funcdef -> funcdef DEF ID : suite .)
+    CONTINUE        reduce using rule 29 (funcdef -> funcdef DEF ID : suite .)
+    RETURN          reduce using rule 29 (funcdef -> funcdef DEF ID : suite .)
+    $end            reduce using rule 29 (funcdef -> funcdef DEF ID : suite .)
+
+
+state 73
+
+    (10) action_stmt -> ACTION : = ID . NEWLINE
+
+    NEWLINE         shift and go to state 96
+
+
+state 74
+
+    (11) action_stmt -> action_stmt ACTION : = . ID NEWLINE
+
+    ID              shift and go to state 97
+
+
+state 75
+
+    (89) return_stmt -> RETURN . expr NEWLINE
+    (33) expr -> . or_test
+    (34) or_test -> . and_test
+    (35) or_test -> . or_test OR and_test
+    (36) and_test -> . not_test
+    (37) and_test -> . and_test AND not_test
+    (38) not_test -> . NOT not_test
+    (39) not_test -> . comparison
+    (40) comparison -> . operand
+    (41) comparison -> . comparison = operand
+    (42) comparison -> . comparison > operand
+    (43) comparison -> . comparison < operand
+    (44) comparison -> . comparison > = operand
+    (45) comparison -> . comparison < = operand
+    (46) comparison -> . comparison ~ = operand
+    (47) operand -> . term
+    (48) operand -> . operand + term
+    (49) operand -> . operand - term
+    (50) term -> . factor
+    (51) term -> . term * factor
+    (52) term -> . term / factor
+    (53) term -> . term % factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    NOT             shift and go to state 119
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    comparison                     shift and go to state 113
+    term                           shift and go to state 114
+    power                          shift and go to state 108
+    expr                           shift and go to state 116
+    atom                           shift and go to state 110
+    or_test                        shift and go to state 117
+    and_test                       shift and go to state 109
+    not_test                       shift and go to state 99
+    factor                         shift and go to state 106
+    operand                        shift and go to state 100
+    position                       shift and go to state 120
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 76
+
+    (84) while_stmt -> WHILE . expr : suite
+    (33) expr -> . or_test
+    (34) or_test -> . and_test
+    (35) or_test -> . or_test OR and_test
+    (36) and_test -> . not_test
+    (37) and_test -> . and_test AND not_test
+    (38) not_test -> . NOT not_test
+    (39) not_test -> . comparison
+    (40) comparison -> . operand
+    (41) comparison -> . comparison = operand
+    (42) comparison -> . comparison > operand
+    (43) comparison -> . comparison < operand
+    (44) comparison -> . comparison > = operand
+    (45) comparison -> . comparison < = operand
+    (46) comparison -> . comparison ~ = operand
+    (47) operand -> . term
+    (48) operand -> . operand + term
+    (49) operand -> . operand - term
+    (50) term -> . factor
+    (51) term -> . term * factor
+    (52) term -> . term / factor
+    (53) term -> . term % factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    NOT             shift and go to state 119
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    comparison                     shift and go to state 113
+    term                           shift and go to state 114
+    position                       shift and go to state 120
+    power                          shift and go to state 108
+    expr                           shift and go to state 121
+    atom                           shift and go to state 110
+    or_test                        shift and go to state 117
+    and_test                       shift and go to state 109
+    not_test                       shift and go to state 99
+    factor                         shift and go to state 106
+    operand                        shift and go to state 100
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 77
+
+    (25) flow_stmt -> return_stmt .
+
+    DEDENT          reduce using rule 25 (flow_stmt -> return_stmt .)
+    ID              reduce using rule 25 (flow_stmt -> return_stmt .)
+    DEF             reduce using rule 25 (flow_stmt -> return_stmt .)
+    FOR             reduce using rule 25 (flow_stmt -> return_stmt .)
+    IF              reduce using rule 25 (flow_stmt -> return_stmt .)
+    WHILE           reduce using rule 25 (flow_stmt -> return_stmt .)
+    BREAK           reduce using rule 25 (flow_stmt -> return_stmt .)
+    CONTINUE        reduce using rule 25 (flow_stmt -> return_stmt .)
+    RETURN          reduce using rule 25 (flow_stmt -> return_stmt .)
+
+
+state 78
+
+    (86) suite -> NEWLINE INDENT suite_stmt . DEDENT
+    (88) suite_stmt -> suite_stmt . stmt
+    (14) stmt -> . simple_stmt
+    (15) stmt -> . compound_stmt
+    (16) simple_stmt -> . assign_stmt
+    (17) simple_stmt -> . flow_stmt
+    (18) compound_stmt -> . funcdef
+    (19) compound_stmt -> . for_stmt
+    (20) compound_stmt -> . if_stmt
+    (21) compound_stmt -> . while_stmt
+    (22) assign_stmt -> . ID : = expr NEWLINE
+    (23) flow_stmt -> . break_stmt
+    (24) flow_stmt -> . continue_stmt
+    (25) flow_stmt -> . return_stmt
+    (26) funcdef -> . DEF ID parameters : suite
+    (27) funcdef -> . DEF ID : suite
+    (28) funcdef -> . funcdef DEF ID parameters : suite
+    (29) funcdef -> . funcdef DEF ID : suite
+    (76) for_stmt -> . FOR ID = NUMBER TO NUMBER : suite
+    (77) for_stmt -> . FOR ID IN expr : suite
+    (78) if_stmt -> . IF expr : suite
+    (79) if_stmt -> . IF expr : suite elseif_stmt
+    (80) if_stmt -> . IF expr : suite ELSE : suite
+    (81) if_stmt -> . IF expr : suite elseif_stmt ELSE : suite
+    (84) while_stmt -> . WHILE expr : suite
+    (91) break_stmt -> . BREAK NEWLINE
+    (90) continue_stmt -> . CONTINUE NEWLINE
+    (89) return_stmt -> . RETURN expr NEWLINE
+
+    DEDENT          shift and go to state 122
+    ID              shift and go to state 89
+    DEF             shift and go to state 26
+    FOR             shift and go to state 84
+    IF              shift and go to state 90
+    WHILE           shift and go to state 76
+    BREAK           shift and go to state 92
+    CONTINUE        shift and go to state 94
+    RETURN          shift and go to state 75
+
+    flow_stmt                      shift and go to state 79
+    break_stmt                     shift and go to state 83
+    if_stmt                        shift and go to state 91
+    simple_stmt                    shift and go to state 85
+    while_stmt                     shift and go to state 93
+    stmt                           shift and go to state 123
+    assign_stmt                    shift and go to state 81
+    for_stmt                       shift and go to state 87
+    return_stmt                    shift and go to state 77
+    continue_stmt                  shift and go to state 80
+    funcdef                        shift and go to state 88
+    compound_stmt                  shift and go to state 82
+
+state 79
+
+    (17) simple_stmt -> flow_stmt .
+
+    DEDENT          reduce using rule 17 (simple_stmt -> flow_stmt .)
+    ID              reduce using rule 17 (simple_stmt -> flow_stmt .)
+    DEF             reduce using rule 17 (simple_stmt -> flow_stmt .)
+    FOR             reduce using rule 17 (simple_stmt -> flow_stmt .)
+    IF              reduce using rule 17 (simple_stmt -> flow_stmt .)
+    WHILE           reduce using rule 17 (simple_stmt -> flow_stmt .)
+    BREAK           reduce using rule 17 (simple_stmt -> flow_stmt .)
+    CONTINUE        reduce using rule 17 (simple_stmt -> flow_stmt .)
+    RETURN          reduce using rule 17 (simple_stmt -> flow_stmt .)
+
+
+state 80
+
+    (24) flow_stmt -> continue_stmt .
+
+    DEDENT          reduce using rule 24 (flow_stmt -> continue_stmt .)
+    ID              reduce using rule 24 (flow_stmt -> continue_stmt .)
+    DEF             reduce using rule 24 (flow_stmt -> continue_stmt .)
+    FOR             reduce using rule 24 (flow_stmt -> continue_stmt .)
+    IF              reduce using rule 24 (flow_stmt -> continue_stmt .)
+    WHILE           reduce using rule 24 (flow_stmt -> continue_stmt .)
+    BREAK           reduce using rule 24 (flow_stmt -> continue_stmt .)
+    CONTINUE        reduce using rule 24 (flow_stmt -> continue_stmt .)
+    RETURN          reduce using rule 24 (flow_stmt -> continue_stmt .)
+
+
+state 81
+
+    (16) simple_stmt -> assign_stmt .
+
+    DEDENT          reduce using rule 16 (simple_stmt -> assign_stmt .)
+    ID              reduce using rule 16 (simple_stmt -> assign_stmt .)
+    DEF             reduce using rule 16 (simple_stmt -> assign_stmt .)
+    FOR             reduce using rule 16 (simple_stmt -> assign_stmt .)
+    IF              reduce using rule 16 (simple_stmt -> assign_stmt .)
+    WHILE           reduce using rule 16 (simple_stmt -> assign_stmt .)
+    BREAK           reduce using rule 16 (simple_stmt -> assign_stmt .)
+    CONTINUE        reduce using rule 16 (simple_stmt -> assign_stmt .)
+    RETURN          reduce using rule 16 (simple_stmt -> assign_stmt .)
+
+
+state 82
+
+    (15) stmt -> compound_stmt .
+
+    DEDENT          reduce using rule 15 (stmt -> compound_stmt .)
+    ID              reduce using rule 15 (stmt -> compound_stmt .)
+    DEF             reduce using rule 15 (stmt -> compound_stmt .)
+    FOR             reduce using rule 15 (stmt -> compound_stmt .)
+    IF              reduce using rule 15 (stmt -> compound_stmt .)
+    WHILE           reduce using rule 15 (stmt -> compound_stmt .)
+    BREAK           reduce using rule 15 (stmt -> compound_stmt .)
+    CONTINUE        reduce using rule 15 (stmt -> compound_stmt .)
+    RETURN          reduce using rule 15 (stmt -> compound_stmt .)
+
+
+state 83
+
+    (23) flow_stmt -> break_stmt .
+
+    DEDENT          reduce using rule 23 (flow_stmt -> break_stmt .)
+    ID              reduce using rule 23 (flow_stmt -> break_stmt .)
+    DEF             reduce using rule 23 (flow_stmt -> break_stmt .)
+    FOR             reduce using rule 23 (flow_stmt -> break_stmt .)
+    IF              reduce using rule 23 (flow_stmt -> break_stmt .)
+    WHILE           reduce using rule 23 (flow_stmt -> break_stmt .)
+    BREAK           reduce using rule 23 (flow_stmt -> break_stmt .)
+    CONTINUE        reduce using rule 23 (flow_stmt -> break_stmt .)
+    RETURN          reduce using rule 23 (flow_stmt -> break_stmt .)
+
+
+state 84
+
+    (76) for_stmt -> FOR . ID = NUMBER TO NUMBER : suite
+    (77) for_stmt -> FOR . ID IN expr : suite
+
+    ID              shift and go to state 124
+
+
+state 85
+
+    (14) stmt -> simple_stmt .
+
+    DEDENT          reduce using rule 14 (stmt -> simple_stmt .)
+    ID              reduce using rule 14 (stmt -> simple_stmt .)
+    DEF             reduce using rule 14 (stmt -> simple_stmt .)
+    FOR             reduce using rule 14 (stmt -> simple_stmt .)
+    IF              reduce using rule 14 (stmt -> simple_stmt .)
+    WHILE           reduce using rule 14 (stmt -> simple_stmt .)
+    BREAK           reduce using rule 14 (stmt -> simple_stmt .)
+    CONTINUE        reduce using rule 14 (stmt -> simple_stmt .)
+    RETURN          reduce using rule 14 (stmt -> simple_stmt .)
+
+
+state 86
+
+    (87) suite_stmt -> stmt .
+
+    DEDENT          reduce using rule 87 (suite_stmt -> stmt .)
+    ID              reduce using rule 87 (suite_stmt -> stmt .)
+    DEF             reduce using rule 87 (suite_stmt -> stmt .)
+    FOR             reduce using rule 87 (suite_stmt -> stmt .)
+    IF              reduce using rule 87 (suite_stmt -> stmt .)
+    WHILE           reduce using rule 87 (suite_stmt -> stmt .)
+    BREAK           reduce using rule 87 (suite_stmt -> stmt .)
+    CONTINUE        reduce using rule 87 (suite_stmt -> stmt .)
+    RETURN          reduce using rule 87 (suite_stmt -> stmt .)
+
+
+state 87
+
+    (19) compound_stmt -> for_stmt .
+
+    DEDENT          reduce using rule 19 (compound_stmt -> for_stmt .)
+    ID              reduce using rule 19 (compound_stmt -> for_stmt .)
+    DEF             reduce using rule 19 (compound_stmt -> for_stmt .)
+    FOR             reduce using rule 19 (compound_stmt -> for_stmt .)
+    IF              reduce using rule 19 (compound_stmt -> for_stmt .)
+    WHILE           reduce using rule 19 (compound_stmt -> for_stmt .)
+    BREAK           reduce using rule 19 (compound_stmt -> for_stmt .)
+    CONTINUE        reduce using rule 19 (compound_stmt -> for_stmt .)
+    RETURN          reduce using rule 19 (compound_stmt -> for_stmt .)
+
+
+state 88
+
+    (18) compound_stmt -> funcdef .
+    (28) funcdef -> funcdef . DEF ID parameters : suite
+    (29) funcdef -> funcdef . DEF ID : suite
+
+  ! shift/reduce conflict for DEF resolved as shift
+    DEDENT          reduce using rule 18 (compound_stmt -> funcdef .)
+    ID              reduce using rule 18 (compound_stmt -> funcdef .)
+    FOR             reduce using rule 18 (compound_stmt -> funcdef .)
+    IF              reduce using rule 18 (compound_stmt -> funcdef .)
+    WHILE           reduce using rule 18 (compound_stmt -> funcdef .)
+    BREAK           reduce using rule 18 (compound_stmt -> funcdef .)
+    CONTINUE        reduce using rule 18 (compound_stmt -> funcdef .)
+    RETURN          reduce using rule 18 (compound_stmt -> funcdef .)
+    DEF             shift and go to state 37
+
+  ! DEF             [ reduce using rule 18 (compound_stmt -> funcdef .) ]
+
+
+state 89
+
+    (22) assign_stmt -> ID . : = expr NEWLINE
+
+    :               shift and go to state 125
+
+
+state 90
+
+    (78) if_stmt -> IF . expr : suite
+    (79) if_stmt -> IF . expr : suite elseif_stmt
+    (80) if_stmt -> IF . expr : suite ELSE : suite
+    (81) if_stmt -> IF . expr : suite elseif_stmt ELSE : suite
+    (33) expr -> . or_test
+    (34) or_test -> . and_test
+    (35) or_test -> . or_test OR and_test
+    (36) and_test -> . not_test
+    (37) and_test -> . and_test AND not_test
+    (38) not_test -> . NOT not_test
+    (39) not_test -> . comparison
+    (40) comparison -> . operand
+    (41) comparison -> . comparison = operand
+    (42) comparison -> . comparison > operand
+    (43) comparison -> . comparison < operand
+    (44) comparison -> . comparison > = operand
+    (45) comparison -> . comparison < = operand
+    (46) comparison -> . comparison ~ = operand
+    (47) operand -> . term
+    (48) operand -> . operand + term
+    (49) operand -> . operand - term
+    (50) term -> . factor
+    (51) term -> . term * factor
+    (52) term -> . term / factor
+    (53) term -> . term % factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    NOT             shift and go to state 119
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    comparison                     shift and go to state 113
+    term                           shift and go to state 114
+    position                       shift and go to state 120
+    power                          shift and go to state 108
+    expr                           shift and go to state 126
+    atom                           shift and go to state 110
+    or_test                        shift and go to state 117
+    and_test                       shift and go to state 109
+    operand                        shift and go to state 100
+    not_test                       shift and go to state 99
+    factor                         shift and go to state 106
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 91
+
+    (20) compound_stmt -> if_stmt .
+
+    DEDENT          reduce using rule 20 (compound_stmt -> if_stmt .)
+    ID              reduce using rule 20 (compound_stmt -> if_stmt .)
+    DEF             reduce using rule 20 (compound_stmt -> if_stmt .)
+    FOR             reduce using rule 20 (compound_stmt -> if_stmt .)
+    IF              reduce using rule 20 (compound_stmt -> if_stmt .)
+    WHILE           reduce using rule 20 (compound_stmt -> if_stmt .)
+    BREAK           reduce using rule 20 (compound_stmt -> if_stmt .)
+    CONTINUE        reduce using rule 20 (compound_stmt -> if_stmt .)
+    RETURN          reduce using rule 20 (compound_stmt -> if_stmt .)
+
+
+state 92
+
+    (91) break_stmt -> BREAK . NEWLINE
+
+    NEWLINE         shift and go to state 127
+
+
+state 93
+
+    (21) compound_stmt -> while_stmt .
+
+    DEDENT          reduce using rule 21 (compound_stmt -> while_stmt .)
+    ID              reduce using rule 21 (compound_stmt -> while_stmt .)
+    DEF             reduce using rule 21 (compound_stmt -> while_stmt .)
+    FOR             reduce using rule 21 (compound_stmt -> while_stmt .)
+    IF              reduce using rule 21 (compound_stmt -> while_stmt .)
+    WHILE           reduce using rule 21 (compound_stmt -> while_stmt .)
+    BREAK           reduce using rule 21 (compound_stmt -> while_stmt .)
+    CONTINUE        reduce using rule 21 (compound_stmt -> while_stmt .)
+    RETURN          reduce using rule 21 (compound_stmt -> while_stmt .)
+
+
+state 94
+
+    (90) continue_stmt -> CONTINUE . NEWLINE
+
+    NEWLINE         shift and go to state 128
+
+
+state 95
+
+    (28) funcdef -> funcdef DEF ID parameters : suite .
+
+    DEF             reduce using rule 28 (funcdef -> funcdef DEF ID parameters : suite .)
+    DEDENT          reduce using rule 28 (funcdef -> funcdef DEF ID parameters : suite .)
+    ID              reduce using rule 28 (funcdef -> funcdef DEF ID parameters : suite .)
+    FOR             reduce using rule 28 (funcdef -> funcdef DEF ID parameters : suite .)
+    IF              reduce using rule 28 (funcdef -> funcdef DEF ID parameters : suite .)
+    WHILE           reduce using rule 28 (funcdef -> funcdef DEF ID parameters : suite .)
+    BREAK           reduce using rule 28 (funcdef -> funcdef DEF ID parameters : suite .)
+    CONTINUE        reduce using rule 28 (funcdef -> funcdef DEF ID parameters : suite .)
+    RETURN          reduce using rule 28 (funcdef -> funcdef DEF ID parameters : suite .)
+    $end            reduce using rule 28 (funcdef -> funcdef DEF ID parameters : suite .)
+
+
+state 96
+
+    (10) action_stmt -> ACTION : = ID NEWLINE .
+
+    DEDENT          reduce using rule 10 (action_stmt -> ACTION : = ID NEWLINE .)
+    ACTION          reduce using rule 10 (action_stmt -> ACTION : = ID NEWLINE .)
+
+
+state 97
+
+    (11) action_stmt -> action_stmt ACTION : = ID . NEWLINE
+
+    NEWLINE         shift and go to state 129
+
+
+state 98
+
+    (63) atom -> NUMBER .
+
+    .               reduce using rule 63 (atom -> NUMBER .)
+    [               reduce using rule 63 (atom -> NUMBER .)
+    *               reduce using rule 63 (atom -> NUMBER .)
+    /               reduce using rule 63 (atom -> NUMBER .)
+    %               reduce using rule 63 (atom -> NUMBER .)
+    +               reduce using rule 63 (atom -> NUMBER .)
+    -               reduce using rule 63 (atom -> NUMBER .)
+    =               reduce using rule 63 (atom -> NUMBER .)
+    >               reduce using rule 63 (atom -> NUMBER .)
+    <               reduce using rule 63 (atom -> NUMBER .)
+    ~               reduce using rule 63 (atom -> NUMBER .)
+    AND             reduce using rule 63 (atom -> NUMBER .)
+    OR              reduce using rule 63 (atom -> NUMBER .)
+    NEWLINE         reduce using rule 63 (atom -> NUMBER .)
+    :               reduce using rule 63 (atom -> NUMBER .)
+    )               reduce using rule 63 (atom -> NUMBER .)
+    ,               reduce using rule 63 (atom -> NUMBER .)
+    ]               reduce using rule 63 (atom -> NUMBER .)
+
+
+state 99
+
+    (36) and_test -> not_test .
+
+    AND             reduce using rule 36 (and_test -> not_test .)
+    OR              reduce using rule 36 (and_test -> not_test .)
+    :               reduce using rule 36 (and_test -> not_test .)
+    NEWLINE         reduce using rule 36 (and_test -> not_test .)
+    )               reduce using rule 36 (and_test -> not_test .)
+    ,               reduce using rule 36 (and_test -> not_test .)
+    ]               reduce using rule 36 (and_test -> not_test .)
+
+
+state 100
+
+    (40) comparison -> operand .
+    (48) operand -> operand . + term
+    (49) operand -> operand . - term
+
+    =               reduce using rule 40 (comparison -> operand .)
+    >               reduce using rule 40 (comparison -> operand .)
+    <               reduce using rule 40 (comparison -> operand .)
+    ~               reduce using rule 40 (comparison -> operand .)
+    AND             reduce using rule 40 (comparison -> operand .)
+    OR              reduce using rule 40 (comparison -> operand .)
+    NEWLINE         reduce using rule 40 (comparison -> operand .)
+    :               reduce using rule 40 (comparison -> operand .)
+    )               reduce using rule 40 (comparison -> operand .)
+    ,               reduce using rule 40 (comparison -> operand .)
+    ]               reduce using rule 40 (comparison -> operand .)
+    +               shift and go to state 130
+    -               shift and go to state 131
+
+
+state 101
+
+    (59) atom -> array .
+
+    .               reduce using rule 59 (atom -> array .)
+    [               reduce using rule 59 (atom -> array .)
+    *               reduce using rule 59 (atom -> array .)
+    /               reduce using rule 59 (atom -> array .)
+    %               reduce using rule 59 (atom -> array .)
+    +               reduce using rule 59 (atom -> array .)
+    -               reduce using rule 59 (atom -> array .)
+    =               reduce using rule 59 (atom -> array .)
+    >               reduce using rule 59 (atom -> array .)
+    <               reduce using rule 59 (atom -> array .)
+    ~               reduce using rule 59 (atom -> array .)
+    AND             reduce using rule 59 (atom -> array .)
+    OR              reduce using rule 59 (atom -> array .)
+    NEWLINE         reduce using rule 59 (atom -> array .)
+    :               reduce using rule 59 (atom -> array .)
+    )               reduce using rule 59 (atom -> array .)
+    ,               reduce using rule 59 (atom -> array .)
+    ]               reduce using rule 59 (atom -> array .)
+
+
+state 102
+
+    (66) atom -> func_expr .
+
+    .               reduce using rule 66 (atom -> func_expr .)
+    [               reduce using rule 66 (atom -> func_expr .)
+    *               reduce using rule 66 (atom -> func_expr .)
+    /               reduce using rule 66 (atom -> func_expr .)
+    %               reduce using rule 66 (atom -> func_expr .)
+    +               reduce using rule 66 (atom -> func_expr .)
+    -               reduce using rule 66 (atom -> func_expr .)
+    =               reduce using rule 66 (atom -> func_expr .)
+    >               reduce using rule 66 (atom -> func_expr .)
+    <               reduce using rule 66 (atom -> func_expr .)
+    ~               reduce using rule 66 (atom -> func_expr .)
+    AND             reduce using rule 66 (atom -> func_expr .)
+    OR              reduce using rule 66 (atom -> func_expr .)
+    NEWLINE         reduce using rule 66 (atom -> func_expr .)
+    :               reduce using rule 66 (atom -> func_expr .)
+    )               reduce using rule 66 (atom -> func_expr .)
+    ,               reduce using rule 66 (atom -> func_expr .)
+    ]               reduce using rule 66 (atom -> func_expr .)
+
+
+state 103
+
+    (67) atom -> ( . expr )
+    (68) position -> ( . expr , expr )
+    (33) expr -> . or_test
+    (34) or_test -> . and_test
+    (35) or_test -> . or_test OR and_test
+    (36) and_test -> . not_test
+    (37) and_test -> . and_test AND not_test
+    (38) not_test -> . NOT not_test
+    (39) not_test -> . comparison
+    (40) comparison -> . operand
+    (41) comparison -> . comparison = operand
+    (42) comparison -> . comparison > operand
+    (43) comparison -> . comparison < operand
+    (44) comparison -> . comparison > = operand
+    (45) comparison -> . comparison < = operand
+    (46) comparison -> . comparison ~ = operand
+    (47) operand -> . term
+    (48) operand -> . operand + term
+    (49) operand -> . operand - term
+    (50) term -> . factor
+    (51) term -> . term * factor
+    (52) term -> . term / factor
+    (53) term -> . term % factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    NOT             shift and go to state 119
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    comparison                     shift and go to state 113
+    term                           shift and go to state 114
+    power                          shift and go to state 108
+    expr                           shift and go to state 132
+    atom                           shift and go to state 110
+    or_test                        shift and go to state 117
+    and_test                       shift and go to state 109
+    not_test                       shift and go to state 99
+    factor                         shift and go to state 106
+    operand                        shift and go to state 100
+    position                       shift and go to state 120
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 104
+
+    (55) factor -> + . factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    power                          shift and go to state 108
+    factor                         shift and go to state 133
+    atom                           shift and go to state 110
+    position                       shift and go to state 120
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 105
+
+    (56) factor -> - . factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    power                          shift and go to state 108
+    factor                         shift and go to state 134
+    atom                           shift and go to state 110
+    position                       shift and go to state 120
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 106
+
+    (50) term -> factor .
+
+    *               reduce using rule 50 (term -> factor .)
+    /               reduce using rule 50 (term -> factor .)
+    %               reduce using rule 50 (term -> factor .)
+    +               reduce using rule 50 (term -> factor .)
+    -               reduce using rule 50 (term -> factor .)
+    =               reduce using rule 50 (term -> factor .)
+    >               reduce using rule 50 (term -> factor .)
+    <               reduce using rule 50 (term -> factor .)
+    ~               reduce using rule 50 (term -> factor .)
+    AND             reduce using rule 50 (term -> factor .)
+    OR              reduce using rule 50 (term -> factor .)
+    NEWLINE         reduce using rule 50 (term -> factor .)
+    :               reduce using rule 50 (term -> factor .)
+    )               reduce using rule 50 (term -> factor .)
+    ,               reduce using rule 50 (term -> factor .)
+    ]               reduce using rule 50 (term -> factor .)
+
+
+state 107
+
+    (62) atom -> STRING .
+
+    .               reduce using rule 62 (atom -> STRING .)
+    [               reduce using rule 62 (atom -> STRING .)
+    *               reduce using rule 62 (atom -> STRING .)
+    /               reduce using rule 62 (atom -> STRING .)
+    %               reduce using rule 62 (atom -> STRING .)
+    +               reduce using rule 62 (atom -> STRING .)
+    -               reduce using rule 62 (atom -> STRING .)
+    =               reduce using rule 62 (atom -> STRING .)
+    >               reduce using rule 62 (atom -> STRING .)
+    <               reduce using rule 62 (atom -> STRING .)
+    ~               reduce using rule 62 (atom -> STRING .)
+    AND             reduce using rule 62 (atom -> STRING .)
+    OR              reduce using rule 62 (atom -> STRING .)
+    NEWLINE         reduce using rule 62 (atom -> STRING .)
+    :               reduce using rule 62 (atom -> STRING .)
+    )               reduce using rule 62 (atom -> STRING .)
+    ,               reduce using rule 62 (atom -> STRING .)
+    ]               reduce using rule 62 (atom -> STRING .)
+
+
+state 108
+
+    (54) factor -> power .
+    (58) power -> power . trailer
+    (70) trailer -> . . ID
+    (71) trailer -> . [ expr ]
+
+    *               reduce using rule 54 (factor -> power .)
+    /               reduce using rule 54 (factor -> power .)
+    %               reduce using rule 54 (factor -> power .)
+    +               reduce using rule 54 (factor -> power .)
+    -               reduce using rule 54 (factor -> power .)
+    =               reduce using rule 54 (factor -> power .)
+    >               reduce using rule 54 (factor -> power .)
+    <               reduce using rule 54 (factor -> power .)
+    ~               reduce using rule 54 (factor -> power .)
+    AND             reduce using rule 54 (factor -> power .)
+    OR              reduce using rule 54 (factor -> power .)
+    NEWLINE         reduce using rule 54 (factor -> power .)
+    :               reduce using rule 54 (factor -> power .)
+    )               reduce using rule 54 (factor -> power .)
+    ,               reduce using rule 54 (factor -> power .)
+    ]               reduce using rule 54 (factor -> power .)
+    .               shift and go to state 135
+    [               shift and go to state 136
+
+    trailer                        shift and go to state 137
+
+state 109
+
+    (34) or_test -> and_test .
+    (37) and_test -> and_test . AND not_test
+
+    OR              reduce using rule 34 (or_test -> and_test .)
+    NEWLINE         reduce using rule 34 (or_test -> and_test .)
+    :               reduce using rule 34 (or_test -> and_test .)
+    )               reduce using rule 34 (or_test -> and_test .)
+    ]               reduce using rule 34 (or_test -> and_test .)
+    ,               reduce using rule 34 (or_test -> and_test .)
+    AND             shift and go to state 138
+
+
+state 110
+
+    (57) power -> atom .
+
+    .               reduce using rule 57 (power -> atom .)
+    [               reduce using rule 57 (power -> atom .)
+    *               reduce using rule 57 (power -> atom .)
+    /               reduce using rule 57 (power -> atom .)
+    %               reduce using rule 57 (power -> atom .)
+    +               reduce using rule 57 (power -> atom .)
+    -               reduce using rule 57 (power -> atom .)
+    =               reduce using rule 57 (power -> atom .)
+    >               reduce using rule 57 (power -> atom .)
+    <               reduce using rule 57 (power -> atom .)
+    ~               reduce using rule 57 (power -> atom .)
+    AND             reduce using rule 57 (power -> atom .)
+    OR              reduce using rule 57 (power -> atom .)
+    :               reduce using rule 57 (power -> atom .)
+    )               reduce using rule 57 (power -> atom .)
+    ,               reduce using rule 57 (power -> atom .)
+    ]               reduce using rule 57 (power -> atom .)
+    NEWLINE         reduce using rule 57 (power -> atom .)
+
+
+state 111
+
+    (69) array -> [ . parameter_list ]
+    (74) parameter_list -> . expr
+    (75) parameter_list -> . parameter_list , expr
+    (33) expr -> . or_test
+    (34) or_test -> . and_test
+    (35) or_test -> . or_test OR and_test
+    (36) and_test -> . not_test
+    (37) and_test -> . and_test AND not_test
+    (38) not_test -> . NOT not_test
+    (39) not_test -> . comparison
+    (40) comparison -> . operand
+    (41) comparison -> . comparison = operand
+    (42) comparison -> . comparison > operand
+    (43) comparison -> . comparison < operand
+    (44) comparison -> . comparison > = operand
+    (45) comparison -> . comparison < = operand
+    (46) comparison -> . comparison ~ = operand
+    (47) operand -> . term
+    (48) operand -> . operand + term
+    (49) operand -> . operand - term
+    (50) term -> . factor
+    (51) term -> . term * factor
+    (52) term -> . term / factor
+    (53) term -> . term % factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    NOT             shift and go to state 119
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    comparison                     shift and go to state 113
+    term                           shift and go to state 114
+    power                          shift and go to state 108
+    parameter_list                 shift and go to state 139
+    expr                           shift and go to state 140
+    atom                           shift and go to state 110
+    or_test                        shift and go to state 117
+    and_test                       shift and go to state 109
+    not_test                       shift and go to state 99
+    factor                         shift and go to state 106
+    operand                        shift and go to state 100
+    position                       shift and go to state 120
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 112
+
+    (61) atom -> ID .
+    (72) func_expr -> ID . ( )
+    (73) func_expr -> ID . ( parameter_list )
+
+    .               reduce using rule 61 (atom -> ID .)
+    [               reduce using rule 61 (atom -> ID .)
+    *               reduce using rule 61 (atom -> ID .)
+    /               reduce using rule 61 (atom -> ID .)
+    %               reduce using rule 61 (atom -> ID .)
+    +               reduce using rule 61 (atom -> ID .)
+    -               reduce using rule 61 (atom -> ID .)
+    =               reduce using rule 61 (atom -> ID .)
+    >               reduce using rule 61 (atom -> ID .)
+    <               reduce using rule 61 (atom -> ID .)
+    ~               reduce using rule 61 (atom -> ID .)
+    AND             reduce using rule 61 (atom -> ID .)
+    OR              reduce using rule 61 (atom -> ID .)
+    NEWLINE         reduce using rule 61 (atom -> ID .)
+    :               reduce using rule 61 (atom -> ID .)
+    )               reduce using rule 61 (atom -> ID .)
+    ,               reduce using rule 61 (atom -> ID .)
+    ]               reduce using rule 61 (atom -> ID .)
+    (               shift and go to state 141
+
+
+state 113
+
+    (39) not_test -> comparison .
+    (41) comparison -> comparison . = operand
+    (42) comparison -> comparison . > operand
+    (43) comparison -> comparison . < operand
+    (44) comparison -> comparison . > = operand
+    (45) comparison -> comparison . < = operand
+    (46) comparison -> comparison . ~ = operand
+
+    AND             reduce using rule 39 (not_test -> comparison .)
+    OR              reduce using rule 39 (not_test -> comparison .)
+    )               reduce using rule 39 (not_test -> comparison .)
+    ,               reduce using rule 39 (not_test -> comparison .)
+    :               reduce using rule 39 (not_test -> comparison .)
+    NEWLINE         reduce using rule 39 (not_test -> comparison .)
+    ]               reduce using rule 39 (not_test -> comparison .)
+    =               shift and go to state 143
+    >               shift and go to state 142
+    <               shift and go to state 144
+    ~               shift and go to state 145
+
+
+state 114
+
+    (47) operand -> term .
+    (51) term -> term . * factor
+    (52) term -> term . / factor
+    (53) term -> term . % factor
+
+    +               reduce using rule 47 (operand -> term .)
+    -               reduce using rule 47 (operand -> term .)
+    =               reduce using rule 47 (operand -> term .)
+    >               reduce using rule 47 (operand -> term .)
+    <               reduce using rule 47 (operand -> term .)
+    ~               reduce using rule 47 (operand -> term .)
+    AND             reduce using rule 47 (operand -> term .)
+    OR              reduce using rule 47 (operand -> term .)
+    NEWLINE         reduce using rule 47 (operand -> term .)
+    :               reduce using rule 47 (operand -> term .)
+    )               reduce using rule 47 (operand -> term .)
+    ,               reduce using rule 47 (operand -> term .)
+    ]               reduce using rule 47 (operand -> term .)
+    *               shift and go to state 146
+    /               shift and go to state 148
+    %               shift and go to state 147
+
+
+state 115
+
+    (65) atom -> NIL .
+
+    .               reduce using rule 65 (atom -> NIL .)
+    [               reduce using rule 65 (atom -> NIL .)
+    *               reduce using rule 65 (atom -> NIL .)
+    /               reduce using rule 65 (atom -> NIL .)
+    %               reduce using rule 65 (atom -> NIL .)
+    +               reduce using rule 65 (atom -> NIL .)
+    -               reduce using rule 65 (atom -> NIL .)
+    =               reduce using rule 65 (atom -> NIL .)
+    >               reduce using rule 65 (atom -> NIL .)
+    <               reduce using rule 65 (atom -> NIL .)
+    ~               reduce using rule 65 (atom -> NIL .)
+    AND             reduce using rule 65 (atom -> NIL .)
+    OR              reduce using rule 65 (atom -> NIL .)
+    NEWLINE         reduce using rule 65 (atom -> NIL .)
+    :               reduce using rule 65 (atom -> NIL .)
+    )               reduce using rule 65 (atom -> NIL .)
+    ,               reduce using rule 65 (atom -> NIL .)
+    ]               reduce using rule 65 (atom -> NIL .)
+
+
+state 116
+
+    (89) return_stmt -> RETURN expr . NEWLINE
+
+    NEWLINE         shift and go to state 149
+
+
+state 117
+
+    (33) expr -> or_test .
+    (35) or_test -> or_test . OR and_test
+
+    ]               reduce using rule 33 (expr -> or_test .)
+    ,               reduce using rule 33 (expr -> or_test .)
+    )               reduce using rule 33 (expr -> or_test .)
+    :               reduce using rule 33 (expr -> or_test .)
+    NEWLINE         reduce using rule 33 (expr -> or_test .)
+    OR              shift and go to state 150
+
+
+state 118
+
+    (64) atom -> BOOLEAN .
+
+    .               reduce using rule 64 (atom -> BOOLEAN .)
+    [               reduce using rule 64 (atom -> BOOLEAN .)
+    *               reduce using rule 64 (atom -> BOOLEAN .)
+    /               reduce using rule 64 (atom -> BOOLEAN .)
+    %               reduce using rule 64 (atom -> BOOLEAN .)
+    +               reduce using rule 64 (atom -> BOOLEAN .)
+    -               reduce using rule 64 (atom -> BOOLEAN .)
+    =               reduce using rule 64 (atom -> BOOLEAN .)
+    >               reduce using rule 64 (atom -> BOOLEAN .)
+    <               reduce using rule 64 (atom -> BOOLEAN .)
+    ~               reduce using rule 64 (atom -> BOOLEAN .)
+    AND             reduce using rule 64 (atom -> BOOLEAN .)
+    OR              reduce using rule 64 (atom -> BOOLEAN .)
+    NEWLINE         reduce using rule 64 (atom -> BOOLEAN .)
+    :               reduce using rule 64 (atom -> BOOLEAN .)
+    )               reduce using rule 64 (atom -> BOOLEAN .)
+    ,               reduce using rule 64 (atom -> BOOLEAN .)
+    ]               reduce using rule 64 (atom -> BOOLEAN .)
+
+
+state 119
+
+    (38) not_test -> NOT . not_test
+    (38) not_test -> . NOT not_test
+    (39) not_test -> . comparison
+    (40) comparison -> . operand
+    (41) comparison -> . comparison = operand
+    (42) comparison -> . comparison > operand
+    (43) comparison -> . comparison < operand
+    (44) comparison -> . comparison > = operand
+    (45) comparison -> . comparison < = operand
+    (46) comparison -> . comparison ~ = operand
+    (47) operand -> . term
+    (48) operand -> . operand + term
+    (49) operand -> . operand - term
+    (50) term -> . factor
+    (51) term -> . term * factor
+    (52) term -> . term / factor
+    (53) term -> . term % factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    NOT             shift and go to state 119
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    comparison                     shift and go to state 113
+    term                           shift and go to state 114
+    power                          shift and go to state 108
+    atom                           shift and go to state 110
+    not_test                       shift and go to state 151
+    factor                         shift and go to state 106
+    operand                        shift and go to state 100
+    position                       shift and go to state 120
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 120
+
+    (60) atom -> position .
+
+    .               reduce using rule 60 (atom -> position .)
+    [               reduce using rule 60 (atom -> position .)
+    *               reduce using rule 60 (atom -> position .)
+    /               reduce using rule 60 (atom -> position .)
+    %               reduce using rule 60 (atom -> position .)
+    +               reduce using rule 60 (atom -> position .)
+    -               reduce using rule 60 (atom -> position .)
+    =               reduce using rule 60 (atom -> position .)
+    >               reduce using rule 60 (atom -> position .)
+    <               reduce using rule 60 (atom -> position .)
+    ~               reduce using rule 60 (atom -> position .)
+    AND             reduce using rule 60 (atom -> position .)
+    OR              reduce using rule 60 (atom -> position .)
+    NEWLINE         reduce using rule 60 (atom -> position .)
+    :               reduce using rule 60 (atom -> position .)
+    )               reduce using rule 60 (atom -> position .)
+    ,               reduce using rule 60 (atom -> position .)
+    ]               reduce using rule 60 (atom -> position .)
+
+
+state 121
+
+    (84) while_stmt -> WHILE expr . : suite
+
+    :               shift and go to state 152
+
+
+state 122
+
+    (86) suite -> NEWLINE INDENT suite_stmt DEDENT .
+
+    DEF             reduce using rule 86 (suite -> NEWLINE INDENT suite_stmt DEDENT .)
+    $end            reduce using rule 86 (suite -> NEWLINE INDENT suite_stmt DEDENT .)
+    DEDENT          reduce using rule 86 (suite -> NEWLINE INDENT suite_stmt DEDENT .)
+    ID              reduce using rule 86 (suite -> NEWLINE INDENT suite_stmt DEDENT .)
+    FOR             reduce using rule 86 (suite -> NEWLINE INDENT suite_stmt DEDENT .)
+    IF              reduce using rule 86 (suite -> NEWLINE INDENT suite_stmt DEDENT .)
+    WHILE           reduce using rule 86 (suite -> NEWLINE INDENT suite_stmt DEDENT .)
+    BREAK           reduce using rule 86 (suite -> NEWLINE INDENT suite_stmt DEDENT .)
+    CONTINUE        reduce using rule 86 (suite -> NEWLINE INDENT suite_stmt DEDENT .)
+    RETURN          reduce using rule 86 (suite -> NEWLINE INDENT suite_stmt DEDENT .)
+    ELSE            reduce using rule 86 (suite -> NEWLINE INDENT suite_stmt DEDENT .)
+    ELSEIF          reduce using rule 86 (suite -> NEWLINE INDENT suite_stmt DEDENT .)
+
+
+state 123
+
+    (88) suite_stmt -> suite_stmt stmt .
+
+    DEDENT          reduce using rule 88 (suite_stmt -> suite_stmt stmt .)
+    ID              reduce using rule 88 (suite_stmt -> suite_stmt stmt .)
+    DEF             reduce using rule 88 (suite_stmt -> suite_stmt stmt .)
+    FOR             reduce using rule 88 (suite_stmt -> suite_stmt stmt .)
+    IF              reduce using rule 88 (suite_stmt -> suite_stmt stmt .)
+    WHILE           reduce using rule 88 (suite_stmt -> suite_stmt stmt .)
+    BREAK           reduce using rule 88 (suite_stmt -> suite_stmt stmt .)
+    CONTINUE        reduce using rule 88 (suite_stmt -> suite_stmt stmt .)
+    RETURN          reduce using rule 88 (suite_stmt -> suite_stmt stmt .)
+
+
+state 124
+
+    (76) for_stmt -> FOR ID . = NUMBER TO NUMBER : suite
+    (77) for_stmt -> FOR ID . IN expr : suite
+
+    =               shift and go to state 154
+    IN              shift and go to state 153
+
+
+state 125
+
+    (22) assign_stmt -> ID : . = expr NEWLINE
+
+    =               shift and go to state 155
+
+
+state 126
+
+    (78) if_stmt -> IF expr . : suite
+    (79) if_stmt -> IF expr . : suite elseif_stmt
+    (80) if_stmt -> IF expr . : suite ELSE : suite
+    (81) if_stmt -> IF expr . : suite elseif_stmt ELSE : suite
+
+    :               shift and go to state 156
+
+
+state 127
+
+    (91) break_stmt -> BREAK NEWLINE .
+
+    DEDENT          reduce using rule 91 (break_stmt -> BREAK NEWLINE .)
+    ID              reduce using rule 91 (break_stmt -> BREAK NEWLINE .)
+    DEF             reduce using rule 91 (break_stmt -> BREAK NEWLINE .)
+    FOR             reduce using rule 91 (break_stmt -> BREAK NEWLINE .)
+    IF              reduce using rule 91 (break_stmt -> BREAK NEWLINE .)
+    WHILE           reduce using rule 91 (break_stmt -> BREAK NEWLINE .)
+    BREAK           reduce using rule 91 (break_stmt -> BREAK NEWLINE .)
+    CONTINUE        reduce using rule 91 (break_stmt -> BREAK NEWLINE .)
+    RETURN          reduce using rule 91 (break_stmt -> BREAK NEWLINE .)
+
+
+state 128
+
+    (90) continue_stmt -> CONTINUE NEWLINE .
+
+    DEDENT          reduce using rule 90 (continue_stmt -> CONTINUE NEWLINE .)
+    ID              reduce using rule 90 (continue_stmt -> CONTINUE NEWLINE .)
+    DEF             reduce using rule 90 (continue_stmt -> CONTINUE NEWLINE .)
+    FOR             reduce using rule 90 (continue_stmt -> CONTINUE NEWLINE .)
+    IF              reduce using rule 90 (continue_stmt -> CONTINUE NEWLINE .)
+    WHILE           reduce using rule 90 (continue_stmt -> CONTINUE NEWLINE .)
+    BREAK           reduce using rule 90 (continue_stmt -> CONTINUE NEWLINE .)
+    CONTINUE        reduce using rule 90 (continue_stmt -> CONTINUE NEWLINE .)
+    RETURN          reduce using rule 90 (continue_stmt -> CONTINUE NEWLINE .)
+
+
+state 129
+
+    (11) action_stmt -> action_stmt ACTION : = ID NEWLINE .
+
+    DEDENT          reduce using rule 11 (action_stmt -> action_stmt ACTION : = ID NEWLINE .)
+    ACTION          reduce using rule 11 (action_stmt -> action_stmt ACTION : = ID NEWLINE .)
+
+
+state 130
+
+    (48) operand -> operand + . term
+    (50) term -> . factor
+    (51) term -> . term * factor
+    (52) term -> . term / factor
+    (53) term -> . term % factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    term                           shift and go to state 157
+    power                          shift and go to state 108
+    factor                         shift and go to state 106
+    atom                           shift and go to state 110
+    position                       shift and go to state 120
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 131
+
+    (49) operand -> operand - . term
+    (50) term -> . factor
+    (51) term -> . term * factor
+    (52) term -> . term / factor
+    (53) term -> . term % factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    term                           shift and go to state 158
+    power                          shift and go to state 108
+    factor                         shift and go to state 106
+    atom                           shift and go to state 110
+    position                       shift and go to state 120
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 132
+
+    (67) atom -> ( expr . )
+    (68) position -> ( expr . , expr )
+
+    )               shift and go to state 159
+    ,               shift and go to state 160
+
+
+state 133
+
+    (55) factor -> + factor .
+
+    *               reduce using rule 55 (factor -> + factor .)
+    /               reduce using rule 55 (factor -> + factor .)
+    %               reduce using rule 55 (factor -> + factor .)
+    +               reduce using rule 55 (factor -> + factor .)
+    -               reduce using rule 55 (factor -> + factor .)
+    =               reduce using rule 55 (factor -> + factor .)
+    >               reduce using rule 55 (factor -> + factor .)
+    <               reduce using rule 55 (factor -> + factor .)
+    ~               reduce using rule 55 (factor -> + factor .)
+    AND             reduce using rule 55 (factor -> + factor .)
+    OR              reduce using rule 55 (factor -> + factor .)
+    NEWLINE         reduce using rule 55 (factor -> + factor .)
+    :               reduce using rule 55 (factor -> + factor .)
+    )               reduce using rule 55 (factor -> + factor .)
+    ,               reduce using rule 55 (factor -> + factor .)
+    ]               reduce using rule 55 (factor -> + factor .)
+
+
+state 134
+
+    (56) factor -> - factor .
+
+    *               reduce using rule 56 (factor -> - factor .)
+    /               reduce using rule 56 (factor -> - factor .)
+    %               reduce using rule 56 (factor -> - factor .)
+    +               reduce using rule 56 (factor -> - factor .)
+    -               reduce using rule 56 (factor -> - factor .)
+    =               reduce using rule 56 (factor -> - factor .)
+    >               reduce using rule 56 (factor -> - factor .)
+    <               reduce using rule 56 (factor -> - factor .)
+    ~               reduce using rule 56 (factor -> - factor .)
+    AND             reduce using rule 56 (factor -> - factor .)
+    OR              reduce using rule 56 (factor -> - factor .)
+    NEWLINE         reduce using rule 56 (factor -> - factor .)
+    :               reduce using rule 56 (factor -> - factor .)
+    )               reduce using rule 56 (factor -> - factor .)
+    ,               reduce using rule 56 (factor -> - factor .)
+    ]               reduce using rule 56 (factor -> - factor .)
+
+
+state 135
+
+    (70) trailer -> . . ID
+
+    ID              shift and go to state 161
+
+
+state 136
+
+    (71) trailer -> [ . expr ]
+    (33) expr -> . or_test
+    (34) or_test -> . and_test
+    (35) or_test -> . or_test OR and_test
+    (36) and_test -> . not_test
+    (37) and_test -> . and_test AND not_test
+    (38) not_test -> . NOT not_test
+    (39) not_test -> . comparison
+    (40) comparison -> . operand
+    (41) comparison -> . comparison = operand
+    (42) comparison -> . comparison > operand
+    (43) comparison -> . comparison < operand
+    (44) comparison -> . comparison > = operand
+    (45) comparison -> . comparison < = operand
+    (46) comparison -> . comparison ~ = operand
+    (47) operand -> . term
+    (48) operand -> . operand + term
+    (49) operand -> . operand - term
+    (50) term -> . factor
+    (51) term -> . term * factor
+    (52) term -> . term / factor
+    (53) term -> . term % factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    NOT             shift and go to state 119
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    comparison                     shift and go to state 113
+    term                           shift and go to state 114
+    power                          shift and go to state 108
+    expr                           shift and go to state 162
+    atom                           shift and go to state 110
+    or_test                        shift and go to state 117
+    and_test                       shift and go to state 109
+    not_test                       shift and go to state 99
+    factor                         shift and go to state 106
+    operand                        shift and go to state 100
+    position                       shift and go to state 120
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 137
+
+    (58) power -> power trailer .
+
+    .               reduce using rule 58 (power -> power trailer .)
+    [               reduce using rule 58 (power -> power trailer .)
+    *               reduce using rule 58 (power -> power trailer .)
+    /               reduce using rule 58 (power -> power trailer .)
+    %               reduce using rule 58 (power -> power trailer .)
+    +               reduce using rule 58 (power -> power trailer .)
+    -               reduce using rule 58 (power -> power trailer .)
+    =               reduce using rule 58 (power -> power trailer .)
+    >               reduce using rule 58 (power -> power trailer .)
+    <               reduce using rule 58 (power -> power trailer .)
+    ~               reduce using rule 58 (power -> power trailer .)
+    AND             reduce using rule 58 (power -> power trailer .)
+    OR              reduce using rule 58 (power -> power trailer .)
+    :               reduce using rule 58 (power -> power trailer .)
+    )               reduce using rule 58 (power -> power trailer .)
+    ,               reduce using rule 58 (power -> power trailer .)
+    ]               reduce using rule 58 (power -> power trailer .)
+    NEWLINE         reduce using rule 58 (power -> power trailer .)
+
+
+state 138
+
+    (37) and_test -> and_test AND . not_test
+    (38) not_test -> . NOT not_test
+    (39) not_test -> . comparison
+    (40) comparison -> . operand
+    (41) comparison -> . comparison = operand
+    (42) comparison -> . comparison > operand
+    (43) comparison -> . comparison < operand
+    (44) comparison -> . comparison > = operand
+    (45) comparison -> . comparison < = operand
+    (46) comparison -> . comparison ~ = operand
+    (47) operand -> . term
+    (48) operand -> . operand + term
+    (49) operand -> . operand - term
+    (50) term -> . factor
+    (51) term -> . term * factor
+    (52) term -> . term / factor
+    (53) term -> . term % factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    NOT             shift and go to state 119
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    comparison                     shift and go to state 113
+    term                           shift and go to state 114
+    power                          shift and go to state 108
+    atom                           shift and go to state 110
+    not_test                       shift and go to state 163
+    factor                         shift and go to state 106
+    operand                        shift and go to state 100
+    position                       shift and go to state 120
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 139
+
+    (69) array -> [ parameter_list . ]
+    (75) parameter_list -> parameter_list . , expr
+
+    ]               shift and go to state 164
+    ,               shift and go to state 165
+
+
+state 140
+
+    (74) parameter_list -> expr .
+
+    )               reduce using rule 74 (parameter_list -> expr .)
+    ,               reduce using rule 74 (parameter_list -> expr .)
+    ]               reduce using rule 74 (parameter_list -> expr .)
+
+
+state 141
+
+    (72) func_expr -> ID ( . )
+    (73) func_expr -> ID ( . parameter_list )
+    (74) parameter_list -> . expr
+    (75) parameter_list -> . parameter_list , expr
+    (33) expr -> . or_test
+    (34) or_test -> . and_test
+    (35) or_test -> . or_test OR and_test
+    (36) and_test -> . not_test
+    (37) and_test -> . and_test AND not_test
+    (38) not_test -> . NOT not_test
+    (39) not_test -> . comparison
+    (40) comparison -> . operand
+    (41) comparison -> . comparison = operand
+    (42) comparison -> . comparison > operand
+    (43) comparison -> . comparison < operand
+    (44) comparison -> . comparison > = operand
+    (45) comparison -> . comparison < = operand
+    (46) comparison -> . comparison ~ = operand
+    (47) operand -> . term
+    (48) operand -> . operand + term
+    (49) operand -> . operand - term
+    (50) term -> . factor
+    (51) term -> . term * factor
+    (52) term -> . term / factor
+    (53) term -> . term % factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    )               shift and go to state 166
+    NOT             shift and go to state 119
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    comparison                     shift and go to state 113
+    term                           shift and go to state 114
+    power                          shift and go to state 108
+    parameter_list                 shift and go to state 167
+    expr                           shift and go to state 140
+    atom                           shift and go to state 110
+    or_test                        shift and go to state 117
+    and_test                       shift and go to state 109
+    not_test                       shift and go to state 99
+    factor                         shift and go to state 106
+    operand                        shift and go to state 100
+    position                       shift and go to state 120
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 142
+
+    (42) comparison -> comparison > . operand
+    (44) comparison -> comparison > . = operand
+    (47) operand -> . term
+    (48) operand -> . operand + term
+    (49) operand -> . operand - term
+    (50) term -> . factor
+    (51) term -> . term * factor
+    (52) term -> . term / factor
+    (53) term -> . term % factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    =               shift and go to state 169
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    term                           shift and go to state 114
+    power                          shift and go to state 108
+    factor                         shift and go to state 106
+    atom                           shift and go to state 110
+    operand                        shift and go to state 168
+    position                       shift and go to state 120
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 143
+
+    (41) comparison -> comparison = . operand
+    (47) operand -> . term
+    (48) operand -> . operand + term
+    (49) operand -> . operand - term
+    (50) term -> . factor
+    (51) term -> . term * factor
+    (52) term -> . term / factor
+    (53) term -> . term % factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    term                           shift and go to state 114
+    power                          shift and go to state 108
+    factor                         shift and go to state 106
+    atom                           shift and go to state 110
+    operand                        shift and go to state 170
+    position                       shift and go to state 120
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 144
+
+    (43) comparison -> comparison < . operand
+    (45) comparison -> comparison < . = operand
+    (47) operand -> . term
+    (48) operand -> . operand + term
+    (49) operand -> . operand - term
+    (50) term -> . factor
+    (51) term -> . term * factor
+    (52) term -> . term / factor
+    (53) term -> . term % factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    =               shift and go to state 172
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    term                           shift and go to state 114
+    power                          shift and go to state 108
+    factor                         shift and go to state 106
+    atom                           shift and go to state 110
+    operand                        shift and go to state 171
+    position                       shift and go to state 120
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 145
+
+    (46) comparison -> comparison ~ . = operand
+
+    =               shift and go to state 173
+
+
+state 146
+
+    (51) term -> term * . factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    power                          shift and go to state 108
+    factor                         shift and go to state 174
+    atom                           shift and go to state 110
+    position                       shift and go to state 120
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 147
+
+    (53) term -> term % . factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    power                          shift and go to state 108
+    factor                         shift and go to state 175
+    atom                           shift and go to state 110
+    position                       shift and go to state 120
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 148
+
+    (52) term -> term / . factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    power                          shift and go to state 108
+    factor                         shift and go to state 176
+    atom                           shift and go to state 110
+    position                       shift and go to state 120
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 149
+
+    (89) return_stmt -> RETURN expr NEWLINE .
+
+    DEDENT          reduce using rule 89 (return_stmt -> RETURN expr NEWLINE .)
+    ID              reduce using rule 89 (return_stmt -> RETURN expr NEWLINE .)
+    DEF             reduce using rule 89 (return_stmt -> RETURN expr NEWLINE .)
+    FOR             reduce using rule 89 (return_stmt -> RETURN expr NEWLINE .)
+    IF              reduce using rule 89 (return_stmt -> RETURN expr NEWLINE .)
+    WHILE           reduce using rule 89 (return_stmt -> RETURN expr NEWLINE .)
+    BREAK           reduce using rule 89 (return_stmt -> RETURN expr NEWLINE .)
+    CONTINUE        reduce using rule 89 (return_stmt -> RETURN expr NEWLINE .)
+    RETURN          reduce using rule 89 (return_stmt -> RETURN expr NEWLINE .)
+
+
+state 150
+
+    (35) or_test -> or_test OR . and_test
+    (36) and_test -> . not_test
+    (37) and_test -> . and_test AND not_test
+    (38) not_test -> . NOT not_test
+    (39) not_test -> . comparison
+    (40) comparison -> . operand
+    (41) comparison -> . comparison = operand
+    (42) comparison -> . comparison > operand
+    (43) comparison -> . comparison < operand
+    (44) comparison -> . comparison > = operand
+    (45) comparison -> . comparison < = operand
+    (46) comparison -> . comparison ~ = operand
+    (47) operand -> . term
+    (48) operand -> . operand + term
+    (49) operand -> . operand - term
+    (50) term -> . factor
+    (51) term -> . term * factor
+    (52) term -> . term / factor
+    (53) term -> . term % factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    NOT             shift and go to state 119
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    comparison                     shift and go to state 113
+    term                           shift and go to state 114
+    power                          shift and go to state 108
+    atom                           shift and go to state 110
+    and_test                       shift and go to state 177
+    not_test                       shift and go to state 99
+    factor                         shift and go to state 106
+    operand                        shift and go to state 100
+    position                       shift and go to state 120
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 151
+
+    (38) not_test -> NOT not_test .
+
+    AND             reduce using rule 38 (not_test -> NOT not_test .)
+    OR              reduce using rule 38 (not_test -> NOT not_test .)
+    )               reduce using rule 38 (not_test -> NOT not_test .)
+    ,               reduce using rule 38 (not_test -> NOT not_test .)
+    :               reduce using rule 38 (not_test -> NOT not_test .)
+    NEWLINE         reduce using rule 38 (not_test -> NOT not_test .)
+    ]               reduce using rule 38 (not_test -> NOT not_test .)
+
+
+state 152
+
+    (84) while_stmt -> WHILE expr : . suite
+    (85) suite -> . NEWLINE
+    (86) suite -> . NEWLINE INDENT suite_stmt DEDENT
+
+    NEWLINE         shift and go to state 60
+
+    suite                          shift and go to state 178
+
+state 153
+
+    (77) for_stmt -> FOR ID IN . expr : suite
+    (33) expr -> . or_test
+    (34) or_test -> . and_test
+    (35) or_test -> . or_test OR and_test
+    (36) and_test -> . not_test
+    (37) and_test -> . and_test AND not_test
+    (38) not_test -> . NOT not_test
+    (39) not_test -> . comparison
+    (40) comparison -> . operand
+    (41) comparison -> . comparison = operand
+    (42) comparison -> . comparison > operand
+    (43) comparison -> . comparison < operand
+    (44) comparison -> . comparison > = operand
+    (45) comparison -> . comparison < = operand
+    (46) comparison -> . comparison ~ = operand
+    (47) operand -> . term
+    (48) operand -> . operand + term
+    (49) operand -> . operand - term
+    (50) term -> . factor
+    (51) term -> . term * factor
+    (52) term -> . term / factor
+    (53) term -> . term % factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    NOT             shift and go to state 119
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    comparison                     shift and go to state 113
+    term                           shift and go to state 114
+    position                       shift and go to state 120
+    power                          shift and go to state 108
+    expr                           shift and go to state 179
+    atom                           shift and go to state 110
+    or_test                        shift and go to state 117
+    and_test                       shift and go to state 109
+    not_test                       shift and go to state 99
+    factor                         shift and go to state 106
+    operand                        shift and go to state 100
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 154
+
+    (76) for_stmt -> FOR ID = . NUMBER TO NUMBER : suite
+
+    NUMBER          shift and go to state 180
+
+
+state 155
+
+    (22) assign_stmt -> ID : = . expr NEWLINE
+    (33) expr -> . or_test
+    (34) or_test -> . and_test
+    (35) or_test -> . or_test OR and_test
+    (36) and_test -> . not_test
+    (37) and_test -> . and_test AND not_test
+    (38) not_test -> . NOT not_test
+    (39) not_test -> . comparison
+    (40) comparison -> . operand
+    (41) comparison -> . comparison = operand
+    (42) comparison -> . comparison > operand
+    (43) comparison -> . comparison < operand
+    (44) comparison -> . comparison > = operand
+    (45) comparison -> . comparison < = operand
+    (46) comparison -> . comparison ~ = operand
+    (47) operand -> . term
+    (48) operand -> . operand + term
+    (49) operand -> . operand - term
+    (50) term -> . factor
+    (51) term -> . term * factor
+    (52) term -> . term / factor
+    (53) term -> . term % factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    NOT             shift and go to state 119
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    comparison                     shift and go to state 113
+    term                           shift and go to state 114
+    power                          shift and go to state 108
+    expr                           shift and go to state 181
+    atom                           shift and go to state 110
+    or_test                        shift and go to state 117
+    and_test                       shift and go to state 109
+    not_test                       shift and go to state 99
+    factor                         shift and go to state 106
+    operand                        shift and go to state 100
+    position                       shift and go to state 120
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 156
+
+    (78) if_stmt -> IF expr : . suite
+    (79) if_stmt -> IF expr : . suite elseif_stmt
+    (80) if_stmt -> IF expr : . suite ELSE : suite
+    (81) if_stmt -> IF expr : . suite elseif_stmt ELSE : suite
+    (85) suite -> . NEWLINE
+    (86) suite -> . NEWLINE INDENT suite_stmt DEDENT
+
+    NEWLINE         shift and go to state 60
+
+    suite                          shift and go to state 182
+
+state 157
+
+    (48) operand -> operand + term .
+    (51) term -> term . * factor
+    (52) term -> term . / factor
+    (53) term -> term . % factor
+
+    +               reduce using rule 48 (operand -> operand + term .)
+    -               reduce using rule 48 (operand -> operand + term .)
+    =               reduce using rule 48 (operand -> operand + term .)
+    >               reduce using rule 48 (operand -> operand + term .)
+    <               reduce using rule 48 (operand -> operand + term .)
+    ~               reduce using rule 48 (operand -> operand + term .)
+    AND             reduce using rule 48 (operand -> operand + term .)
+    OR              reduce using rule 48 (operand -> operand + term .)
+    NEWLINE         reduce using rule 48 (operand -> operand + term .)
+    :               reduce using rule 48 (operand -> operand + term .)
+    )               reduce using rule 48 (operand -> operand + term .)
+    ,               reduce using rule 48 (operand -> operand + term .)
+    ]               reduce using rule 48 (operand -> operand + term .)
+    *               shift and go to state 146
+    /               shift and go to state 148
+    %               shift and go to state 147
+
+
+state 158
+
+    (49) operand -> operand - term .
+    (51) term -> term . * factor
+    (52) term -> term . / factor
+    (53) term -> term . % factor
+
+    +               reduce using rule 49 (operand -> operand - term .)
+    -               reduce using rule 49 (operand -> operand - term .)
+    =               reduce using rule 49 (operand -> operand - term .)
+    >               reduce using rule 49 (operand -> operand - term .)
+    <               reduce using rule 49 (operand -> operand - term .)
+    ~               reduce using rule 49 (operand -> operand - term .)
+    AND             reduce using rule 49 (operand -> operand - term .)
+    OR              reduce using rule 49 (operand -> operand - term .)
+    NEWLINE         reduce using rule 49 (operand -> operand - term .)
+    :               reduce using rule 49 (operand -> operand - term .)
+    )               reduce using rule 49 (operand -> operand - term .)
+    ,               reduce using rule 49 (operand -> operand - term .)
+    ]               reduce using rule 49 (operand -> operand - term .)
+    *               shift and go to state 146
+    /               shift and go to state 148
+    %               shift and go to state 147
+
+
+state 159
+
+    (67) atom -> ( expr ) .
+
+    .               reduce using rule 67 (atom -> ( expr ) .)
+    [               reduce using rule 67 (atom -> ( expr ) .)
+    *               reduce using rule 67 (atom -> ( expr ) .)
+    /               reduce using rule 67 (atom -> ( expr ) .)
+    %               reduce using rule 67 (atom -> ( expr ) .)
+    +               reduce using rule 67 (atom -> ( expr ) .)
+    -               reduce using rule 67 (atom -> ( expr ) .)
+    =               reduce using rule 67 (atom -> ( expr ) .)
+    >               reduce using rule 67 (atom -> ( expr ) .)
+    <               reduce using rule 67 (atom -> ( expr ) .)
+    ~               reduce using rule 67 (atom -> ( expr ) .)
+    AND             reduce using rule 67 (atom -> ( expr ) .)
+    OR              reduce using rule 67 (atom -> ( expr ) .)
+    NEWLINE         reduce using rule 67 (atom -> ( expr ) .)
+    :               reduce using rule 67 (atom -> ( expr ) .)
+    )               reduce using rule 67 (atom -> ( expr ) .)
+    ,               reduce using rule 67 (atom -> ( expr ) .)
+    ]               reduce using rule 67 (atom -> ( expr ) .)
+
+
+state 160
+
+    (68) position -> ( expr , . expr )
+    (33) expr -> . or_test
+    (34) or_test -> . and_test
+    (35) or_test -> . or_test OR and_test
+    (36) and_test -> . not_test
+    (37) and_test -> . and_test AND not_test
+    (38) not_test -> . NOT not_test
+    (39) not_test -> . comparison
+    (40) comparison -> . operand
+    (41) comparison -> . comparison = operand
+    (42) comparison -> . comparison > operand
+    (43) comparison -> . comparison < operand
+    (44) comparison -> . comparison > = operand
+    (45) comparison -> . comparison < = operand
+    (46) comparison -> . comparison ~ = operand
+    (47) operand -> . term
+    (48) operand -> . operand + term
+    (49) operand -> . operand - term
+    (50) term -> . factor
+    (51) term -> . term * factor
+    (52) term -> . term / factor
+    (53) term -> . term % factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    NOT             shift and go to state 119
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    comparison                     shift and go to state 113
+    term                           shift and go to state 114
+    power                          shift and go to state 108
+    expr                           shift and go to state 183
+    atom                           shift and go to state 110
+    or_test                        shift and go to state 117
+    and_test                       shift and go to state 109
+    not_test                       shift and go to state 99
+    factor                         shift and go to state 106
+    operand                        shift and go to state 100
+    position                       shift and go to state 120
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 161
+
+    (70) trailer -> . ID .
+
+    .               reduce using rule 70 (trailer -> . ID .)
+    [               reduce using rule 70 (trailer -> . ID .)
+    *               reduce using rule 70 (trailer -> . ID .)
+    /               reduce using rule 70 (trailer -> . ID .)
+    %               reduce using rule 70 (trailer -> . ID .)
+    +               reduce using rule 70 (trailer -> . ID .)
+    -               reduce using rule 70 (trailer -> . ID .)
+    =               reduce using rule 70 (trailer -> . ID .)
+    >               reduce using rule 70 (trailer -> . ID .)
+    <               reduce using rule 70 (trailer -> . ID .)
+    ~               reduce using rule 70 (trailer -> . ID .)
+    AND             reduce using rule 70 (trailer -> . ID .)
+    OR              reduce using rule 70 (trailer -> . ID .)
+    NEWLINE         reduce using rule 70 (trailer -> . ID .)
+    :               reduce using rule 70 (trailer -> . ID .)
+    )               reduce using rule 70 (trailer -> . ID .)
+    ,               reduce using rule 70 (trailer -> . ID .)
+    ]               reduce using rule 70 (trailer -> . ID .)
+
+
+state 162
+
+    (71) trailer -> [ expr . ]
+
+    ]               shift and go to state 184
+
+
+state 163
+
+    (37) and_test -> and_test AND not_test .
+
+    AND             reduce using rule 37 (and_test -> and_test AND not_test .)
+    OR              reduce using rule 37 (and_test -> and_test AND not_test .)
+    :               reduce using rule 37 (and_test -> and_test AND not_test .)
+    NEWLINE         reduce using rule 37 (and_test -> and_test AND not_test .)
+    )               reduce using rule 37 (and_test -> and_test AND not_test .)
+    ,               reduce using rule 37 (and_test -> and_test AND not_test .)
+    ]               reduce using rule 37 (and_test -> and_test AND not_test .)
+
+
+state 164
+
+    (69) array -> [ parameter_list ] .
+
+    .               reduce using rule 69 (array -> [ parameter_list ] .)
+    [               reduce using rule 69 (array -> [ parameter_list ] .)
+    *               reduce using rule 69 (array -> [ parameter_list ] .)
+    /               reduce using rule 69 (array -> [ parameter_list ] .)
+    %               reduce using rule 69 (array -> [ parameter_list ] .)
+    +               reduce using rule 69 (array -> [ parameter_list ] .)
+    -               reduce using rule 69 (array -> [ parameter_list ] .)
+    =               reduce using rule 69 (array -> [ parameter_list ] .)
+    >               reduce using rule 69 (array -> [ parameter_list ] .)
+    <               reduce using rule 69 (array -> [ parameter_list ] .)
+    ~               reduce using rule 69 (array -> [ parameter_list ] .)
+    AND             reduce using rule 69 (array -> [ parameter_list ] .)
+    OR              reduce using rule 69 (array -> [ parameter_list ] .)
+    NEWLINE         reduce using rule 69 (array -> [ parameter_list ] .)
+    :               reduce using rule 69 (array -> [ parameter_list ] .)
+    )               reduce using rule 69 (array -> [ parameter_list ] .)
+    ,               reduce using rule 69 (array -> [ parameter_list ] .)
+    ]               reduce using rule 69 (array -> [ parameter_list ] .)
+
+
+state 165
+
+    (75) parameter_list -> parameter_list , . expr
+    (33) expr -> . or_test
+    (34) or_test -> . and_test
+    (35) or_test -> . or_test OR and_test
+    (36) and_test -> . not_test
+    (37) and_test -> . and_test AND not_test
+    (38) not_test -> . NOT not_test
+    (39) not_test -> . comparison
+    (40) comparison -> . operand
+    (41) comparison -> . comparison = operand
+    (42) comparison -> . comparison > operand
+    (43) comparison -> . comparison < operand
+    (44) comparison -> . comparison > = operand
+    (45) comparison -> . comparison < = operand
+    (46) comparison -> . comparison ~ = operand
+    (47) operand -> . term
+    (48) operand -> . operand + term
+    (49) operand -> . operand - term
+    (50) term -> . factor
+    (51) term -> . term * factor
+    (52) term -> . term / factor
+    (53) term -> . term % factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    NOT             shift and go to state 119
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    comparison                     shift and go to state 113
+    term                           shift and go to state 114
+    power                          shift and go to state 108
+    expr                           shift and go to state 185
+    atom                           shift and go to state 110
+    or_test                        shift and go to state 117
+    and_test                       shift and go to state 109
+    not_test                       shift and go to state 99
+    factor                         shift and go to state 106
+    operand                        shift and go to state 100
+    position                       shift and go to state 120
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 166
+
+    (72) func_expr -> ID ( ) .
+
+    .               reduce using rule 72 (func_expr -> ID ( ) .)
+    [               reduce using rule 72 (func_expr -> ID ( ) .)
+    *               reduce using rule 72 (func_expr -> ID ( ) .)
+    /               reduce using rule 72 (func_expr -> ID ( ) .)
+    %               reduce using rule 72 (func_expr -> ID ( ) .)
+    +               reduce using rule 72 (func_expr -> ID ( ) .)
+    -               reduce using rule 72 (func_expr -> ID ( ) .)
+    =               reduce using rule 72 (func_expr -> ID ( ) .)
+    >               reduce using rule 72 (func_expr -> ID ( ) .)
+    <               reduce using rule 72 (func_expr -> ID ( ) .)
+    ~               reduce using rule 72 (func_expr -> ID ( ) .)
+    AND             reduce using rule 72 (func_expr -> ID ( ) .)
+    OR              reduce using rule 72 (func_expr -> ID ( ) .)
+    ]               reduce using rule 72 (func_expr -> ID ( ) .)
+    ,               reduce using rule 72 (func_expr -> ID ( ) .)
+    NEWLINE         reduce using rule 72 (func_expr -> ID ( ) .)
+    :               reduce using rule 72 (func_expr -> ID ( ) .)
+    )               reduce using rule 72 (func_expr -> ID ( ) .)
+
+
+state 167
+
+    (73) func_expr -> ID ( parameter_list . )
+    (75) parameter_list -> parameter_list . , expr
+
+    )               shift and go to state 186
+    ,               shift and go to state 165
+
+
+state 168
+
+    (42) comparison -> comparison > operand .
+    (48) operand -> operand . + term
+    (49) operand -> operand . - term
+
+    =               reduce using rule 42 (comparison -> comparison > operand .)
+    >               reduce using rule 42 (comparison -> comparison > operand .)
+    <               reduce using rule 42 (comparison -> comparison > operand .)
+    ~               reduce using rule 42 (comparison -> comparison > operand .)
+    AND             reduce using rule 42 (comparison -> comparison > operand .)
+    OR              reduce using rule 42 (comparison -> comparison > operand .)
+    NEWLINE         reduce using rule 42 (comparison -> comparison > operand .)
+    :               reduce using rule 42 (comparison -> comparison > operand .)
+    )               reduce using rule 42 (comparison -> comparison > operand .)
+    ,               reduce using rule 42 (comparison -> comparison > operand .)
+    ]               reduce using rule 42 (comparison -> comparison > operand .)
+    +               shift and go to state 130
+    -               shift and go to state 131
+
+
+state 169
+
+    (44) comparison -> comparison > = . operand
+    (47) operand -> . term
+    (48) operand -> . operand + term
+    (49) operand -> . operand - term
+    (50) term -> . factor
+    (51) term -> . term * factor
+    (52) term -> . term / factor
+    (53) term -> . term % factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    term                           shift and go to state 114
+    power                          shift and go to state 108
+    factor                         shift and go to state 106
+    atom                           shift and go to state 110
+    operand                        shift and go to state 187
+    position                       shift and go to state 120
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 170
+
+    (41) comparison -> comparison = operand .
+    (48) operand -> operand . + term
+    (49) operand -> operand . - term
+
+    =               reduce using rule 41 (comparison -> comparison = operand .)
+    >               reduce using rule 41 (comparison -> comparison = operand .)
+    <               reduce using rule 41 (comparison -> comparison = operand .)
+    ~               reduce using rule 41 (comparison -> comparison = operand .)
+    AND             reduce using rule 41 (comparison -> comparison = operand .)
+    OR              reduce using rule 41 (comparison -> comparison = operand .)
+    NEWLINE         reduce using rule 41 (comparison -> comparison = operand .)
+    :               reduce using rule 41 (comparison -> comparison = operand .)
+    )               reduce using rule 41 (comparison -> comparison = operand .)
+    ,               reduce using rule 41 (comparison -> comparison = operand .)
+    ]               reduce using rule 41 (comparison -> comparison = operand .)
+    +               shift and go to state 130
+    -               shift and go to state 131
+
+
+state 171
+
+    (43) comparison -> comparison < operand .
+    (48) operand -> operand . + term
+    (49) operand -> operand . - term
+
+    =               reduce using rule 43 (comparison -> comparison < operand .)
+    >               reduce using rule 43 (comparison -> comparison < operand .)
+    <               reduce using rule 43 (comparison -> comparison < operand .)
+    ~               reduce using rule 43 (comparison -> comparison < operand .)
+    AND             reduce using rule 43 (comparison -> comparison < operand .)
+    OR              reduce using rule 43 (comparison -> comparison < operand .)
+    NEWLINE         reduce using rule 43 (comparison -> comparison < operand .)
+    :               reduce using rule 43 (comparison -> comparison < operand .)
+    )               reduce using rule 43 (comparison -> comparison < operand .)
+    ,               reduce using rule 43 (comparison -> comparison < operand .)
+    ]               reduce using rule 43 (comparison -> comparison < operand .)
+    +               shift and go to state 130
+    -               shift and go to state 131
+
+
+state 172
+
+    (45) comparison -> comparison < = . operand
+    (47) operand -> . term
+    (48) operand -> . operand + term
+    (49) operand -> . operand - term
+    (50) term -> . factor
+    (51) term -> . term * factor
+    (52) term -> . term / factor
+    (53) term -> . term % factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    term                           shift and go to state 114
+    power                          shift and go to state 108
+    factor                         shift and go to state 106
+    atom                           shift and go to state 110
+    operand                        shift and go to state 188
+    position                       shift and go to state 120
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 173
+
+    (46) comparison -> comparison ~ = . operand
+    (47) operand -> . term
+    (48) operand -> . operand + term
+    (49) operand -> . operand - term
+    (50) term -> . factor
+    (51) term -> . term * factor
+    (52) term -> . term / factor
+    (53) term -> . term % factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    term                           shift and go to state 114
+    power                          shift and go to state 108
+    factor                         shift and go to state 106
+    atom                           shift and go to state 110
+    operand                        shift and go to state 189
+    position                       shift and go to state 120
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 174
+
+    (51) term -> term * factor .
+
+    *               reduce using rule 51 (term -> term * factor .)
+    /               reduce using rule 51 (term -> term * factor .)
+    %               reduce using rule 51 (term -> term * factor .)
+    +               reduce using rule 51 (term -> term * factor .)
+    -               reduce using rule 51 (term -> term * factor .)
+    =               reduce using rule 51 (term -> term * factor .)
+    >               reduce using rule 51 (term -> term * factor .)
+    <               reduce using rule 51 (term -> term * factor .)
+    ~               reduce using rule 51 (term -> term * factor .)
+    AND             reduce using rule 51 (term -> term * factor .)
+    OR              reduce using rule 51 (term -> term * factor .)
+    NEWLINE         reduce using rule 51 (term -> term * factor .)
+    :               reduce using rule 51 (term -> term * factor .)
+    )               reduce using rule 51 (term -> term * factor .)
+    ,               reduce using rule 51 (term -> term * factor .)
+    ]               reduce using rule 51 (term -> term * factor .)
+
+
+state 175
+
+    (53) term -> term % factor .
+
+    *               reduce using rule 53 (term -> term % factor .)
+    /               reduce using rule 53 (term -> term % factor .)
+    %               reduce using rule 53 (term -> term % factor .)
+    +               reduce using rule 53 (term -> term % factor .)
+    -               reduce using rule 53 (term -> term % factor .)
+    =               reduce using rule 53 (term -> term % factor .)
+    >               reduce using rule 53 (term -> term % factor .)
+    <               reduce using rule 53 (term -> term % factor .)
+    ~               reduce using rule 53 (term -> term % factor .)
+    AND             reduce using rule 53 (term -> term % factor .)
+    OR              reduce using rule 53 (term -> term % factor .)
+    NEWLINE         reduce using rule 53 (term -> term % factor .)
+    :               reduce using rule 53 (term -> term % factor .)
+    )               reduce using rule 53 (term -> term % factor .)
+    ,               reduce using rule 53 (term -> term % factor .)
+    ]               reduce using rule 53 (term -> term % factor .)
+
+
+state 176
+
+    (52) term -> term / factor .
+
+    *               reduce using rule 52 (term -> term / factor .)
+    /               reduce using rule 52 (term -> term / factor .)
+    %               reduce using rule 52 (term -> term / factor .)
+    +               reduce using rule 52 (term -> term / factor .)
+    -               reduce using rule 52 (term -> term / factor .)
+    =               reduce using rule 52 (term -> term / factor .)
+    >               reduce using rule 52 (term -> term / factor .)
+    <               reduce using rule 52 (term -> term / factor .)
+    ~               reduce using rule 52 (term -> term / factor .)
+    AND             reduce using rule 52 (term -> term / factor .)
+    OR              reduce using rule 52 (term -> term / factor .)
+    NEWLINE         reduce using rule 52 (term -> term / factor .)
+    :               reduce using rule 52 (term -> term / factor .)
+    )               reduce using rule 52 (term -> term / factor .)
+    ,               reduce using rule 52 (term -> term / factor .)
+    ]               reduce using rule 52 (term -> term / factor .)
+
+
+state 177
+
+    (35) or_test -> or_test OR and_test .
+    (37) and_test -> and_test . AND not_test
+
+    OR              reduce using rule 35 (or_test -> or_test OR and_test .)
+    NEWLINE         reduce using rule 35 (or_test -> or_test OR and_test .)
+    :               reduce using rule 35 (or_test -> or_test OR and_test .)
+    )               reduce using rule 35 (or_test -> or_test OR and_test .)
+    ]               reduce using rule 35 (or_test -> or_test OR and_test .)
+    ,               reduce using rule 35 (or_test -> or_test OR and_test .)
+    AND             shift and go to state 138
+
+
+state 178
+
+    (84) while_stmt -> WHILE expr : suite .
+
+    DEDENT          reduce using rule 84 (while_stmt -> WHILE expr : suite .)
+    ID              reduce using rule 84 (while_stmt -> WHILE expr : suite .)
+    DEF             reduce using rule 84 (while_stmt -> WHILE expr : suite .)
+    FOR             reduce using rule 84 (while_stmt -> WHILE expr : suite .)
+    IF              reduce using rule 84 (while_stmt -> WHILE expr : suite .)
+    WHILE           reduce using rule 84 (while_stmt -> WHILE expr : suite .)
+    BREAK           reduce using rule 84 (while_stmt -> WHILE expr : suite .)
+    CONTINUE        reduce using rule 84 (while_stmt -> WHILE expr : suite .)
+    RETURN          reduce using rule 84 (while_stmt -> WHILE expr : suite .)
+
+
+state 179
+
+    (77) for_stmt -> FOR ID IN expr . : suite
+
+    :               shift and go to state 190
+
+
+state 180
+
+    (76) for_stmt -> FOR ID = NUMBER . TO NUMBER : suite
+
+    TO              shift and go to state 191
+
+
+state 181
+
+    (22) assign_stmt -> ID : = expr . NEWLINE
+
+    NEWLINE         shift and go to state 192
+
+
+state 182
+
+    (78) if_stmt -> IF expr : suite .
+    (79) if_stmt -> IF expr : suite . elseif_stmt
+    (80) if_stmt -> IF expr : suite . ELSE : suite
+    (81) if_stmt -> IF expr : suite . elseif_stmt ELSE : suite
+    (82) elseif_stmt -> . ELSEIF expr : suite
+    (83) elseif_stmt -> . elseif_stmt ELSEIF expr : suite
+
+    DEDENT          reduce using rule 78 (if_stmt -> IF expr : suite .)
+    ID              reduce using rule 78 (if_stmt -> IF expr : suite .)
+    DEF             reduce using rule 78 (if_stmt -> IF expr : suite .)
+    FOR             reduce using rule 78 (if_stmt -> IF expr : suite .)
+    IF              reduce using rule 78 (if_stmt -> IF expr : suite .)
+    WHILE           reduce using rule 78 (if_stmt -> IF expr : suite .)
+    BREAK           reduce using rule 78 (if_stmt -> IF expr : suite .)
+    CONTINUE        reduce using rule 78 (if_stmt -> IF expr : suite .)
+    RETURN          reduce using rule 78 (if_stmt -> IF expr : suite .)
+    ELSE            shift and go to state 193
+    ELSEIF          shift and go to state 194
+
+    elseif_stmt                    shift and go to state 195
+
+state 183
+
+    (68) position -> ( expr , expr . )
+
+    )               shift and go to state 196
+
+
+state 184
+
+    (71) trailer -> [ expr ] .
+
+    .               reduce using rule 71 (trailer -> [ expr ] .)
+    [               reduce using rule 71 (trailer -> [ expr ] .)
+    *               reduce using rule 71 (trailer -> [ expr ] .)
+    /               reduce using rule 71 (trailer -> [ expr ] .)
+    %               reduce using rule 71 (trailer -> [ expr ] .)
+    +               reduce using rule 71 (trailer -> [ expr ] .)
+    -               reduce using rule 71 (trailer -> [ expr ] .)
+    =               reduce using rule 71 (trailer -> [ expr ] .)
+    >               reduce using rule 71 (trailer -> [ expr ] .)
+    <               reduce using rule 71 (trailer -> [ expr ] .)
+    ~               reduce using rule 71 (trailer -> [ expr ] .)
+    AND             reduce using rule 71 (trailer -> [ expr ] .)
+    OR              reduce using rule 71 (trailer -> [ expr ] .)
+    NEWLINE         reduce using rule 71 (trailer -> [ expr ] .)
+    :               reduce using rule 71 (trailer -> [ expr ] .)
+    )               reduce using rule 71 (trailer -> [ expr ] .)
+    ,               reduce using rule 71 (trailer -> [ expr ] .)
+    ]               reduce using rule 71 (trailer -> [ expr ] .)
+
+
+state 185
+
+    (75) parameter_list -> parameter_list , expr .
+
+    )               reduce using rule 75 (parameter_list -> parameter_list , expr .)
+    ,               reduce using rule 75 (parameter_list -> parameter_list , expr .)
+    ]               reduce using rule 75 (parameter_list -> parameter_list , expr .)
+
+
+state 186
+
+    (73) func_expr -> ID ( parameter_list ) .
+
+    .               reduce using rule 73 (func_expr -> ID ( parameter_list ) .)
+    [               reduce using rule 73 (func_expr -> ID ( parameter_list ) .)
+    *               reduce using rule 73 (func_expr -> ID ( parameter_list ) .)
+    /               reduce using rule 73 (func_expr -> ID ( parameter_list ) .)
+    %               reduce using rule 73 (func_expr -> ID ( parameter_list ) .)
+    +               reduce using rule 73 (func_expr -> ID ( parameter_list ) .)
+    -               reduce using rule 73 (func_expr -> ID ( parameter_list ) .)
+    =               reduce using rule 73 (func_expr -> ID ( parameter_list ) .)
+    >               reduce using rule 73 (func_expr -> ID ( parameter_list ) .)
+    <               reduce using rule 73 (func_expr -> ID ( parameter_list ) .)
+    ~               reduce using rule 73 (func_expr -> ID ( parameter_list ) .)
+    AND             reduce using rule 73 (func_expr -> ID ( parameter_list ) .)
+    OR              reduce using rule 73 (func_expr -> ID ( parameter_list ) .)
+    ]               reduce using rule 73 (func_expr -> ID ( parameter_list ) .)
+    ,               reduce using rule 73 (func_expr -> ID ( parameter_list ) .)
+    NEWLINE         reduce using rule 73 (func_expr -> ID ( parameter_list ) .)
+    :               reduce using rule 73 (func_expr -> ID ( parameter_list ) .)
+    )               reduce using rule 73 (func_expr -> ID ( parameter_list ) .)
+
+
+state 187
+
+    (44) comparison -> comparison > = operand .
+    (48) operand -> operand . + term
+    (49) operand -> operand . - term
+
+    =               reduce using rule 44 (comparison -> comparison > = operand .)
+    >               reduce using rule 44 (comparison -> comparison > = operand .)
+    <               reduce using rule 44 (comparison -> comparison > = operand .)
+    ~               reduce using rule 44 (comparison -> comparison > = operand .)
+    AND             reduce using rule 44 (comparison -> comparison > = operand .)
+    OR              reduce using rule 44 (comparison -> comparison > = operand .)
+    NEWLINE         reduce using rule 44 (comparison -> comparison > = operand .)
+    :               reduce using rule 44 (comparison -> comparison > = operand .)
+    )               reduce using rule 44 (comparison -> comparison > = operand .)
+    ,               reduce using rule 44 (comparison -> comparison > = operand .)
+    ]               reduce using rule 44 (comparison -> comparison > = operand .)
+    +               shift and go to state 130
+    -               shift and go to state 131
+
+
+state 188
+
+    (45) comparison -> comparison < = operand .
+    (48) operand -> operand . + term
+    (49) operand -> operand . - term
+
+    =               reduce using rule 45 (comparison -> comparison < = operand .)
+    >               reduce using rule 45 (comparison -> comparison < = operand .)
+    <               reduce using rule 45 (comparison -> comparison < = operand .)
+    ~               reduce using rule 45 (comparison -> comparison < = operand .)
+    AND             reduce using rule 45 (comparison -> comparison < = operand .)
+    OR              reduce using rule 45 (comparison -> comparison < = operand .)
+    NEWLINE         reduce using rule 45 (comparison -> comparison < = operand .)
+    :               reduce using rule 45 (comparison -> comparison < = operand .)
+    )               reduce using rule 45 (comparison -> comparison < = operand .)
+    ,               reduce using rule 45 (comparison -> comparison < = operand .)
+    ]               reduce using rule 45 (comparison -> comparison < = operand .)
+    +               shift and go to state 130
+    -               shift and go to state 131
+
+
+state 189
+
+    (46) comparison -> comparison ~ = operand .
+    (48) operand -> operand . + term
+    (49) operand -> operand . - term
+
+    =               reduce using rule 46 (comparison -> comparison ~ = operand .)
+    >               reduce using rule 46 (comparison -> comparison ~ = operand .)
+    <               reduce using rule 46 (comparison -> comparison ~ = operand .)
+    ~               reduce using rule 46 (comparison -> comparison ~ = operand .)
+    AND             reduce using rule 46 (comparison -> comparison ~ = operand .)
+    OR              reduce using rule 46 (comparison -> comparison ~ = operand .)
+    NEWLINE         reduce using rule 46 (comparison -> comparison ~ = operand .)
+    :               reduce using rule 46 (comparison -> comparison ~ = operand .)
+    )               reduce using rule 46 (comparison -> comparison ~ = operand .)
+    ,               reduce using rule 46 (comparison -> comparison ~ = operand .)
+    ]               reduce using rule 46 (comparison -> comparison ~ = operand .)
+    +               shift and go to state 130
+    -               shift and go to state 131
+
+
+state 190
+
+    (77) for_stmt -> FOR ID IN expr : . suite
+    (85) suite -> . NEWLINE
+    (86) suite -> . NEWLINE INDENT suite_stmt DEDENT
+
+    NEWLINE         shift and go to state 60
+
+    suite                          shift and go to state 197
+
+state 191
+
+    (76) for_stmt -> FOR ID = NUMBER TO . NUMBER : suite
+
+    NUMBER          shift and go to state 198
+
+
+state 192
+
+    (22) assign_stmt -> ID : = expr NEWLINE .
+
+    DEDENT          reduce using rule 22 (assign_stmt -> ID : = expr NEWLINE .)
+    ID              reduce using rule 22 (assign_stmt -> ID : = expr NEWLINE .)
+    DEF             reduce using rule 22 (assign_stmt -> ID : = expr NEWLINE .)
+    FOR             reduce using rule 22 (assign_stmt -> ID : = expr NEWLINE .)
+    IF              reduce using rule 22 (assign_stmt -> ID : = expr NEWLINE .)
+    WHILE           reduce using rule 22 (assign_stmt -> ID : = expr NEWLINE .)
+    BREAK           reduce using rule 22 (assign_stmt -> ID : = expr NEWLINE .)
+    CONTINUE        reduce using rule 22 (assign_stmt -> ID : = expr NEWLINE .)
+    RETURN          reduce using rule 22 (assign_stmt -> ID : = expr NEWLINE .)
+
+
+state 193
+
+    (80) if_stmt -> IF expr : suite ELSE . : suite
+
+    :               shift and go to state 199
+
+
+state 194
+
+    (82) elseif_stmt -> ELSEIF . expr : suite
+    (33) expr -> . or_test
+    (34) or_test -> . and_test
+    (35) or_test -> . or_test OR and_test
+    (36) and_test -> . not_test
+    (37) and_test -> . and_test AND not_test
+    (38) not_test -> . NOT not_test
+    (39) not_test -> . comparison
+    (40) comparison -> . operand
+    (41) comparison -> . comparison = operand
+    (42) comparison -> . comparison > operand
+    (43) comparison -> . comparison < operand
+    (44) comparison -> . comparison > = operand
+    (45) comparison -> . comparison < = operand
+    (46) comparison -> . comparison ~ = operand
+    (47) operand -> . term
+    (48) operand -> . operand + term
+    (49) operand -> . operand - term
+    (50) term -> . factor
+    (51) term -> . term * factor
+    (52) term -> . term / factor
+    (53) term -> . term % factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    NOT             shift and go to state 119
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    comparison                     shift and go to state 113
+    term                           shift and go to state 114
+    position                       shift and go to state 120
+    power                          shift and go to state 108
+    expr                           shift and go to state 200
+    atom                           shift and go to state 110
+    or_test                        shift and go to state 117
+    and_test                       shift and go to state 109
+    not_test                       shift and go to state 99
+    factor                         shift and go to state 106
+    operand                        shift and go to state 100
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 195
+
+    (79) if_stmt -> IF expr : suite elseif_stmt .
+    (81) if_stmt -> IF expr : suite elseif_stmt . ELSE : suite
+    (83) elseif_stmt -> elseif_stmt . ELSEIF expr : suite
+
+    DEDENT          reduce using rule 79 (if_stmt -> IF expr : suite elseif_stmt .)
+    ID              reduce using rule 79 (if_stmt -> IF expr : suite elseif_stmt .)
+    DEF             reduce using rule 79 (if_stmt -> IF expr : suite elseif_stmt .)
+    FOR             reduce using rule 79 (if_stmt -> IF expr : suite elseif_stmt .)
+    IF              reduce using rule 79 (if_stmt -> IF expr : suite elseif_stmt .)
+    WHILE           reduce using rule 79 (if_stmt -> IF expr : suite elseif_stmt .)
+    BREAK           reduce using rule 79 (if_stmt -> IF expr : suite elseif_stmt .)
+    CONTINUE        reduce using rule 79 (if_stmt -> IF expr : suite elseif_stmt .)
+    RETURN          reduce using rule 79 (if_stmt -> IF expr : suite elseif_stmt .)
+    ELSE            shift and go to state 201
+    ELSEIF          shift and go to state 202
+
+
+state 196
+
+    (68) position -> ( expr , expr ) .
+
+    .               reduce using rule 68 (position -> ( expr , expr ) .)
+    [               reduce using rule 68 (position -> ( expr , expr ) .)
+    *               reduce using rule 68 (position -> ( expr , expr ) .)
+    /               reduce using rule 68 (position -> ( expr , expr ) .)
+    %               reduce using rule 68 (position -> ( expr , expr ) .)
+    +               reduce using rule 68 (position -> ( expr , expr ) .)
+    -               reduce using rule 68 (position -> ( expr , expr ) .)
+    =               reduce using rule 68 (position -> ( expr , expr ) .)
+    >               reduce using rule 68 (position -> ( expr , expr ) .)
+    <               reduce using rule 68 (position -> ( expr , expr ) .)
+    ~               reduce using rule 68 (position -> ( expr , expr ) .)
+    AND             reduce using rule 68 (position -> ( expr , expr ) .)
+    OR              reduce using rule 68 (position -> ( expr , expr ) .)
+    :               reduce using rule 68 (position -> ( expr , expr ) .)
+    NEWLINE         reduce using rule 68 (position -> ( expr , expr ) .)
+    )               reduce using rule 68 (position -> ( expr , expr ) .)
+    ,               reduce using rule 68 (position -> ( expr , expr ) .)
+    ]               reduce using rule 68 (position -> ( expr , expr ) .)
+
+
+state 197
+
+    (77) for_stmt -> FOR ID IN expr : suite .
+
+    DEDENT          reduce using rule 77 (for_stmt -> FOR ID IN expr : suite .)
+    ID              reduce using rule 77 (for_stmt -> FOR ID IN expr : suite .)
+    DEF             reduce using rule 77 (for_stmt -> FOR ID IN expr : suite .)
+    FOR             reduce using rule 77 (for_stmt -> FOR ID IN expr : suite .)
+    IF              reduce using rule 77 (for_stmt -> FOR ID IN expr : suite .)
+    WHILE           reduce using rule 77 (for_stmt -> FOR ID IN expr : suite .)
+    BREAK           reduce using rule 77 (for_stmt -> FOR ID IN expr : suite .)
+    CONTINUE        reduce using rule 77 (for_stmt -> FOR ID IN expr : suite .)
+    RETURN          reduce using rule 77 (for_stmt -> FOR ID IN expr : suite .)
+
+
+state 198
+
+    (76) for_stmt -> FOR ID = NUMBER TO NUMBER . : suite
+
+    :               shift and go to state 203
+
+
+state 199
+
+    (80) if_stmt -> IF expr : suite ELSE : . suite
+    (85) suite -> . NEWLINE
+    (86) suite -> . NEWLINE INDENT suite_stmt DEDENT
+
+    NEWLINE         shift and go to state 60
+
+    suite                          shift and go to state 204
+
+state 200
+
+    (82) elseif_stmt -> ELSEIF expr . : suite
+
+    :               shift and go to state 205
+
+
+state 201
+
+    (81) if_stmt -> IF expr : suite elseif_stmt ELSE . : suite
+
+    :               shift and go to state 206
+
+
+state 202
+
+    (83) elseif_stmt -> elseif_stmt ELSEIF . expr : suite
+    (33) expr -> . or_test
+    (34) or_test -> . and_test
+    (35) or_test -> . or_test OR and_test
+    (36) and_test -> . not_test
+    (37) and_test -> . and_test AND not_test
+    (38) not_test -> . NOT not_test
+    (39) not_test -> . comparison
+    (40) comparison -> . operand
+    (41) comparison -> . comparison = operand
+    (42) comparison -> . comparison > operand
+    (43) comparison -> . comparison < operand
+    (44) comparison -> . comparison > = operand
+    (45) comparison -> . comparison < = operand
+    (46) comparison -> . comparison ~ = operand
+    (47) operand -> . term
+    (48) operand -> . operand + term
+    (49) operand -> . operand - term
+    (50) term -> . factor
+    (51) term -> . term * factor
+    (52) term -> . term / factor
+    (53) term -> . term % factor
+    (54) factor -> . power
+    (55) factor -> . + factor
+    (56) factor -> . - factor
+    (57) power -> . atom
+    (58) power -> . power trailer
+    (59) atom -> . array
+    (60) atom -> . position
+    (61) atom -> . ID
+    (62) atom -> . STRING
+    (63) atom -> . NUMBER
+    (64) atom -> . BOOLEAN
+    (65) atom -> . NIL
+    (66) atom -> . func_expr
+    (67) atom -> . ( expr )
+    (69) array -> . [ parameter_list ]
+    (68) position -> . ( expr , expr )
+    (72) func_expr -> . ID ( )
+    (73) func_expr -> . ID ( parameter_list )
+
+    NOT             shift and go to state 119
+    +               shift and go to state 104
+    -               shift and go to state 105
+    ID              shift and go to state 112
+    STRING          shift and go to state 107
+    NUMBER          shift and go to state 98
+    BOOLEAN         shift and go to state 118
+    NIL             shift and go to state 115
+    (               shift and go to state 103
+    [               shift and go to state 111
+
+    comparison                     shift and go to state 113
+    term                           shift and go to state 114
+    position                       shift and go to state 120
+    power                          shift and go to state 108
+    expr                           shift and go to state 207
+    atom                           shift and go to state 110
+    or_test                        shift and go to state 117
+    and_test                       shift and go to state 109
+    operand                        shift and go to state 100
+    not_test                       shift and go to state 99
+    factor                         shift and go to state 106
+    array                          shift and go to state 101
+    func_expr                      shift and go to state 102
+
+state 203
+
+    (76) for_stmt -> FOR ID = NUMBER TO NUMBER : . suite
+    (85) suite -> . NEWLINE
+    (86) suite -> . NEWLINE INDENT suite_stmt DEDENT
+
+    NEWLINE         shift and go to state 60
+
+    suite                          shift and go to state 208
+
+state 204
+
+    (80) if_stmt -> IF expr : suite ELSE : suite .
+
+    DEDENT          reduce using rule 80 (if_stmt -> IF expr : suite ELSE : suite .)
+    ID              reduce using rule 80 (if_stmt -> IF expr : suite ELSE : suite .)
+    DEF             reduce using rule 80 (if_stmt -> IF expr : suite ELSE : suite .)
+    FOR             reduce using rule 80 (if_stmt -> IF expr : suite ELSE : suite .)
+    IF              reduce using rule 80 (if_stmt -> IF expr : suite ELSE : suite .)
+    WHILE           reduce using rule 80 (if_stmt -> IF expr : suite ELSE : suite .)
+    BREAK           reduce using rule 80 (if_stmt -> IF expr : suite ELSE : suite .)
+    CONTINUE        reduce using rule 80 (if_stmt -> IF expr : suite ELSE : suite .)
+    RETURN          reduce using rule 80 (if_stmt -> IF expr : suite ELSE : suite .)
+
+
+state 205
+
+    (82) elseif_stmt -> ELSEIF expr : . suite
+    (85) suite -> . NEWLINE
+    (86) suite -> . NEWLINE INDENT suite_stmt DEDENT
+
+    NEWLINE         shift and go to state 60
+
+    suite                          shift and go to state 209
+
+state 206
+
+    (81) if_stmt -> IF expr : suite elseif_stmt ELSE : . suite
+    (85) suite -> . NEWLINE
+    (86) suite -> . NEWLINE INDENT suite_stmt DEDENT
+
+    NEWLINE         shift and go to state 60
+
+    suite                          shift and go to state 210
+
+state 207
+
+    (83) elseif_stmt -> elseif_stmt ELSEIF expr . : suite
+
+    :               shift and go to state 211
+
+
+state 208
+
+    (76) for_stmt -> FOR ID = NUMBER TO NUMBER : suite .
+
+    DEDENT          reduce using rule 76 (for_stmt -> FOR ID = NUMBER TO NUMBER : suite .)
+    ID              reduce using rule 76 (for_stmt -> FOR ID = NUMBER TO NUMBER : suite .)
+    DEF             reduce using rule 76 (for_stmt -> FOR ID = NUMBER TO NUMBER : suite .)
+    FOR             reduce using rule 76 (for_stmt -> FOR ID = NUMBER TO NUMBER : suite .)
+    IF              reduce using rule 76 (for_stmt -> FOR ID = NUMBER TO NUMBER : suite .)
+    WHILE           reduce using rule 76 (for_stmt -> FOR ID = NUMBER TO NUMBER : suite .)
+    BREAK           reduce using rule 76 (for_stmt -> FOR ID = NUMBER TO NUMBER : suite .)
+    CONTINUE        reduce using rule 76 (for_stmt -> FOR ID = NUMBER TO NUMBER : suite .)
+    RETURN          reduce using rule 76 (for_stmt -> FOR ID = NUMBER TO NUMBER : suite .)
+
+
+state 209
+
+    (82) elseif_stmt -> ELSEIF expr : suite .
+
+    ELSE            reduce using rule 82 (elseif_stmt -> ELSEIF expr : suite .)
+    ELSEIF          reduce using rule 82 (elseif_stmt -> ELSEIF expr : suite .)
+    DEDENT          reduce using rule 82 (elseif_stmt -> ELSEIF expr : suite .)
+    ID              reduce using rule 82 (elseif_stmt -> ELSEIF expr : suite .)
+    DEF             reduce using rule 82 (elseif_stmt -> ELSEIF expr : suite .)
+    FOR             reduce using rule 82 (elseif_stmt -> ELSEIF expr : suite .)
+    IF              reduce using rule 82 (elseif_stmt -> ELSEIF expr : suite .)
+    WHILE           reduce using rule 82 (elseif_stmt -> ELSEIF expr : suite .)
+    BREAK           reduce using rule 82 (elseif_stmt -> ELSEIF expr : suite .)
+    CONTINUE        reduce using rule 82 (elseif_stmt -> ELSEIF expr : suite .)
+    RETURN          reduce using rule 82 (elseif_stmt -> ELSEIF expr : suite .)
+
+
+state 210
+
+    (81) if_stmt -> IF expr : suite elseif_stmt ELSE : suite .
+
+    DEDENT          reduce using rule 81 (if_stmt -> IF expr : suite elseif_stmt ELSE : suite .)
+    ID              reduce using rule 81 (if_stmt -> IF expr : suite elseif_stmt ELSE : suite .)
+    DEF             reduce using rule 81 (if_stmt -> IF expr : suite elseif_stmt ELSE : suite .)
+    FOR             reduce using rule 81 (if_stmt -> IF expr : suite elseif_stmt ELSE : suite .)
+    IF              reduce using rule 81 (if_stmt -> IF expr : suite elseif_stmt ELSE : suite .)
+    WHILE           reduce using rule 81 (if_stmt -> IF expr : suite elseif_stmt ELSE : suite .)
+    BREAK           reduce using rule 81 (if_stmt -> IF expr : suite elseif_stmt ELSE : suite .)
+    CONTINUE        reduce using rule 81 (if_stmt -> IF expr : suite elseif_stmt ELSE : suite .)
+    RETURN          reduce using rule 81 (if_stmt -> IF expr : suite elseif_stmt ELSE : suite .)
+
+
+state 211
+
+    (83) elseif_stmt -> elseif_stmt ELSEIF expr : . suite
+    (85) suite -> . NEWLINE
+    (86) suite -> . NEWLINE INDENT suite_stmt DEDENT
+
+    NEWLINE         shift and go to state 60
+
+    suite                          shift and go to state 212
+
+state 212
+
+    (83) elseif_stmt -> elseif_stmt ELSEIF expr : suite .
+
+    ELSE            reduce using rule 83 (elseif_stmt -> elseif_stmt ELSEIF expr : suite .)
+    ELSEIF          reduce using rule 83 (elseif_stmt -> elseif_stmt ELSEIF expr : suite .)
+    DEDENT          reduce using rule 83 (elseif_stmt -> elseif_stmt ELSEIF expr : suite .)
+    ID              reduce using rule 83 (elseif_stmt -> elseif_stmt ELSEIF expr : suite .)
+    DEF             reduce using rule 83 (elseif_stmt -> elseif_stmt ELSEIF expr : suite .)
+    FOR             reduce using rule 83 (elseif_stmt -> elseif_stmt ELSEIF expr : suite .)
+    IF              reduce using rule 83 (elseif_stmt -> elseif_stmt ELSEIF expr : suite .)
+    WHILE           reduce using rule 83 (elseif_stmt -> elseif_stmt ELSEIF expr : suite .)
+    BREAK           reduce using rule 83 (elseif_stmt -> elseif_stmt ELSEIF expr : suite .)
+    CONTINUE        reduce using rule 83 (elseif_stmt -> elseif_stmt ELSEIF expr : suite .)
+    RETURN          reduce using rule 83 (elseif_stmt -> elseif_stmt ELSEIF expr : suite .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for DEF in state 27 resolved as shift
+WARNING: shift/reduce conflict for DEF in state 88 resolved as shift

@@ -88,8 +88,8 @@ def p_action_stmt(t):
         t[0] = Node('action_stmt', [t[1], t[5]])
 
 def p_function_stmt(t):
-    '''function_stmt : FUNCTION ":" NEWLINE INDENT funcdef DEDENT
-                    | function_stmt funcdef'''
+    '''function_stmt : global_assign_stmt function_stmt
+                    | FUNCTION ":" NEWLINE INDENT global_assign_stmt funcdef DEDENT'''
     if len(t) == 3:
         t[0] = Node('function_stmt', [t[1], t[2]])
     else:
@@ -115,6 +115,16 @@ def p_compound_stmt(t):
 def p_assign_stmt(t):
     'assign_stmt : ID ":" "=" expr NEWLINE'
     t[0] = Node('assign_stmt',[t[1], t[4]], ':=')
+
+def p_global_assign_stmt(t):
+    '''global_assign_stmt : global_assign_stmt GLOBAL ID ":" "=" expr NEWLINE
+                          | empty'''
+
+    print 'global_assign_stmt'
+    if len(t) == 2:
+        t[0] = Node('global_assign_stmt', [], 'empty')
+    else:
+        t[0] = Node('global_assign_stmt', [t[2], t[5]])
 
 def p_flow_stmt(t):
     '''flow_stmt : break_stmt
@@ -287,10 +297,10 @@ def p_parameter_list(t):
         t[0] = Node('parameter_list', [t[1], t[3]])
 
 def p_for_stmt(t):
-    '''for_stmt : FOR ID "=" NUMBER TO NUMBER ":" suite
+    '''for_stmt : FOR ID ":" "=" NUMBER TO NUMBER ":" suite
                | FOR ID IN expr ":" suite'''
-    if len(t) == 9:
-        t[0] = Node('for_stmt', [t[2], t[4], t[6], t[8]])
+    if len(t) == 10:
+        t[0] = Node('for_stmt', [t[2], t[5], t[7], t[9]])
     else:
         t[0] = Node('for_stmt', [t[2], t[4], t[6]])
 
@@ -351,6 +361,9 @@ def p_break_stmt(t):
     'break_stmt : BREAK NEWLINE'
     t[0] = Node('break_stmt')
 
+def p_empty(p):
+    'empty :'
+    pass
 
 def p_error(p):
     print p
@@ -361,7 +374,7 @@ if __name__ == "__main__":
     m = lexing.BGDLexer()
     #parser = yacc.yacc(debug = True)
     parser = yacc.yacc(debug = False)
-    f = open('test.bgd')
+    f = open('tic-tac-toe.bgd')
     line = f.read()
     print line
     m.input(line)
