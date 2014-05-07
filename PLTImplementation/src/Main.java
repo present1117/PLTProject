@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.HashMap;
 
 
 /**
@@ -12,7 +13,21 @@ import java.util.Scanner;
 public class Main {
 	static ArrayList<Player> playerlist = new ArrayList<Player>();
 	//static String[] icons = {"o", "x", "+", "#", "W"};
-	static String[] icons = {"../bp.png", "../wp.png"};
+	//static String[] icons = {"bp.png", "wp.png"};
+	static HashMap<String, String>[] iconPool = new HashMap[GameDesigner.playerNum];
+	
+	static {
+		for(int i = 0; i < iconPool.length; i++)
+		{
+			iconPool[i] = new HashMap<String, String>();
+			iconPool[i].put("RED", "red.png");
+			iconPool[i].put("YELLOW", "yellow.png");
+			iconPool[i].put("GREEN", "green.png");
+			iconPool[i].put("BLUE", "blue.png");
+		}
+	}
+	
+	
 	public static void main(String[] args) {
 		BoardGUI board = Drawing.drawInitialBoard();
 		System.out.println("Welcome to our greatest Board game!");
@@ -52,7 +67,7 @@ public class Main {
 					}
 					
 					if (Functions.add(posx, posy, playerlist.get(playerid), ptype)) {
-						Drawing.drawBoard(board, playerlist, icons);
+						Drawing.drawBoard(board, playerlist, iconPool, ptype, posx, posy);
 						System.out.println("Successfully Added!");
 						if (Functions.win(posx, posy, playerlist.get(playerid))) {
 							System.out.println("Player " + playerid + " wins!");

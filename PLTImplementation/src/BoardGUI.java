@@ -27,7 +27,7 @@ public class BoardGUI extends JFrame {
     }
 
     private void createAndShowGUI() {
-        setTitle("Chess board example");
+        setTitle("Board Game Designer");
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -115,9 +115,9 @@ public class BoardGUI extends JFrame {
     }
 
     //method sets image of a label at a certain position in the board according to the block name i.e D4
-    public void addPiece(ImageIcon img, String block) {
+    public void addPiece(ImageIcon img, String position) {
         for (int s = 0; s < labels.length; s++) {
-            if (labels[s].getName().equalsIgnoreCase(block)) {
+            if (labels[s].getName().equalsIgnoreCase(position)) {
             	Image scaledImage = img.getImage().getScaledInstance((int)(panels[s].getWidth()/1.2), (int)(panels[s].getHeight()/1.2), Image.SCALE_SMOOTH);
             	img.setImage(scaledImage);
                 labels[s].setIcon(img);

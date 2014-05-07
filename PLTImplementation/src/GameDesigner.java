@@ -2,7 +2,7 @@ import java.lang.*;
 import java.util.*;
 
 public class GameDesigner {
-	static String[] pieceType = { "RED", "YELLOW", "GREEN", "BLUE" };
+	static String[] pieceType = { "RED", "YELLOW", "GREEN", "BLUE"};
 	static int[] pieceNum = { 0, 0, 0, 0 };
 	static int boardRow = 8;
 	static int boardCol = 8;
