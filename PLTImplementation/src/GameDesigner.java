@@ -17,26 +17,26 @@ public class GameDesigner {
 
 		if (PIECE_TYPE == "GREEN") {
 			return Functions.isEmpty(position)
-					&& Functions.getPieceType(Functions.getPiece(position.getX(),
-							position.getY() - 1)) == "RED"
-					&& Functions.getPieceType(Functions.getPiece(position.getX(),
-							position.getY() + 1)) == "RED"
+					&& Functions.getPieceType(Functions.getPiece(position.x(),
+							position.y() - 1)) == "RED"
+					&& Functions.getPieceType(Functions.getPiece(position.x(),
+							position.y() + 1)) == "RED"
 					&& Functions.getPieceType(Functions.getPiece(
-							position.getX() - 1, position.getY())) == "RED"
+							position.x() - 1, position.y())) == "RED"
 					&& Functions.getPieceType(Functions.getPiece(
-							position.getX() + 1, position.getY())) == "RED";
+							position.x() + 1, position.y())) == "RED";
 		}
 
 		if (PIECE_TYPE == "BLUE") {
 			return Functions.isEmpty(position)
-					&& Functions.getPieceType(Functions.getPiece(position.getX(),
-							position.getY() - 1)) == "RED"
+					&& Functions.getPieceType(Functions.getPiece(position.x(),
+							position.y() - 1)) == "RED"
 					&& Functions.getPieceType(Functions.getPiece(
-							position.getX() - 1, position.getY())) == "RED"
-					&& Functions.getPieceType(Functions.getPiece(position.getX(),
-							position.getY() + 1)) == "YELLOW"
+							position.x() - 1, position.y())) == "RED"
+					&& Functions.getPieceType(Functions.getPiece(position.x(),
+							position.y() + 1)) == "YELLOW"
 					&& Functions.getPieceType(Functions.getPiece(
-							position.getX() + 1, position.getY())) == "YELLOW";
+							position.x() + 1, position.y())) == "YELLOW";
 		}
 
 		return false;

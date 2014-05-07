@@ -29,9 +29,9 @@ public class Functions {
 	public static boolean isEmpty(Pos pos) {
 		if (pos == null)
 			return false;
-		if (pos.getX() >= Board.getBoardSlots().length
-				|| pos.getY() >= Board.getBoardSlots()[0].length
-				|| pos.getX() < 0 || pos.getY() < 0)
+		if (pos.x() >= Board.getBoardSlots().length
+				|| pos.y() >= Board.getBoardSlots()[0].length
+				|| pos.x() < 0 || pos.y() < 0)
 			return false;
 		Slot currentSlot = Board.getSlot(pos);
 		if (currentSlot == null) {
@@ -49,8 +49,8 @@ public class Functions {
 		// check horizontal line
 		// check vertical line
 		// check diagonal line
-		int posx = pos.getX();
-		int posy = pos.getY();
+		int posx = pos.x();
+		int posy = pos.y();
 		int a = CountDiagonal(posx, posy, currentSlot);
 		int b = CountHorizontal(posx, posy, currentSlot);
 		int c = CountVertical(posx, posy, currentSlot);
@@ -194,9 +194,9 @@ public class Functions {
 	}
 
 	public static Piece getPiece(Pos po) {
-		if (po.getX() < Board.getBoardSlots().length
-				&& po.getY() < Board.getBoardSlots()[0].length) {
-			Piece piece = Board.getBoardSlots()[po.getX()][po.getY()].Piece();
+		if (po.x() < Board.getBoardSlots().length
+				&& po.y() < Board.getBoardSlots()[0].length) {
+			Piece piece = Board.getBoardSlots()[po.x()][po.y()].Piece();
 			return piece;
 		}
 		return null;
@@ -253,8 +253,8 @@ public class Functions {
 	}
 
 	public static Piece findNextInRow(Pos pos, int mode) {
-		int x = pos.getX();
-		int y = pos.getY();
+		int x = pos.x();
+		int y = pos.y();
 		Slot currentSlot = Board.getBoardSlots()[x][y];
 		if (currentSlot == null || currentSlot.Piece() == null)
 			return null;
@@ -284,5 +284,24 @@ public class Functions {
 		}
 		return null;
 	}
+	
+	/**
+	 * get all currently existing pieces in the board
+	 * @return the array of pieces
+	 */
+	public Piece[] getAllPieces(){
+		return null;
+	}
+	/**
+	 * create an empty two dimension integer table and return.
+	 * @param row number of row in the two dimension table
+	 * @param col number of column in the two dimension table
+	 * @return
+	 */
+	public int[][] Create2DimArrays(int row, int col){
+		return null;
+	}
+	
+	
 
 }

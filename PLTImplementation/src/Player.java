@@ -26,6 +26,8 @@ public class Player {
 	}
 
 	boolean addPiece(Piece newpiece) {
+		if(newpiece == null)
+			return false;
 		if (pieceList.add(newpiece)) {
 			numberofpieces++;
 			return true;
@@ -34,15 +36,17 @@ public class Player {
 	}
 
 	boolean removePiece(Piece p) {
+		if(p == null)
+			return false;
 		Pos pos = p.pos;
 		for (Piece one : pieceList) {
 			Pos onepos = one.pos;
-			if (onepos.getX() == pos.getX() && onepos.getY() == pos.getY()) {
+			if (onepos.x() == pos.x() && onepos.y() == pos.y()) {
 				pieceList.remove(one);
 				numberofpieces--;
-				break;
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 }

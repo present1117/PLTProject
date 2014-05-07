@@ -22,11 +22,11 @@ public class Board {
 	}
 
 	public static Slot getSlot(Pos pos) {
-		return boardSlots[pos.getX()][pos.getY()];
+		return boardSlots[pos.x()][pos.y()];
 	}
 
 	public static boolean initSlot(Pos pos) {
-		if ((boardSlots[pos.getX()][pos.getY()] = new Slot()) != null)
+		if ((boardSlots[pos.x()][pos.y()] = new Slot()) != null)
 			return true;
 		else
 			return false;
@@ -69,8 +69,8 @@ class Pos {
 	}
 
 	Pos(Pos pos) {
-		x = pos.getX();
-		y = pos.getY();
+		x = pos.x();
+		y = pos.y();
 	}
 	Pos(String s){
 		String[] pos = s.split(",");
@@ -79,11 +79,11 @@ class Pos {
 		}
 	}
 
-	int getX() {
+	int x() {
 		return x;
 	}
 
-	int getY() {
+	int y() {
 		return y;
 	}
 }
