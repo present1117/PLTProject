@@ -12,7 +12,7 @@ public class Piece {
 	Piece(Player p, Pos pos) {
 		// TODO Auto-generated constructor stub
 		owner = p;
-		pos = new Pos(pos.x(), pos.y());
+		pos = new Pos(pos.getX(), pos.getY());
 	}
 
 	boolean setPiecetype(String type) {

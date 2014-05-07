@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 
-
 /**
  * class for all functions in the program as well all the built-in functions
  * 
@@ -9,33 +8,32 @@ import java.util.ArrayList;
  */
 
 public class Functions {
-	public static boolean add(int posx, int posy, Player currentowner, String ptype) {
-		if (GameDesigner.add_res(ptype, new Pos(posx, posy))) {
-			
-			Board.boardslots[posx][posy] = new Slot();
-			Board.boardslots[posx][posy].setPiece(new Piece(currentowner,
-					new Pos(posx, posy)), currentowner);
+	public static boolean add(Pos pos, Player currentowner, String ptype) {
+		if (GameDesigner.add_res(ptype, new Pos(pos))) {
+			Board.initSlot(pos);
+			Board.getSlot(pos).setPiece(new Piece(currentowner, new Pos(pos)), currentowner);
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	public static boolean win(int posx, int posy, Player currentowner) {
-		if (GameDesigner.win_res(new Pos(posx, posy))) {
+	public static boolean win(Pos pos, Player currentowner) {
+		if (GameDesigner.win_res(new Pos(pos))) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	public static boolean isEmpty(Pos position) {
-		if (position == null)
+	public static boolean isEmpty(Pos pos) {
+		if (pos == null)
 			return false;
-		if (position.x() >= Board.boardslots.length
-				|| position.y() >= Board.boardslots[0].length || position.x() < 0 || position.y() < 0)
+		if (pos.getX() >= Board.getBoardSlots().length
+				|| pos.getY() >= Board.getBoardSlots()[0].length
+				|| pos.getX() < 0 || pos.getY() < 0)
 			return false;
-		Slot currentSlot = Board.boardslots[position.x()][position.y()];
+		Slot currentSlot = Board.getSlot(pos);
 		if (currentSlot == null) {
 			return true;
 		} else {
@@ -43,18 +41,16 @@ public class Functions {
 		}
 	}
 
-	public static int numberInRow(int[] position) {
-		if (position.length < 2)
-			return 0;
-		int posx = position[0];
-		int posy = position[1];
-		Slot currentSlot = Board.boardslots[posx][posy];
+	public static int numberInRow(Pos pos) {
+		Slot currentSlot = Board.getSlot(pos);
 		if (currentSlot == null) {
 			return 0;
 		}
 		// check horizontal line
 		// check vertical line
 		// check diagonal line
+		int posx = pos.getX();
+		int posy = pos.getY();
 		int a = CountDiagonal(posx, posy, currentSlot);
 		int b = CountHorizontal(posx, posy, currentSlot);
 		int c = CountVertical(posx, posy, currentSlot);
@@ -64,19 +60,19 @@ public class Functions {
 
 	private static int CountHorizontal(int posx, int posy, Slot currentSlot) {
 		int total = 1;
-		for (int i = posy + 1; i < Board.col(); ++i) {
-			if (Board.boardslots[posx][i] == null)
+		for (int i = posy + 1; i < Board.getCol(); ++i) {
+			if (Board.getBoardSlots()[posx][i] == null)
 				break;
-			if (Board.boardslots[posx][i].Player() == currentSlot.Player()) {
+			if (Board.getBoardSlots()[posx][i].Player() == currentSlot.Player()) {
 				total++;
 			} else {
 				break;
 			}
 		}
 		for (int i = posy - 1; i >= 0; --i) {
-			if (Board.boardslots[posx][i] == null)
+			if (Board.getBoardSlots()[posx][i] == null)
 				break;
-			if (Board.boardslots[posx][i].Player() == currentSlot.Player()) {
+			if (Board.getBoardSlots()[posx][i].Player() == currentSlot.Player()) {
 				total++;
 			} else {
 				break;
@@ -88,19 +84,19 @@ public class Functions {
 
 	private static int CountVertical(int posx, int posy, Slot currentSlot) {
 		int total = 1;
-		for (int i = posx + 1; i < Board.row(); ++i) {
-			if (Board.boardslots[i][posy] == null)
+		for (int i = posx + 1; i < Board.getRow(); ++i) {
+			if (Board.getBoardSlots()[i][posy] == null)
 				break;
-			if (Board.boardslots[i][posy].Player() == currentSlot.Player()) {
+			if (Board.getBoardSlots()[i][posy].Player() == currentSlot.Player()) {
 				total++;
 			} else {
 				break;
 			}
 		}
 		for (int i = posx - 1; i >= 0; --i) {
-			if (Board.boardslots[i][posy] == null)
+			if (Board.getBoardSlots()[i][posy] == null)
 				break;
-			if (Board.boardslots[i][posy].Player() == currentSlot.Player()) {
+			if (Board.getBoardSlots()[i][posy].Player() == currentSlot.Player()) {
 				total++;
 			} else {
 				break;
@@ -118,10 +114,10 @@ public class Functions {
 
 		i -= 1;
 		j -= 1;
-		while (i >= 0 && i < Board.row() && j >= 0 && j < Board.col()) {
-			if (Board.boardslots[i][j] == null)
+		while (i >= 0 && i < Board.getRow() && j >= 0 && j < Board.getCol()) {
+			if (Board.getBoardSlots()[i][j] == null)
 				break;
-			if (Board.boardslots[i][j].Player() == currentSlot.Player()) {
+			if (Board.getBoardSlots()[i][j].Player() == currentSlot.Player()) {
 				total1++;
 			}
 			i -= 1;
@@ -131,10 +127,10 @@ public class Functions {
 		j = posy;
 		i += 1;
 		j += 1;
-		while (i >= 0 && i < Board.row() && j >= 0 && j < Board.col()) {
-			if (Board.boardslots[i][j] == null)
+		while (i >= 0 && i < Board.getRow() && j >= 0 && j < Board.getCol()) {
+			if (Board.getBoardSlots()[i][j] == null)
 				break;
-			if (Board.boardslots[i][j].Player() == currentSlot.Player()) {
+			if (Board.getBoardSlots()[i][j].Player() == currentSlot.Player()) {
 				total1++;
 			}
 			i += 1;
@@ -145,10 +141,10 @@ public class Functions {
 		j = posy;
 		i -= 1;
 		j += 1;
-		while (i >= 0 && i < Board.row() && j >= 0 && j < Board.col()) {
-			if (Board.boardslots[i][j] == null)
+		while (i >= 0 && i < Board.getRow() && j >= 0 && j < Board.getCol()) {
+			if (Board.getBoardSlots()[i][j] == null)
 				break;
-			if (Board.boardslots[i][j].Player() == currentSlot.Player()) {
+			if (Board.getBoardSlots()[i][j].Player() == currentSlot.Player()) {
 				total2++;
 			}
 			i -= 1;
@@ -159,10 +155,10 @@ public class Functions {
 		j = posy;
 		i += 1;
 		j -= 1;
-		while (i >= 0 && i < Board.row() && j >= 0 && j < Board.col()) {
-			if (Board.boardslots[i][j] == null)
+		while (i >= 0 && i < Board.getRow() && j >= 0 && j < Board.getCol()) {
+			if (Board.getBoardSlots()[i][j] == null)
 				break;
-			if (Board.boardslots[i][j].Player() == currentSlot.Player()) {
+			if (Board.getBoardSlots()[i][j].Player() == currentSlot.Player()) {
 				total2++;
 			}
 			i += 1;
@@ -179,17 +175,17 @@ public class Functions {
 	public static Player getPiecePlayer(Piece p) {
 		return p.owner;
 	}
-	
-	public static ArrayList<Piece> getPiecefromPlayer(Player p, String type){
+
+	public static ArrayList<Piece> getPiecefromPlayer(Player p, String type) {
 		ArrayList<Piece> myList = new ArrayList<Piece>();
-		for(Piece pi : p.pieceList){
-			if(pi.Type.equals(type))
+		for (Piece pi : p.pieceList) {
+			if (pi.Type.equals(type))
 				myList.add(pi);
 		}
 		return myList;
 	}
-	
-	public static ArrayList<Piece> getPiecefromPlayer(Player p){
+
+	public static ArrayList<Piece> getPiecefromPlayer(Player p) {
 		return p.pieceList;
 	}
 
@@ -198,17 +194,18 @@ public class Functions {
 	}
 
 	public static Piece getPiece(Pos po) {
-		if(po.x() < Board.boardslots.length && po.y() < Board.boardslots[0].length){
-			Piece piece = Board.boardslots[po.x()][po.y()].Piece();
+		if (po.getX() < Board.getBoardSlots().length
+				&& po.getY() < Board.getBoardSlots()[0].length) {
+			Piece piece = Board.getBoardSlots()[po.getX()][po.getY()].Piece();
 			return piece;
 		}
 		return null;
 	}
-	
+
 	public static Piece getPiece(int i, int j) {
 		// TODO Auto-generated method stub
-		if(i < Board.boardslots.length && j < Board.boardslots[0].length){
-			Piece piece = Board.boardslots[i][j].Piece();
+		if (i < Board.getBoardSlots().length && j < Board.getBoardSlots()[0].length) {
+			Piece piece = Board.getBoardSlots()[i][j].Piece();
 			return piece;
 		}
 		return null;
@@ -216,32 +213,35 @@ public class Functions {
 
 	public static int pieceCount(String piecetype) {
 		int count = 0;
-		for (int x = 0; x < Board.boardslots.length; x++) {
-			for (int y = 0; y < Board.boardslots[0].length; y ++) {
-				if (Board.boardslots[x][y] != null && Board.boardslots[x][y].Piece() != null && Board.boardslots[x][y].Piece().piecetype().equals(piecetype))
-					count ++;
+		for (int x = 0; x < Board.getBoardSlots().length; x++) {
+			for (int y = 0; y < Board.getBoardSlots()[0].length; y++) {
+				if (Board.getBoardSlots()[x][y] != null
+						&& Board.getBoardSlots()[x][y].Piece() != null
+						&& Board.getBoardSlots()[x][y].Piece().piecetype()
+								.equals(piecetype))
+					count++;
 			}
 		}
 		return count;
 	}
 
 	public static boolean isBoardFull() {
-		for (int x = 0; x < Board.boardslots.length; x++) {
-			for (int y = 0; y < Board.boardslots[0].length; y ++) {
-				if (Board.boardslots[x][y].available())
+		for (int x = 0; x < Board.getBoardSlots().length; x++) {
+			for (int y = 0; y < Board.getBoardSlots()[0].length; y++) {
+				if (Board.getBoardSlots()[x][y].available())
 					return false;
 			}
 		}
 		return true;
 	}
 
-	public static boolean remove(Pos po, ArrayList<Player> players) {
-		Piece piece = Board.boardslots[po.x()][po.y()].Piece();
+	public static boolean remove(Pos pos, ArrayList<Player> players) {
+		Piece piece = Board.getSlot(pos).Piece();
 		if (piece == null) {
 			return false;
 		} else {
 			Player owner = piece.owner;
-			Board.boardslots[po.x()][po.y()].setPiece(null, null);
+			Board.getSlot(pos).setPiece(null, null);
 			// delete the piece from the player
 			for (Player p : players) {
 				if (p.getId() == owner.getId()) {
@@ -253,24 +253,34 @@ public class Functions {
 	}
 
 	public static Piece findNextInRow(Pos pos, int mode) {
-		int x = pos.x();
-		int y = pos.y();
-		Slot currentSlot = Board.boardslots[x][y];
-		if (currentSlot == null || currentSlot.Piece() == null) return null;
-		if (mode < 0 || mode > 7) return null;
+		int x = pos.getX();
+		int y = pos.getY();
+		Slot currentSlot = Board.getBoardSlots()[x][y];
+		if (currentSlot == null || currentSlot.Piece() == null)
+			return null;
+		if (mode < 0 || mode > 7)
+			return null;
 		int x_min = 0;
 		int y_min = 0;
-		int x_max = Board.boardslots.length - 1;
-		int y_max = Board.boardslots[0].length - 1;
-		
+		int x_max = Board.getBoardSlots().length - 1;
+		int y_max = Board.getBoardSlots()[0].length - 1;
+
 		while (x >= x_min && x <= x_max && y >= y_min && y <= y_max) {
-			Slot slot = Board.boardslots[x][y];
-			if (slot != null && slot.Piece() != null && slot.Piece().Type == currentSlot.Piece().piecetype() && slot.Piece().owner.getId() == currentSlot.Piece().owner.getId())
-					return Board.boardslots[x][y].Piece();
-			if (mode <= 1 || mode == 7) x --;
-			if (mode >= 3 && mode <= 5) x ++;
-			if (mode >= 5 && mode <= 7) y --;
-			if (mode >= 1 && mode <= 3) y ++;
+			Slot slot = Board.getBoardSlots()[x][y];
+			if (slot != null
+					&& slot.Piece() != null
+					&& slot.Piece().Type == currentSlot.Piece().piecetype()
+					&& slot.Piece().owner.getId() == currentSlot.Piece().owner
+							.getId())
+				return Board.getBoardSlots()[x][y].Piece();
+			if (mode <= 1 || mode == 7)
+				x--;
+			if (mode >= 3 && mode <= 5)
+				x++;
+			if (mode >= 5 && mode <= 7)
+				y--;
+			if (mode >= 1 && mode <= 3)
+				y++;
 		}
 		return null;
 	}
