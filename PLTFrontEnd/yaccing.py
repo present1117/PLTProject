@@ -88,8 +88,8 @@ def p_action_stmt(t):
         t[0] = Node('action_stmt', [t[1], t[5]])
 
 def p_function_stmt(t):
-    '''function_stmt : FUNCTION ":" NEWLINE INDENT global_assign_stmt funcdef DEDENT'''
-    t[0] = Node('function_stmt', [t[5], t[6]])
+    '''function_stmt : FUNCTION ":" NEWLINE INDENT global_assign_stmt init_assign_stmt funcdef DEDENT'''
+    t[0] = Node('function_stmt', [t[5], t[6],t[7]])
 
 def p_stmt(t):
     '''stmt : simple_stmt
@@ -111,6 +111,23 @@ def p_compound_stmt(t):
 def p_assign_stmt(t):
     'assign_stmt : power ":" "=" expr NEWLINE'
     t[0] = Node('assign_stmt',[t[1], t[4]], ':=')
+
+def p_init_assign_stmt(t):
+    '''init_assign_stmt : DEF INIT ":" NEWLINE INDENT init_stmt DEDENT
+                        | empty'''
+    if len(t) == 2:
+        t[0] = Node('init_assign_stmt', [], string='')
+    else:
+        t[0] = Node('init_assign_stmt', [t[6]])
+
+def p_init_stmt(t):
+    '''init_stmt : STRING NUMBER position NEWLINE
+                 | init_stmt STRING NUMBER position NEWLINE'''
+    if len(t) == 5:
+        t[0] = Node('init_stmt', [t[1][1:-1], t[2], t[3]])
+    else:
+        t[0] = Node('init_stmt', [t[1], t[2][1:-1], t[3], t[4]])
+
 
 def p_global_assign_stmt(t):
     '''global_assign_stmt : global_assign_stmt GLOBAL assign_stmt
@@ -256,7 +273,7 @@ def p_atom(t):
                     t[0].token = type
                     break
     else:
-        t[0] = Node('atom', [t[2]])
+        t[0] = Node('atom', [t[1], t[2], t[3]])
 
 def p_position(t):
     'position : "(" expr "," expr ")"'
@@ -368,7 +385,7 @@ if __name__ == "__main__":
     m = lexing.BGDLexer()
     #parser = yacc.yacc(debug = True)
     parser = yacc.yacc(debug = False)
-    f = open('tic-tac-toe.bgd')
+    f = open('test1.bgd')
     line = f.read()
     print line
     m.input(line)

@@ -329,6 +329,16 @@ class Traverse(object):
                 node.string = ''
             else:
                 node.string = node.children[0].string + node.children[1].string
+        elif node.type == 'init_assign_stmt':
+            if len(node.children) == 0:
+                node.string = ''
+            else:
+                node.string = self.gen_init_assign_stmt(node)
+        elif node.type == 'init_stmt':
+            if len(node.children) == 3:
+                funcParam['init']['param'] = [[node.children[0], node.children[1], node.children[2].string]]
+            else:
+                funcParam['init']['param'].append([node.children[1], node.children[2], node.children[3].string])
         elif node.type == 'input_stmt':
             node.string = self.gen_input_stmt(node)
         elif node.type == 'factor' or node.type == 'term' or node.type == 'operand' or node.type == 'comparison' or node.type == 'not_test' or node.type == 'and_test' or node.type == 'or_test' or node.type == 'expr' or node.type == 'parameter' or node.type == 'flow_stmt' or node.type == 'compound_stmt' or node.type == 'simple_stmt' or node.type == 'stmt':
@@ -445,8 +455,20 @@ class Traverse(object):
         return s
 
     def gen_function_stmt(self, node):
-        return node.children[0].string + '\n' + node.children[1].string
+        return node.children[0].string + '\n' + node.children[1].string + '\n' + node.children[2].string
 
+    def gen_init_assign_stmt(self, node):
+        s1 = 'static String[] initPieces = {'
+        s2 = 'static int[] initOwner = {'
+        s3 = 'static int[][] initPos = {'
+        for item in funcParam['init']['param']:
+            s1 = s1 + '\"' + item[0].upper() + '\"' + ','
+            s2 = s2 + item[1] + ','
+            s3 = s3 + item[2] + ','
+        s1 = s1[0:-1] + '};\n'
+        s2 = s2[0:-1] + '};\n'
+        s3 = s3[0:-1] + '};\n'
+        return s1 + s2 + s3
     
     def gen_funcdef(self, node):
         s = ''
