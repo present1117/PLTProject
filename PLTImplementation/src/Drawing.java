@@ -14,7 +14,7 @@ import javax.swing.ImageIcon;
 public class Drawing {
 	public static void drawBoard(BoardGUI board, ArrayList<Player> pl, HashMap[] iconPool, String pieceType, int posx, int posy)
 	{
-		Slot[][] slots = Board.boardslots;
+		Slot[][] slots = Board.getBoardSlots();
 		//int numOfRows = Board.row();
 		//int numOfColumns = Board.col();
 		

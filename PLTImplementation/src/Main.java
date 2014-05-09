@@ -14,6 +14,7 @@ public class Main {
 	//static String[] icons = {"o", "x", "+", "#", "W"};
 	//static String[] icons = {"bp.png", "wp.png"};
 	static HashMap<String, String>[] iconPool = new HashMap[GameDesigner.playerNum];
+	static BoardGUI board = Drawing.drawInitialBoard(); 
 	
 	static {
 		for(int i = 0; i < iconPool.length; i++)
@@ -29,7 +30,6 @@ public class Main {
 	static int playerid = 0;
 	
 	public static void main(String[] args) {
-		BoardGUI board = Drawing.drawInitialBoard(); 
 		System.out.println("Welcome to our greatest Board game!");
 		System.out.println("This is the start of the game!");
 		
@@ -50,33 +50,6 @@ public class Main {
 					System.out.println("Input Length != 3!");
 					break;
 				}
-
-				try{
-					int posx = Integer.parseInt(xypos[0]);
-					int posy = Integer.parseInt(xypos[1]);	
-					String ptype  = "";
-					for(String t : GameDesigner.pieceType){
-						if(xypos[2].equals(t))
-							ptype = t;
-					}
-					if(ptype == ""){
-						System.out.println("Error input!");
-						break;
-					}
-					
-					if (Functions.add(posx, posy, playerlist.get(playerid), ptype)) {
-						Drawing.drawBoard(board, playerlist, iconPool, ptype, posx, posy);
-						System.out.println("Successfully Added!");
-						if (Functions.win(posx, posy, playerlist.get(playerid))) {
-							System.out.println("Player " + playerid + " wins!");
-							break;
-						}
-						playerid++;
-					} else {
-						System.out.println("Error value!");
-					}
-				}catch(Exception e){
-					System.out.println("Error input!");
 				else if (!add(spliter[1],spliter[2])) 
 					break;
 			} else if (spliter[0].equalsIgnoreCase("remove")) {
@@ -116,7 +89,7 @@ public class Main {
 			}
 
 			if (Functions.add(pos, playerlist.get(playerid), ptype)) {
-				Drawing.drawBoard(board, playerlist, icons);
+				Drawing.drawBoard(board, playerlist, iconPool,ptype,pos.x(),pos.y());
 				
 				System.out.println("Successfully Added!");
 				
@@ -144,7 +117,8 @@ public class Main {
 		try {
 			Pos pos = new Pos(Integer.parseInt(_removePos[0]),Integer.parseInt(_removePos[1]));
 			if (Functions.remove(pos, playerlist)) {
-				Drawing.drawBoard(board, playerlist, icons);
+				
+				Drawing.drawBoard(board, playerlist,iconPool,Functions.getPiece(pos).piecetype(),pos.x(),pos.y() );
 				
 				System.out.println("Successfully Removed");
 				
