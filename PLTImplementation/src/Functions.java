@@ -18,17 +18,26 @@ public class Functions {
 		}
 	}
 
-	public static boolean win(Pos pos, Player currentowner) {
-//		Object wincon = GameDesigner.win_res(new Pos(pos));
-//		if(wincon.getClass().getName().contains("Integer")){
-//			if(GameDesigner.win_res(new Pos(pos)) == -1)
-//				return false
-//		}
-		if (GameDesigner.win_res(new Pos(pos))) {
-			return true;
-		} else {
-			return false;
+	public static boolean win(Pos pos, Player winningPlayer) {
+		Object wincon = GameDesigner.win_res(new Pos(pos));
+		if(wincon.getClass().getName().contains("Integer")){
+			if((Integer)wincon == -1)
+				return false;
+			else {
+				winningPlayer.setId((Integer)wincon);
+				return true;
+			}
+			
 		}
+		else if(wincon.getClass().getName().contains("Boolean")) {
+			if ((Boolean)wincon) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		return false;
+		
 	}
 
 	public static boolean isEmpty(Pos pos) {
@@ -217,7 +226,15 @@ public class Functions {
 		}
 		return null;
 	}
-
+	
+	/**
+	 * get all currently existing pieces in the board
+	 * @return the array of pieces
+	 */
+	public Piece[] getAllPieces(){
+		return null;
+	}
+	
 	public static int pieceCount(String piecetype) {
 		int count = 0;
 		for (int x = 0; x < Board.getBoardSlots().length; x++) {
@@ -292,23 +309,14 @@ public class Functions {
 		return null;
 	}
 	
-	/**
-	 * get all currently existing pieces in the board
-	 * @return the array of pieces
-	 */
-	public Piece[] getAllPieces(){
-		return null;
-	}
+
 	/**
 	 * create an empty two dimension integer table and return.
 	 * @param row number of row in the two dimension table
 	 * @param col number of column in the two dimension table
 	 * @return
 	 */
-	public int[][] Create2DimArrays(int row, int col){
+	public int[][] create2DimArray(int row, int col){
 		return null;
 	}
-	
-	
-
 }

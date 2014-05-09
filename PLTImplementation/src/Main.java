@@ -11,10 +11,12 @@ import java.util.HashMap;
 
 public class Main {
 	static ArrayList<Player> playerlist = new ArrayList<Player>();
+	static Player winningPlayer = new Player(-1);
 	//static String[] icons = {"o", "x", "+", "#", "W"};
 	//static String[] icons = {"bp.png", "wp.png"};
-	static HashMap<String, String>[] iconPool;
-	static BoardGUI board = Drawing.drawInitialBoard(); 
+	@SuppressWarnings("unchecked")
+	static HashMap<String, String>[] iconPool = new HashMap[GameDesigner.playerNum];
+	static BoardGUI board = Drawing.drawInitialBoard();
 	
 	static {
 		for(int i = 0; i < iconPool.length; i++)
@@ -40,6 +42,8 @@ public class Main {
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 		while (true) {
+			if(winningPlayer.getId() != -1)
+				break;
 			playerid = playerid % playerlist.size();
 			System.out.println("Player" + playerid + " Action:");
 			String movement = sc.nextLine();
@@ -82,7 +86,7 @@ public class Main {
 		try {
 			Pos pos = new Pos(Integer.parseInt(_addPos[0]),Integer.parseInt(_addPos[1]));
 			for (String t : GameDesigner.pieceType) {
-				if (type.equals(t))
+				if (type.equalsIgnoreCase(t))
 					ptype = t;
 			}
 			if (ptype == "") {
@@ -95,8 +99,8 @@ public class Main {
 				
 				System.out.println("Successfully Added!");
 				
-				if (Functions.win(pos, playerlist.get(playerid))) {
-					System.out.println("Player " + playerid + " wins!");
+				if (Functions.win(pos, winningPlayer)) {
+					System.out.println("Player " + winningPlayer.getId() + " wins!");
 					return false;
 				}
 				playerid ++;
@@ -124,8 +128,8 @@ public class Main {
 				
 				System.out.println("Successfully Removed");
 				
-				if (Functions.win(pos, playerlist.get(playerid))) {
-					System.out.println("Player " + playerid + " wins!");
+				if (Functions.win(pos, winningPlayer)) {
+					System.out.println("Player " + winningPlayer.getId() + " wins!");
 					return false;
 				} else {
 					System.out.println("Invalid Position!");
