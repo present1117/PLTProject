@@ -11,7 +11,6 @@ import java.util.HashMap;
 
 public class Main {
 	static ArrayList<Player> playerlist = new ArrayList<Player>();
-<<<<<<< HEAD
 	//static String[] icons = {"o", "x", "+", "#", "W"};
 	//static String[] icons = {"bp.png", "wp.png"};
 	static HashMap<String, String>[] iconPool = new HashMap[GameDesigner.playerNum];
@@ -27,13 +26,10 @@ public class Main {
 		}
 	}
 	
-=======
-	static String[] icons = { "bp.png", "wp.png" };
-	static private BoardGUI board = Drawing.drawInitialBoard(); 
 	static int playerid = 0;
->>>>>>> FETCH_HEAD
 	
 	public static void main(String[] args) {
+		BoardGUI board = Drawing.drawInitialBoard(); 
 		System.out.println("Welcome to our greatest Board game!");
 		System.out.println("This is the start of the game!");
 		
@@ -54,7 +50,7 @@ public class Main {
 					System.out.println("Input Length != 3!");
 					break;
 				}
-<<<<<<< HEAD
+
 				try{
 					int posx = Integer.parseInt(xypos[0]);
 					int posy = Integer.parseInt(xypos[1]);	
@@ -81,13 +77,11 @@ public class Main {
 					}
 				}catch(Exception e){
 					System.out.println("Error input!");
-=======
 				else if (!add(spliter[1],spliter[2])) 
 					break;
 			} else if (spliter[0].equalsIgnoreCase("remove")) {
 				if (spliter.length != 2) {
 					System.out.println("Input Length != 2");
->>>>>>> FETCH_HEAD
 					break;
 				}
 				if (!remove(spliter[1]))
