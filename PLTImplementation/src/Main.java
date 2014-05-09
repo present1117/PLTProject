@@ -48,25 +48,27 @@ public class Main {
 			if (spliter[0].equalsIgnoreCase("add")) {
 				if (spliter.length != 3) {
 					System.out.println("Input Length != 3!");
-					break;
+//					break;
 				}
-				else if (!add(spliter[1],spliter[2])) 
-					break;
+				else{
+					add(spliter[1],spliter[2]);
+					} 
+//					break;
 			} else if (spliter[0].equalsIgnoreCase("remove")) {
 				if (spliter.length != 2) {
 					System.out.println("Input Length != 2");
-					break;
+//					break;
 				}
-				if (!remove(spliter[1]))
-					break;
+				remove(spliter[1]);
+//					break;
 			} else if (spliter[0].equalsIgnoreCase("move")) {
-				if (!move(spliter[1]))
-					break;
+				move(spliter[1]);
+//					break;
 			} else {
 				System.out.println("Error input!");
 			}
 		}
-		System.out.println("Game ends!");
+//		System.out.println("Game ends!");
 	}
 
 	private static boolean add(String addPos, String type) {
@@ -118,7 +120,7 @@ public class Main {
 			Pos pos = new Pos(Integer.parseInt(_removePos[0]),Integer.parseInt(_removePos[1]));
 			if (Functions.remove(pos, playerlist)) {
 				
-				Drawing.drawBoard(board, playerlist,iconPool,Functions.getPiece(pos).piecetype(),pos.x(),pos.y() );
+				Drawing.drawBoard(board, playerlist,iconPool,Functions.getPiece(pos).getPiecetype(),pos.x(),pos.y() );
 				
 				System.out.println("Successfully Removed");
 				

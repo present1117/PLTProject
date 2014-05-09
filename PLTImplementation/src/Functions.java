@@ -11,7 +11,7 @@ public class Functions {
 	public static boolean add(Pos pos, Player currentowner, String ptype) {
 		if (GameDesigner.add_res(ptype, new Pos(pos))) {
 			Board.initSlot(pos);
-			Board.getSlot(pos).setPiece(new Piece(currentowner, new Pos(pos)), currentowner);
+			Board.getSlot(pos).setPiece(new Piece(currentowner, new Pos(pos), ptype), currentowner);
 			return true;
 		} else {
 			return false;
@@ -19,6 +19,11 @@ public class Functions {
 	}
 
 	public static boolean win(Pos pos, Player currentowner) {
+//		Object wincon = GameDesigner.win_res(new Pos(pos));
+//		if(wincon.getClass().getName().contains("Integer")){
+//			if(GameDesigner.win_res(new Pos(pos)) == -1)
+//				return false
+//		}
 		if (GameDesigner.win_res(new Pos(pos))) {
 			return true;
 		} else {
@@ -170,7 +175,7 @@ public class Functions {
 
 	public static String getPieceType(Piece p) {
 		if(p != null)
-			return p.piecetype();
+			return p.getPiecetype();
 		return null;
 	}
 
@@ -219,7 +224,7 @@ public class Functions {
 			for (int y = 0; y < Board.getBoardSlots()[0].length; y++) {
 				if (Board.getBoardSlots()[x][y] != null
 						&& Board.getBoardSlots()[x][y].Piece() != null
-						&& Board.getBoardSlots()[x][y].Piece().piecetype()
+						&& Board.getBoardSlots()[x][y].Piece().getPiecetype()
 								.equals(piecetype))
 					count++;
 			}
@@ -271,7 +276,7 @@ public class Functions {
 			Slot slot = Board.getBoardSlots()[x][y];
 			if (slot != null
 					&& slot.Piece() != null
-					&& slot.Piece().Type == currentSlot.Piece().piecetype()
+					&& slot.Piece().Type == currentSlot.Piece().getPiecetype()
 					&& slot.Piece().owner.getId() == currentSlot.Piece().owner
 							.getId())
 				return Board.getBoardSlots()[x][y].Piece();

@@ -9,10 +9,17 @@ public class Piece {
 	Pos pos;
 	String Type = "";
 
-	Piece(Player p, Pos pos) {
+	Piece(Player p, Pos po) {
 		// TODO Auto-generated constructor stub
 		owner = p;
-		pos = new Pos(pos.x(), pos.y());
+		pos = new Pos(po.x(), po.y());
+	}
+
+	public Piece(Player currentowner, Pos pos2, String ptype) {
+		// TODO Auto-generated constructor stub
+		owner = currentowner;
+		pos = new Pos(pos2.x(), pos2.y());
+		Type = ptype;
 	}
 
 	boolean setPiecetype(String type) {
@@ -20,7 +27,7 @@ public class Piece {
 		return true;
 	}
 
-	String piecetype() {
+	String getPiecetype() {
 		return Type;
 	}
 }
