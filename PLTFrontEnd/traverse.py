@@ -16,7 +16,7 @@ import re
 ID_pattern = re.compile(r'[A-Za-z_][A-Za-z0-9_]*')
 
 
-builtInFunc = ['isEmpty', 'numberInRow', 'getPieceType', 'getPiecePlayer', 'getPiecePos', 'getPiece', 'pieceCount', 'isBoardFull', 'getPiecefromPlayer', 'findNextInRow', 'findSameInCircle', 'getAllPieces', 'create2DimArray']
+builtInFunc = ['isEmpty', 'numberInRow', 'getPieceType', 'getPiecePlayer', 'getPiecePos', 'getPiece', 'pieceCount', 'isBoardFull', 'getPiecefromPlayer', 'findNextInRow', 'findSameInCircle', 'getAllPiecesPos', 'create2DimArray']
 actionFunc = ['add', 'move', 'win', 'remove']
 funcParam = defaultdict(dict)
 funcParam['add']['returnValue'] = 'boolean'
@@ -49,8 +49,8 @@ funcParam['findNextInRow']['returnValue'] = 'Piece'
 funcParam['findNextInRow']['param'] = ['Pos', 'int']
 funcParam['findSameInCircle']['returnValue'] = 'Piece[]'
 funcParam['findSameInCircle']['param'] = ['Pos']
-funcParam['getAllPieces']['returnValue'] = 'Pos[]'
-funcParam['getAllPieces']['param'] = []
+funcParam['getAllPiecesPos']['returnValue'] = 'Pos[]'
+funcParam['getAllPiecesPos']['param'] = []
 funcParam['create2DimArray']['returnValue'] = 'int[][]'
 funcParam['create2DimArray']['param'] = ['int', 'int']
 
@@ -110,22 +110,23 @@ class Traverse(object):
     def take_action(self, node):
         if node.leaf == ':=':
             if isinstance(node.children[0], Node):
-                node.string = node.children[0].string + '=' + node.children[1].string + ';\n'
+                leftString = node.children[0].string
             else:
-                node.string = node.children[0] + '=' + node.children[1].string + ';\n'
+                leftString = node.children[0]
+            node.string = leftString + '=' + node.children[1].string + ';\n'
             #if node.string[-1] != '\n':
             #    node.string += ';\n'
             node.token = node.children[1].token
             #if node.token == '':
             #    node.token = 'Object'
-            if node.children[0] not in currentParam['param']:
-                currentParam['param'][node.children[0]] = node.token
+            if leftString not in currentParam['param']:
+                currentParam['param'][leftString] = node.token
                 node.token = cTransform(node.token)
                 node.string = node.token + ' ' + node.string
             else:
-                if node.token != 'Object' and cTransform(node.token) != cTransform(currentParam['param'][node.children[0]]):
+                if node.token != 'Object' and cTransform(node.token) != cTransform(currentParam['param'][leftString]):
 #                if node.token != '' and node.token != 'Object' and node.token != currentParam['param'][node.children[0]]:
-                    print 'Warning: %s: \'%s\' is changed to \'%s\'. ' % (node.string.strip(), cTransform(currentParam['param'][node.children[0]]), cTransform(node.token))
+                    print 'Warning: %s: \'%s\' is changed to \'%s\'. ' % (node.string.strip(), cTransform(currentParam['param'][leftString]), cTransform(node.token))
                     #else:                       
         #elif node.leaf == 'assigned':
             ##function default parameters assignment
@@ -240,7 +241,10 @@ class Traverse(object):
                                 if currentParam['param'][vars[i]]!=funcParam[node.children[0]]['param'][i] and currentParam['param'][vars[i]]!='Object':
                                     print 'Warning: %s: \'%s\' is not \'%s\'. ' % (node.string, vars[i], funcParam[node.children[0]]['param'][i])
         elif node.type == 'atom':
-            if isinstance(node.children[0], Node):
+            if len(node.children) > 1:
+                node.string = node.children[0] + node.children[1].string + node.children[2]
+                node.token = node.children[1].token
+            elif isinstance(node.children[0], Node):
                 node.string = node.children[0].string
             else:
                 node.string = node.children[0]
@@ -432,7 +436,10 @@ class Traverse(object):
             s = 'for( int ' + idx +'='+node.children[1]+';' + idx+ '<='+node.children[2]\
                 + ';'+idx+'++)' + node.children[3].string
         else:
-            array_type = node.children[1].token[0:-2]
+            if node.children[1].string in currentParam['param']:
+                array_type = currentParam['param'][node.children[1].string][0:-2]
+            else:
+                array_type = node.children[1].token
             s = 'for(' + array_type +' '+ node.children[0] + ':'+\
                 node.children[1].string + ')\n'+ node.children[2].string
         return s
