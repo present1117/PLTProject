@@ -169,7 +169,9 @@ public class Functions {
 	}
 
 	public static String getPieceType(Piece p) {
-		return p.piecetype();
+		if(p != null)
+			return p.piecetype();
+		return null;
 	}
 
 	public static Player getPiecePlayer(Piece p) {
@@ -204,7 +206,7 @@ public class Functions {
 
 	public static Piece getPiece(int i, int j) {
 		// TODO Auto-generated method stub
-		if (i < Board.getBoardSlots().length && j < Board.getBoardSlots()[0].length) {
+		if (i >= 0 && j >= 0 && i < Board.getBoardSlots().length && j < Board.getBoardSlots()[0].length) {
 			Piece piece = Board.getBoardSlots()[i][j].Piece();
 			return piece;
 		}
