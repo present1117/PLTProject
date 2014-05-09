@@ -20,6 +20,10 @@ public class Player {
 	int getId() {
 		return identifier;
 	}
+	
+	void setId(int id){
+		identifier = id;
+	}
 
 	int piecenumber() {
 		return numberofpieces;
