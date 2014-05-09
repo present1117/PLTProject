@@ -231,7 +231,7 @@ public class Functions {
 	 * get all currently existing pieces in the board
 	 * @return the array of pieces
 	 */
-	public Piece[] getAllPieces(){
+	public Pos[] getAllPiecesPositions(){
 		return null;
 	}
 	

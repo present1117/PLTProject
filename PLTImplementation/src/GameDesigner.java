@@ -24,11 +24,6 @@ public class GameDesigner {
 		}
 
 		if (PIECE_TYPE == "BLUE") {
-			System.out.println(Functions.getPieceType(Functions.getPiece(position.x(),position.y() - 1)));
-			System.out.println(Functions.getPieceType(Functions.getPiece(position.x()-1,position.y())));
-			System.out.println(Functions.getPieceType(Functions.getPiece(position.x(),position.y() + 1)));
-			System.out.println(Functions.getPieceType(Functions.getPiece(position.x()+1,position.y())));
-			
 			return Functions.isEmpty(position)
 					&& Functions.getPieceType(Functions.getPiece(position.x(),position.y() - 1)) == "RED"
 					&& Functions.getPieceType(Functions.getPiece(position.x() - 1, position.y())) == "RED"
