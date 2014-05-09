@@ -11,19 +11,16 @@ import java.util.HashMap;
 
 public class Main {
 	static ArrayList<Player> playerlist = new ArrayList<Player>();
-	//static String[] icons = {"o", "x", "+", "#", "W"};
-	//static String[] icons = {"bp.png", "wp.png"};
-	static HashMap<String, String>[] iconPool;
+	static HashMap<Integer, HashMap<String, String>> iconPool = new HashMap<Integer, HashMap<String, String>>();
 	static BoardGUI board = Drawing.drawInitialBoard(); 
 	
 	static {
-		for(int i = 0; i < iconPool.length; i++)
+		for(int i = 0; i < GameDesigner.pieceNum.length; i++)
 		{
-			iconPool[i] = new HashMap<String, String>();
-			iconPool[i].put("RED", "red.png");
-			iconPool[i].put("YELLOW", "yellow.png");
-			iconPool[i].put("GREEN", "green.png");
-			iconPool[i].put("BLUE", "blue.png");
+			iconPool.put(i, new HashMap<String, String>());
+			for (int j = 0; j < GameDesigner.pieceType.length; j++) {
+				iconPool.get(i).put(GameDesigner.pieceType[j], GameDesigner.pieceType[j]+".png");
+			}
 		}
 	}
 	
@@ -91,7 +88,7 @@ public class Main {
 			}
 
 			if (Functions.add(pos, playerlist.get(playerid), ptype)) {
-				Drawing.drawBoard(board, playerlist, iconPool,ptype,pos.x(),pos.y());
+				Drawing.drawBoard(board, playerlist, iconPool,ptype,pos);
 				
 				System.out.println("Successfully Added!");
 				
@@ -105,7 +102,7 @@ public class Main {
 				return false;
 			}
 		} catch (Exception e) {
-			System.out.println("Error input!");
+			System.out.println(e.getLocalizedMessage());
 			return false;
 		}
 		return true;
@@ -120,7 +117,7 @@ public class Main {
 			Pos pos = new Pos(Integer.parseInt(_removePos[0]),Integer.parseInt(_removePos[1]));
 			if (Functions.remove(pos, playerlist)) {
 				
-				Drawing.drawBoard(board, playerlist,iconPool,Functions.getPiece(pos).getPiecetype(),pos.x(),pos.y() );
+				Drawing.drawBoard(board, playerlist,iconPool,Functions.getPiece(pos).getPiecetype(),pos);
 				
 				System.out.println("Successfully Removed");
 				
