@@ -12,28 +12,35 @@ import javax.swing.ImageIcon;
  *
  */
 public class Drawing {
-	public static void drawBoard(BoardGUI board, ArrayList<Player> pl, HashMap<Integer, HashMap<String, String>> iconPool, String pieceType, Pos pos)
+	public static void drawBoard(BoardGUI board, ArrayList<Player> pl, HashMap<Integer, HashMap<String, String>> iconPool, String action, String pieceType, Pos pos)
 	{
-		//int numOfRows = Board.row();
-		//int numOfColumns = Board.col();
+		int numOfRows = Board.getRow();
+		int numOfColumns = Board.getCol();
 		
-//		for(int i = 0; i < numOfRows; i++)
-//		{
-//			for(int j = 0; j < numOfColumns; j++)
-//			{
-//				try{
-//					//System.out.print(icons[slots[i][j].Player().getId()] + " ");
-//					add(board, i+""+j, iconPool[slots[i][j].Player().getId()].get(pieceType).toString());
-//					
-//				}
-//				catch(NullPointerException e)
-//				{
-//					
-//				}		
-//			}	
-//		}
-		
-		add(board, pos.x()+""+pos.y(), iconPool.get(Board.getSlot(pos).Player().getId()).get(pieceType).toString());
+		for(int i = 0; i < numOfRows; i++)
+		{
+			for(int j = 0; j < numOfColumns; j++)
+			{
+				try{
+					//System.out.print(icons[slots[i][j].Player().getId()] + " ");
+					if(pos.x() == i && pos.y() == j)
+					{
+						if(action.equalsIgnoreCase("add"))
+							add(board, i+""+j, iconPool.get(Board.getSlot(pos).Player().getId()).get(pieceType).toString());
+						if(action.equalsIgnoreCase("remove"))
+							remove(board, i+""+j);
+					}
+				}
+				catch(NullPointerException e)
+				{
+					
+				}		
+			}	
+		}
+		/*if(action.equalsIgnoreCase("add"))
+			add(board, pos.x()+""+pos.y(), iconPool.get(Board.getSlot(pos).Player().getId()).get(pieceType).toString());
+		else if(action.equalsIgnoreCase("remove"))
+			remove(board, pos.x()+""+pos.y());*/
 	}
 
 	
@@ -58,5 +65,10 @@ public class Drawing {
 		//add pieces to board
 		board.addPiece(new ImageIcon(iconName), position);
 
+	}
+	
+	public static void remove(BoardGUI board, String position)
+	{
+		board.removePiece(position);
 	}
 }

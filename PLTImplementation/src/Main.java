@@ -88,7 +88,7 @@ public class Main {
 			}
 
 			if (Functions.add(pos, playerlist.get(playerid), ptype)) {
-				Drawing.drawBoard(board, playerlist, iconPool,ptype,pos);
+				Drawing.drawBoard(board, playerlist, iconPool,"add", ptype,pos);
 				
 				System.out.println("Successfully Added!");
 				
@@ -117,7 +117,7 @@ public class Main {
 			Pos pos = new Pos(Integer.parseInt(_removePos[0]),Integer.parseInt(_removePos[1]));
 			if (Functions.remove(pos, playerlist)) {
 				
-				Drawing.drawBoard(board, playerlist,iconPool,Functions.getPiece(pos).getPiecetype(),pos);
+				Drawing.drawBoard(board, playerlist,iconPool,"remove", Functions.getPiece(pos).getPiecetype(),pos);
 				
 				System.out.println("Successfully Removed");
 				
