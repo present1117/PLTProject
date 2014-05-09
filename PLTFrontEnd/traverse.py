@@ -16,7 +16,7 @@ import re
 ID_pattern = re.compile(r'[A-Za-z_][A-Za-z0-9_]*')
 
 
-builtInFunc = ['isEmpty', 'numberInRow', 'getPieceType', 'getPiecePlayer', 'getPiecePos', 'getPiece', 'pieceCount', 'isBoardFull', 'getPiecefromPlayer', 'findNextInRow', 'findSameInCircle', 'getAllPieces']
+builtInFunc = ['isEmpty', 'numberInRow', 'getPieceType', 'getPiecePlayer', 'getPiecePos', 'getPiece', 'pieceCount', 'isBoardFull', 'getPiecefromPlayer', 'findNextInRow', 'findSameInCircle', 'getAllPieces', 'create2DimArray']
 actionFunc = ['add', 'move', 'win', 'remove']
 funcParam = defaultdict(dict)
 funcParam['add']['returnValue'] = 'boolean'
@@ -51,6 +51,8 @@ funcParam['findSameInCircle']['returnValue'] = 'Piece[]'
 funcParam['findSameInCircle']['param'] = ['Pos']
 funcParam['getAllPieces']['returnValue'] = 'Pos[]'
 funcParam['getAllPieces']['param'] = []
+funcParam['create2DimArray']['returnValue'] = 'int[][]'
+funcParam['create2DimArray']['param'] = ['int', 'int']
 
 
 #funcParam['add'] = ['boolean', 'int[]']
@@ -107,7 +109,10 @@ class Traverse(object):
     
     def take_action(self, node):
         if node.leaf == ':=':
-            node.string = node.children[0] + '=' + node.children[1].string + ';\n'
+            if isinstance(node.children[0], Node):
+                node.string = node.children[0].string + '=' + node.children[1].string + ';\n'
+            else:
+                node.string = node.children[0] + '=' + node.children[1].string + ';\n'
             #if node.string[-1] != '\n':
             #    node.string += ';\n'
             node.token = node.children[1].token
@@ -223,16 +228,17 @@ class Traverse(object):
         elif node.type == 'func_expr':
             node.string = self.gen_func_expr(node)
             node.token = funcParam[node.children[0]]['returnValue']
-            vars = node.children[1].string.split(', ')
-            for i in range(0,len(vars)):
-                id = ID_pattern.match(vars[i])
-                if id != None and id.group() == vars[i]:
-                    if vars[i] not in currentParam['param']:
-                        currentParam['param'][vars[i]] = funcParam[node.children[0]]['param'][i]
-                    else:
-                        if funcParam[node.children[0]]['param'][i] != 'Object':
-                            if currentParam['param'][vars[i]]!=funcParam[node.children[0]]['param'][i] and currentParam['param'][vars[i]]!='Object':
-                                print 'Warning: %s: \'%s\' is not \'%s\'. ' % (node.string, vars[i], funcParam[node.children[0]]['param'][i])
+            if len(node.children) > 1:
+                vars = node.children[1].string.split(', ')
+                for i in range(0,len(vars)):
+                    id = ID_pattern.match(vars[i])
+                    if id != None and id.group() == vars[i]:
+                        if vars[i] not in currentParam['param']:
+                            currentParam['param'][vars[i]] = funcParam[node.children[0]]['param'][i]
+                        else:
+                            if funcParam[node.children[0]]['param'][i] != 'Object':
+                                if currentParam['param'][vars[i]]!=funcParam[node.children[0]]['param'][i] and currentParam['param'][vars[i]]!='Object':
+                                    print 'Warning: %s: \'%s\' is not \'%s\'. ' % (node.string, vars[i], funcParam[node.children[0]]['param'][i])
         elif node.type == 'atom':
             if isinstance(node.children[0], Node):
                 node.string = node.children[0].string
@@ -465,10 +471,10 @@ class Traverse(object):
                 else:
                     returnvalue = funcParam[children[0]]['returnValue']
                 s = s + returnvalue + ' ' + children[0] + '_res' + ' ('
-                if len(funcParam[children[0]]) > 0:
+                if len(para_list) > 0:
                     for i in range(0,len(para_list)):
                         s = s + para_list[i] + ' ' + children[1].string[i] + ','
-                s = s[0:-1]
+                    s = s[0:-1]
                 s += ')\n'
             else:
                 para_dict = currentParam['param']

@@ -102,14 +102,14 @@ def p_simple_stmt(t):
     t[0] = Node('simple_stmt', [t[1]])
 
 def p_compound_stmt(t): 
-    '''compound_stmt : funcdef
+    '''compound_stmt : func_expr NEWLINE
                     | for_stmt
                     | if_stmt
                     | while_stmt'''
     t[0] = Node('compound_stmt', [t[1]])
 
 def p_assign_stmt(t):
-    'assign_stmt : ID ":" "=" expr NEWLINE'
+    'assign_stmt : power ":" "=" expr NEWLINE'
     t[0] = Node('assign_stmt',[t[1], t[4]], ':=')
 
 def p_global_assign_stmt(t):
@@ -276,7 +276,7 @@ def p_trailer(t):
 
 def p_func_expr(t):
     '''func_expr : ID "(" ")"
-                | ID "(" parameter_list ")" '''
+                | ID "(" parameter_list ")"'''
     if len(t) == 4:
         t[0] = Node('func_expr', [t[1]])
     else:
