@@ -16,7 +16,7 @@ import re
 ID_pattern = re.compile(r'[A-Za-z_][A-Za-z0-9_]*')
 
 
-builtInFunc = ['isEmpty', 'numberInRow', 'getPieceType', 'getPiece', 'pieceCount']
+builtInFunc = ['isEmpty', 'numberInRow', 'getPieceType', 'getPiecePlayer', 'getPiecePos', 'getPiece', 'pieceCount', 'isBoardFull', 'getPiecefromPlayer', 'findNextInRow', 'findSameInCircle', 'getAllPieces']
 actionFunc = ['add', 'move', 'win', 'remove']
 funcParam = defaultdict(dict)
 funcParam['add']['returnValue'] = 'boolean'
@@ -49,6 +49,8 @@ funcParam['findNextInRow']['returnValue'] = 'Piece'
 funcParam['findNextInRow']['param'] = ['Pos', 'int']
 funcParam['findSameInCircle']['returnValue'] = 'Piece[]'
 funcParam['findSameInCircle']['param'] = ['Pos']
+funcParam['getAllPieces']['returnValue'] = 'Pos[]'
+funcParam['getAllPieces']['param'] = []
 
 
 #funcParam['add'] = ['boolean', 'int[]']
@@ -287,6 +289,8 @@ class Traverse(object):
                             node.string = node.string[0:-2] + '.x()'
                         else:
                             node.string = node.string[0:-2] + '.y()'
+                    else:
+                        node.token = 'int'
         elif node.type == 'parameters':
             if len(node.children) == 1:
                 node.string = [node.children[0].string]
@@ -456,7 +460,11 @@ class Traverse(object):
             s += 'public static '
             if children[0] in actionFunc:
                 para_list = funcParam[children[0]]['param']
-                s = s + funcParam[children[0]]['returnValue'] + ' ' + children[0] + '_res' + ' ('
+                if children[0] == 'win' and currentParam['returnValue'] == 'int':
+                    returnvalue = 'int'
+                else:
+                    returnvalue = funcParam[children[0]]['returnValue']
+                s = s + returnvalue + ' ' + children[0] + '_res' + ' ('
                 if len(funcParam[children[0]]) > 0:
                     for i in range(0,len(para_list)):
                         s = s + para_list[i] + ' ' + children[1].string[i] + ','
