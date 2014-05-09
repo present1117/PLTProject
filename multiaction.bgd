@@ -15,7 +15,7 @@ FUNCTION:
 
 	def remove position:
 		positions := getAllPieces()
-		Remove := create2DimArrays(19,19)
+		Remove := create2DimArray(19,19)
 		flag := NO
 		for pos in positions
 			if pos.x() = 0
