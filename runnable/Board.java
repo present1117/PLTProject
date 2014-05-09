@@ -24,6 +24,10 @@ public class Board {
 	public static Slot getSlot(Pos pos) {
 		return boardSlots[pos.x()][pos.y()];
 	}
+	
+	public static Slot getSlot(int x, int y) {
+		return boardSlots[x][y];
+	}
 
 	public static boolean initSlot(Pos pos) {
 		if ((boardSlots[pos.x()][pos.y()] = new Slot()) != null)

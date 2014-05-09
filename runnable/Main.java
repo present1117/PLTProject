@@ -136,9 +136,9 @@ public class Main {
 		return true;
 	}
 	private static boolean move(String parameters) {
-		String[] split = parameters.split(" ");
-		String[] fromPos = split[0].split(",");
-		String[] toPos = split[1].split(",");
+//		String[] split = parameters.split(" ");
+//		String[] fromPos = split[0].split(",");
+//		String[] toPos = split[1].split(",");
 		return true;
 	}
 }

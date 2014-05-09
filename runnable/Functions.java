@@ -11,7 +11,8 @@ public class Functions {
 	public static boolean add(Pos pos, Player currentowner, String ptype) {
 		if (GameDesigner.add_res(ptype, new Pos(pos))) {
 			Board.initSlot(pos);
-			Board.getSlot(pos).setPiece(new Piece(currentowner, new Pos(pos), ptype), currentowner);
+			Board.getSlot(pos).setPiece(
+					new Piece(currentowner, new Pos(pos), ptype), currentowner);
 			return true;
 		} else {
 			return false;
@@ -20,32 +21,31 @@ public class Functions {
 
 	public static boolean win(Pos pos, Player winningPlayer) {
 		Object wincon = GameDesigner.win_res(new Pos(pos));
-		if(wincon.getClass().getName().contains("Integer")){
-			if((Integer)wincon == -1)
+		if (wincon.getClass().getName().contains("Integer")) {
+			if ((Integer) wincon == -1)
 				return false;
 			else {
-				winningPlayer.setId((Integer)wincon);
+				winningPlayer.setId((Integer) wincon);
 				return true;
 			}
-			
-		}
-		else if(wincon.getClass().getName().contains("Boolean")) {
-			if ((Boolean)wincon) {
+
+		} else if (wincon.getClass().getName().contains("Boolean")) {
+			if ((Boolean) wincon) {
 				return true;
 			} else {
 				return false;
 			}
 		}
 		return false;
-		
+
 	}
 
 	public static boolean isEmpty(Pos pos) {
 		if (pos == null)
 			return false;
 		if (pos.x() >= Board.getBoardSlots().length
-				|| pos.y() >= Board.getBoardSlots()[0].length
-				|| pos.x() < 0 || pos.y() < 0)
+				|| pos.y() >= Board.getBoardSlots()[0].length || pos.x() < 0
+				|| pos.y() < 0)
 			return false;
 		Slot currentSlot = Board.getSlot(pos);
 		if (currentSlot == null) {
@@ -183,7 +183,7 @@ public class Functions {
 	}
 
 	public static String getPieceType(Piece p) {
-		if(p != null)
+		if (p != null)
 			return p.getPiecetype();
 		return null;
 	}
@@ -219,22 +219,38 @@ public class Functions {
 	}
 
 	public static Piece getPiece(int i, int j) {
-		// TODO Auto-generated method stub
-		if (i >= 0 && j >= 0 && i < Board.getBoardSlots().length && j < Board.getBoardSlots()[0].length) {
+		if (i >= 0 && j >= 0 && i < Board.getBoardSlots().length
+				&& j < Board.getBoardSlots()[0].length) {
 			Piece piece = Board.getBoardSlots()[i][j].Piece();
 			return piece;
 		}
 		return null;
 	}
-	
+
 	/**
 	 * get all currently existing pieces in the board
+	 * 
 	 * @return the array of pieces
 	 */
-	public Pos[] getAllPiecesPos(){
-		return null;
+	public Pos[] getAllPiecesPos() {
+		ArrayList<Pos> resPos = new ArrayList<Pos>();
+		for (int i = 0; i < Board.getRow(); i++) {
+			for (int j = 0; j < Board.getCol(); j++) {
+				if (Board.getSlot(i, j).Piece() != null) {
+					resPos.add(new Pos(i, j));
+				}
+			}
+		}
+		if (resPos.size() > 0) {
+			Pos[] res = new Pos[resPos.size()];
+			for (int i = 0; i < res.length; i++) {
+				res[i] = resPos.get(i);
+			}
+			return res;
+		}
+		else return null;
 	}
-	
+
 	public static int pieceCount(String piecetype) {
 		int count = 0;
 		for (int x = 0; x < Board.getBoardSlots().length; x++) {
@@ -308,15 +324,17 @@ public class Functions {
 		}
 		return null;
 	}
-	
 
 	/**
 	 * create an empty two dimension integer table and return.
-	 * @param row number of row in the two dimension table
-	 * @param col number of column in the two dimension table
+	 * 
+	 * @param row
+	 *            number of row in the two dimension table
+	 * @param col
+	 *            number of column in the two dimension table
 	 * @return
 	 */
-	public int[][] create2DimArray(int row, int col){
-		return null;
+	public int[][] create2DimArray(int row, int col) {
+		return new int[row][col];
 	}
 }

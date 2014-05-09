@@ -1,1 +1,2 @@
-echo "" > ./more.txt
+make
+java Main
