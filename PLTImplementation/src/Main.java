@@ -13,7 +13,7 @@ public class Main {
 	static ArrayList<Player> playerlist = new ArrayList<Player>();
 	//static String[] icons = {"o", "x", "+", "#", "W"};
 	//static String[] icons = {"bp.png", "wp.png"};
-	static HashMap<String, String>[] iconPool = new HashMap[GameDesigner.playerNum];
+	static HashMap<String, String>[] iconPool;
 	static BoardGUI board = Drawing.drawInitialBoard(); 
 	
 	static {
