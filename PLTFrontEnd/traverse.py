@@ -378,7 +378,7 @@ class Traverse(object):
         s1 = 'static String[] pieceType = {'
         s2 = 'static int[] pieceNum = {'
         for item in node.children[0].string:
-            s1 = s1 + '\"' + item[0].upper() + '\"' + ','
+            s1 = s1 + '\"' + item[0] + '\"' + ','
             s2 = s2 + item[1] + ','
         s1 = s1[0:-1] + '};\n'
         s2 = s2[0:-1] + '};\n'
@@ -466,7 +466,7 @@ class Traverse(object):
         s2 = 'static int[] initOwner = {'
         s3 = 'static int[][] initPos = {'
         for item in funcParam['init']['param']:
-            s1 = s1 + '\"' + item[0].upper() + '\"' + ','
+            s1 = s1 + '\"' + item[0] + '\"' + ','
             s2 = s2 + item[1] + ','
             s3 = s3 + item[2] + ','
         s1 = s1[0:-1] + '};\n'
