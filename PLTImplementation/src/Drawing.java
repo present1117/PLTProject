@@ -23,13 +23,18 @@ public class Drawing {
 			{
 				try{
 					//System.out.print(icons[slots[i][j].Player().getId()] + " ");
-					if(pos.x() == i && pos.y() == j)
+					/*if(pos.x() == i && pos.y() == j)
 					{
 						if(action.equalsIgnoreCase("add"))
-							add(board, i+""+j, iconPool.get(Board.getSlot(pos).Player().getId()).get(pieceType).toString());
+							add(board, i+""+j, iconPool.get(Board.getSlot(pos).Player().getId()).get(pieceType).toString());	
 						if(action.equalsIgnoreCase("remove"))
 							remove(board, i+""+j);
 					}
+					else
+					{
+						add(board, i+""+j, Board.getBoardSlots()[i][j].Piece().Type + ".png");
+					}*/
+					add(board, i+""+j, Board.getBoardSlots()[i][j].Piece().Type + ".png");
 				}
 				catch(NullPointerException e)
 				{
