@@ -24,7 +24,7 @@ FUNCTION:
 		'STONE' 0 (2,2)
 
        def remove position:
-		if getPiece(pos) ~= NIL:
+		if getPiece(position) ~= NIL:
 			return YES
 		else:
 			return NO
