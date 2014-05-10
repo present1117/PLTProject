@@ -27,11 +27,11 @@ public class Drawing {
 					{
 						if(action.equalsIgnoreCase("add"))
 							add(board, i+""+j, iconPool.get(Board.getSlot(pos).Player().getId()).get(pieceType).toString());
-						else if(action.equalsIgnoreCase("remove"))
+						if(action.equalsIgnoreCase("remove"))
 							remove(board, i+""+j);
-						else
-							add(board, i+""+j, Board.getSlot(pos).Piece().Type);
 					}
+					else
+						add(board, i+""+j, Board.getSlot(pos).Piece().Type);
 				}
 				catch(NullPointerException e)
 				{
