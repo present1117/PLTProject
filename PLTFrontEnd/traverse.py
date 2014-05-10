@@ -330,9 +330,6 @@ class Traverse(object):
             else:
                 node.string = node.children[0].string + node.children[1].string
         elif node.type == 'init_assign_stmt':
-            if len(node.children) == 0:
-                node.string = ''
-            else:
                 node.string = self.gen_init_assign_stmt(node)
         elif node.type == 'init_stmt':
             if len(node.children) == 3:
@@ -403,6 +400,10 @@ class Traverse(object):
     def gen_input_stmt(self, node):
         s = 'import java.lang.*;\nimport java.util.*;\npublic class GameDesigner{\n'
         s += node.children[0].string + node.children[1].string + node.children[2].string + node.children[4].string
+        if 'init' not in funcParam:
+            s += 'static String[] initPieces = {};\n'
+            s += 'static int[] initOwner = {};\n'
+            s += 'static int[][] initPos = {};\n' 
         for func in actionFunc:
             if func not in localFunc:
                 s += 'public static ' + funcParam[func]['returnValue'] + ' ' + func + '_res('
@@ -455,9 +456,12 @@ class Traverse(object):
         return s
 
     def gen_function_stmt(self, node):
-        return node.children[0].string + '\n' + node.children[1].string + '\n' + node.children[2].string
+        if len(node.children) == 2:
+            return node.children[0].string + '\n' + node.children[1].string
+        else:
+            return node.children[0].string + '\n' + node.children[1].string + '\n' + node.children[2].string
 
-    def gen_init_assign_stmt(self, node):
+    def gen_init_assign_stmt(self, node): 
         s1 = 'static String[] initPieces = {'
         s2 = 'static int[] initOwner = {'
         s3 = 'static int[][] initPos = {'

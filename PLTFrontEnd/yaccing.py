@@ -88,8 +88,12 @@ def p_action_stmt(t):
         t[0] = Node('action_stmt', [t[1], t[5]])
 
 def p_function_stmt(t):
-    '''function_stmt : FUNCTION ":" NEWLINE INDENT global_assign_stmt init_assign_stmt funcdef DEDENT'''
-    t[0] = Node('function_stmt', [t[5], t[6],t[7]])
+    '''function_stmt : FUNCTION ":" NEWLINE INDENT global_assign_stmt funcdef DEDENT
+                     | FUNCTION ":" NEWLINE INDENT global_assign_stmt init_assign_stmt funcdef DEDENT'''
+    if len(t) == 8:
+        t[0] = Node('function_stmt', [t[5], t[6]])
+    else:
+        t[0] = Node('function_stmt', [t[5],t[6],t[7]])
 
 def p_stmt(t):
     '''stmt : simple_stmt
@@ -113,12 +117,8 @@ def p_assign_stmt(t):
     t[0] = Node('assign_stmt',[t[1], t[4]], ':=')
 
 def p_init_assign_stmt(t):
-    '''init_assign_stmt : DEF INIT ":" NEWLINE INDENT init_stmt DEDENT
-                        | empty'''
-    if len(t) == 2:
-        t[0] = Node('init_assign_stmt', [], string='')
-    else:
-        t[0] = Node('init_assign_stmt', [t[6]])
+    'init_assign_stmt : DEF INIT ":" NEWLINE INDENT init_stmt DEDENT'
+    t[0] = Node('init_assign_stmt', [t[6]])
 
 def p_init_stmt(t):
     '''init_stmt : STRING NUMBER position NEWLINE
@@ -385,7 +385,7 @@ if __name__ == "__main__":
     m = lexing.BGDLexer()
     #parser = yacc.yacc(debug = True)
     parser = yacc.yacc(debug = False)
-    f = open('test1.bgd')
+    f = open('init_example.bgd')
     line = f.read()
     print line
     m.input(line)

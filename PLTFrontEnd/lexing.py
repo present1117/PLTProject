@@ -26,7 +26,7 @@ class BGDLexer(object):
         'to' : 'TO',
         'in' : 'IN',
         'global' : 'GLOBAL',
-        'INIT' : 'INIT'
+        '__init__' : 'INIT'
         }
     tokens = [
         #'EMPTYLINE',
