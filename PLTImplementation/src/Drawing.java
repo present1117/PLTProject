@@ -30,8 +30,6 @@ public class Drawing {
 						if(action.equalsIgnoreCase("remove"))
 							remove(board, i+""+j);
 					}
-					else
-						add(board, i+""+j, Board.getSlot(pos).Piece().Type);
 				}
 				catch(NullPointerException e)
 				{
