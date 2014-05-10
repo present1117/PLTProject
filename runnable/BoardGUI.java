@@ -5,6 +5,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 public class BoardGUI extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -68,7 +69,7 @@ public class BoardGUI extends JFrame {
     	northPanel.setLayout(gridLayout);
     	JLabel[] lbls = new JLabel[numOfColumns];
     	for (int i = 0; i < numOfColumns; i++) {
-            lbls[i] = new JLabel(i + "");
+            lbls[i] = new JLabel(i + "", SwingConstants.CENTER);
             northPanel.add(lbls[i]);
         }
     }
@@ -78,7 +79,7 @@ public class BoardGUI extends JFrame {
         westPanel.setLayout(gridLayout);
         JLabel[] lbls = new JLabel[numOfRows];
         for (int i = 0; i < numOfRows; i++) {
-        	lbls[i] = new JLabel(i + "");
+        	lbls[i] = new JLabel(i + "", SwingConstants.CENTER);
             westPanel.add(lbls[i]);
         }
     }
@@ -123,6 +124,15 @@ public class BoardGUI extends JFrame {
                 labels[s].setIcon(img);
             }
         }
+    }
+    
+    //method to remove the image of a label at a certain position in the board
+    public void removePiece(String position) {
+    	for (int s = 0; s < labels.length; s++) {
+    		if(labels[s].getName().equalsIgnoreCase(position)) {
+    			labels[s].setIcon(null);
+    		}
+    	}
     }
 
     //nested class used to set the background of frame contenPane

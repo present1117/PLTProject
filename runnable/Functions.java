@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-
 /**
  * class for all functions in the program as well all the built-in functions
  * 
@@ -336,5 +335,9 @@ public class Functions {
 	 */
 	public int[][] create2DimArray(int row, int col) {
 		return new int[row][col];
+	}
+	
+	public boolean findSameInCircle(Pos position){
+		return false;
 	}
 }

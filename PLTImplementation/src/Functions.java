@@ -1,7 +1,4 @@
 import java.util.ArrayList;
-
-import sun.text.normalizer.UCharacter.NumericType;
-
 /**
  * class for all functions in the program as well all the built-in functions
  * 

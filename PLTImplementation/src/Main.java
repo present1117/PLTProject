@@ -79,7 +79,7 @@ public class Main {
 		try {
 			Pos pos = new Pos(Integer.parseInt(_addPos[0]),Integer.parseInt(_addPos[1]));
 			for (String t : GameDesigner.pieceType) {
-				if (type.equals(t))
+				if (type.equalsIgnoreCase(t))
 					ptype = t;
 			}
 			if (ptype == "") {
