@@ -42,7 +42,7 @@ public class Drawing {
 				}
 				catch(NullPointerException e)
 				{
-					//remove(board, i+""+j);
+					
 				}		
 			}	
 		}
