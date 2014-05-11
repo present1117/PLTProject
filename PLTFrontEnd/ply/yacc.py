@@ -122,7 +122,8 @@ class PlyLogger(object):
     info     = debug
 
     def warning(self,msg,*args,**kwargs):
-        self.f.write("WARNING: "+ (msg % args) + "\n")
+        pass
+        #self.f.write("WARNING: "+ (msg % args) + "\n")
 
     def error(self,msg,*args,**kwargs):
         self.f.write("ERROR: " + (msg % args) + "\n")

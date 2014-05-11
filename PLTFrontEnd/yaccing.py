@@ -9,11 +9,18 @@ import sys
 import ply.yacc as yacc
 import lexing
 import re
+import unittest
+
+
+sys.path.append('./testing')
+from test_cases import BGDTests
 
 tokens = lexing.BGDLexer.tokens 
 
 def getyacc():
     return yacc.yacc()
+
+syntax_error = 0
 
 
 reList = {}
@@ -43,7 +50,6 @@ class Node(object):
 
 
 start = 'input_stmt'
-
 def p_input_stmt(t):
     'input_stmt : piece_stmt board_stmt player_stmt rule_stmt function_stmt'
     t[0] = Node('input_stmt', [t[1], t[2], t[3], t[4], t[5]])
@@ -377,16 +383,104 @@ def p_empty(p):
     pass
 
 def p_error(p):
+    syntax_error = 1
     print p
     print "Syntax error in input!"
     
 
+
+
 if __name__ == "__main__":
-    m = lexing.BGDLexer()
-    #parser = yacc.yacc(debug = True)
-    parser = yacc.yacc(debug = False)
+    import unittest
+    class testYaccing(unittest.TestCase):
+        def setUp(self):
+            self.m = lexing.BGDLexer()
+
+        def _print_rule(self, node):
+            if isinstance(node, Node):
+                for subtree in node.children:
+                    self._print_rule(subtree)
+                print node.type
+            
+        def test_piece_stmt(self):
+            self.m.input(BGDTests.piece_stmt)
+            start = 'piece_stmt'
+            self.parser = yacc.yacc(debug = False)
+            self._print_rule(self.parser.parse(tokenfunc = self.m.token))
+            print
+
+        def test_board_stmt(self):
+            self.m.input(BGDTests.board_stmt)
+            start = 'board_stmt'
+            self.parser = yacc.yacc(debug = False)
+            self._print_rule(self.parser.parse(tokenfunc = self.m.token))
+            print
+
+        def test_player_stmt(self):
+            self.m.input(BGDTests.player_stmt)
+            start = 'player_stmt'
+            self.parser = yacc.yacc(debug = False)
+            self._print_rule(self.parser.parse(tokenfunc = self.m.token))
+            print
+
+        def test_rule_stmt(self):
+            self.m.input(BGDTests.rule_stmt)
+            start = 'rule_stmt'
+            self.parser = yacc.yacc(debug = False)
+            self._print_rule(self.parser.parse(tokenfunc = self.m.token))
+            print
+
+
+        def test_if_stmt(self):
+            self.m.input(BGDTests.if_stmt)
+            start = 'if_stmt'
+            self.parser = yacc.yacc(debug = False)
+            self._print_rule(self.parser.parse(tokenfunc = self.m.token))
+            print
+
+        def test_funcdef(self):
+            self.m.input(BGDTests.funcdef)
+            start = 'funcdef'
+            self.parser = yacc.yacc(debug = False)
+            self._print_rule(self.parser.parse(tokenfunc = self.m.token))
+            print
+
+        def test_for_loop(self):
+            self.m.input(BGDTests.for_loop)
+            start = 'for_stmt'
+            self.parser = yacc.yacc(debug = False)
+            self._print_rule(self.parser.parse(tokenfunc = self.m.token))
+            print
+
+        def test_forin_loop(self):
+            self.m.input(BGDTests.forin_loop)
+            start = 'for_stmt'
+            self.parser = yacc.yacc(debug = False)
+            self._print_rule(self.parser.parse(tokenfunc = self.m.token))
+            print
+
+        def test_while_loop(self):
+            self.m.input(BGDTests.while_loop)
+            start = 'while_stmt'
+            self.parser = yacc.yacc(debug = False)
+            self._print_rule(self.parser.parse(tokenfunc = self.m.token))
+            print
+
+        def test_tic_tac_toe(self):
+            self.m.input(BGDTests.tic_tac_toe)
+            start = 'input_stmt'
+            self.parser = yacc.yacc(debug = False)
+            self._print_rule(self.parser.parse(tokenfunc = self.m.token))
+            print
+
+
+
+
+    """start = start = 'input_stmt'
     f = open('tic-tac-toe.bgd')
     line = f.read()
-    print line
+    m = lexing.BGDLexer()
     m.input(line)
-    print parser.parse(tokenfunc = m.token)
+    parser = yacc.yacc(debug = False)
+    parser.parse(tokenfunc = m.token)"""
+    unittest.main(verbosity=2)
