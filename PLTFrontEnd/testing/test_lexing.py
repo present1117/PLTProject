@@ -63,7 +63,6 @@ class testLexing(unittest.TestCase):
         tokens = f2.read()
         tokens = re.split('\n+', tokens)
         self.m.input(code)
-        print len(tokens)
         for token in tokens:
             tmp_token = self.m.token()
             self.assertEqual(tmp_token.type, token)
