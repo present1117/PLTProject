@@ -67,6 +67,8 @@ class testLexing(unittest.TestCase):
         for token in tokens:
             tmp_token = self.m.token()
             self.assertEqual(tmp_token.type, token)
+        f1.close()
+        f2.close()
         
         
         
