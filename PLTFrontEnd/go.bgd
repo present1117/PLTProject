@@ -1,0 +1,84 @@
+PIECE:
+	'STONE'
+BOARD:
+	19 19
+PLAYER:
+	2
+RULE:
+	action	:= add
+	action	:= remove
+	action	:= win
+	
+FUNCTION:
+	def add piece, position:
+		return isEmpty(position)
+
+	def remove position:
+		positions := getAllPiecesPos()
+		Remove := create2DimArray(19,19)
+		flag := NO
+		for pos in positions:
+			if pos.x = 0:
+				if pos.y = 0:
+					if Remove[pos.x+ 1][pos.y] = YES AND Remove[pos.x][pos.y+ 1] = YES AND getPiece(pos) ~= NIL:
+						flag := YES
+				elseif pos.y = 18:
+					if Remove[pos.x+ 1][pos.y] = YES AND Remove[pos.x][pos.y- 1] = YES AND getPiece(pos) ~= NIL:
+						flag := YES
+				else:
+					if Remove[pos.x+ 1][pos.y] = YES AND Remove[pos.x][pos.y+ 1] = YES AND Remove[pos.x][pos.y- 1] = YES AND getPiece(pos) ~= NIL:
+						flag := YES
+			elseif pos.x = 18:
+				if pos.y = 0:
+					if Remove[pos.x- 1][pos.y] = YES AND Remove[pos.x][pos.y+ 1] = YES AND getPiece(pos) ~= NIL:
+						flag := YES
+				elseif pos.y = 18:
+					if Remove[pos.x- 1][pos.y] = YES AND Remove[pos.x][pos.y- 1] = YES AND getPiece(pos) ~= NIL:
+						flag := YES
+				else:
+					if Remove[pos.x- 1][pos.y] = YES AND Remove[pos.x][pos.y+ 1] = YES AND Remove[pos.x][pos.y- 1] = YES AND getPiece(pos) ~= NIL:
+						flag := YES
+			elseif pos.y = 0:
+				if pos.x = 0:
+					if Remove[pos.x+ 1][pos.y] = YES AND Remove[pos.x][pos.y+ 1] = YES AND getPiece(pos) ~= NIL:
+						flag := YES
+				elseif pos.x = 18:
+					if Remove[pos.x- 1][pos.y] = YES AND Remove[pos.x][pos.y+ 1] = YES AND getPiece(pos) ~= NIL:
+						flag := YES
+				else:
+					if Remove[pos.x+ 1][pos.y] = YES AND Remove[pos.x][pos.y+ 1] = YES AND Remove[pos.x- 1][pos.y] = YES AND getPiece(pos) ~= NIL:
+						flag := YES
+			elseif pos.y = 18:
+				if pos.x = 0:
+					if Remove[pos.x+ 1][pos.y] = YES AND Remove[pos.x][pos.y- 1] = YES AND getPiece(pos) ~= NIL:
+						flag := YES
+				elseif pos.x = 18:
+					if Remove[pos.x- 1][pos.y] = YES AND Remove[pos.x][pos.y- 1] = YES AND getPiece(pos) ~= NIL:
+						flag := YES
+				else:
+					if Remove[pos.x+ 1][pos.y] = YES AND Remove[pos.x][pos.y- 1] = YES AND Remove[pos.x- 1][pos.y] = YES AND getPiece(pos) ~= NIL:
+						flag := YES	
+			else:
+				if Remove[pos.x- 1][pos.y] = YES AND Remove[pos.x+ 1][pos.y] = YES AND Remove[pos.x][pos.y+ 1] = YES AND Remove[pos.x][pos.y- 1] = YES AND getPiece(pos) ~= NIL:
+					flag := YES
+		if flag:
+			mySet := findSameInCircle(position)
+			for point in mySet:
+				Remove[point.x][point.y]:= YES
+		for pos in positions:
+			if Remove[pos.x][pos.y] = YES:
+				remove(pos)
+
+	def win position:
+		if isBoardFull():
+			player1pieces := 0
+			player2pieces := 0
+			if getPiecePlayer(getPiece(position)).id = 1:
+				player1pieces := player1pieces+ 1
+			elseif getPiecePlayer(getPiece(position)).id = 2:
+				player2pieces := player2pieces+ 1
+				if player1pieces > player2pieces:
+					return 1
+			else:
+				return 2 	
+		return -1

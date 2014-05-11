@@ -385,8 +385,8 @@ if __name__ == "__main__":
     m = lexing.BGDLexer()
     #parser = yacc.yacc(debug = True)
     parser = yacc.yacc(debug = False)
-    f = open('init_example.bgd')
+    f = open('tic-tac-toe.bgd')
     line = f.read()
     print line
     m.input(line)
-    parser.parse(tokenfunc = m.token)
+    print parser.parse(tokenfunc = m.token)

@@ -12,3 +12,5 @@ PLTFrontEnd/ply/yacc.pyc
 PLTFrontEnd/ply/yacc.pyc
 
 *.class
+
+PLTFrontEnd/parsetab.py

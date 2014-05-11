@@ -1,0 +1,41 @@
+PIECE:
+	'stone'
+	'red'	
+BOARD:
+	3 3
+
+PLAYER:
+	2
+
+RULE:
+	action := add
+	action := win
+
+FUNCTION:
+	global Remove := [0,0]
+	def __init__:
+		'red' 0 (1,0)
+		'stone' 1 (0,0)
+	def foo pos:
+		a := 2*(3 + 1)
+		flag := YES
+		if flag:
+			remove(pos)
+		b := pos.y
+		b := b + 'hello world'
+		pos2 := (a,b)
+		return isEmpty(pos2)
+	def add piece, position:
+		b := [position, (2,4)]
+		a := ['1', '2', '3']
+		s := 'hi'
+		return foo(b[1])
+	def win position:
+		a := 4
+		if numberInRow(position) >= 3:
+			return 1
+		elseif a > 3:
+			while a <= 4:
+				return 2
+		else:
+			return 1
