@@ -4,15 +4,15 @@ import java.util.HashMap;
 
 /**
  * Main entrance of the program.
- *
+ * 
  * @author Presenthuang
- *
+ * 
  */
 
 public class Main {
 	static ArrayList<Player> playerlist = new ArrayList<Player>();
 	static HashMap<Integer, HashMap<String, String>> iconPool = new HashMap<Integer, HashMap<String, String>>();
-	static BoardGUI board = Drawing.drawInitialBoard();
+	static BoardGUI board = Drawing.drawInitialBoard(); 
 	
 	static {
 		for(int i = 0; i < GameDesigner.pieceNum.length; i++)
@@ -34,15 +34,11 @@ public class Main {
 			Player newplayer = new Player(i);
 			playerlist.add(newplayer);
 		}
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> FETCH_HEAD
 		
 		for (int i = 0; i < GameDesigner.initOwner.length; i ++) {
 			Functions.add(new Pos(GameDesigner.initPos[i][0],GameDesigner.initPos[i][1]), playerlist.get(GameDesigner.initOwner[i]), GameDesigner.initPieces[i]);
-			Drawing.drawBoard(board, playerlist, iconPool, "add", GameDesigner.initPieces[i], new Pos(GameDesigner.initPos[i][0],GameDesigner.initPos[i][1]));
+			Drawing.drawBoard(board, "add", new Pos(GameDesigner.initPos[i][0],GameDesigner.initPos[i][1]));
 			
 		}
 		
@@ -58,29 +54,29 @@ public class Main {
 			if (spliter[0].equalsIgnoreCase("add")) {
 				if (spliter.length != 3) {
 					System.out.println("Input Length != 3!");
-                    //					break;
+//					break;
 				}
 				else{
 					add(spliter[1],spliter[2]);
-                }
-                //					break;
+					} 
+//					break;
 			} else if (spliter[0].equalsIgnoreCase("remove")) {
 				if (spliter.length != 2) {
 					System.out.println("Input Length != 2");
-                    //					break;
+//					break;
 				}
 				remove(spliter[1]);
-                //					break;
+//					break;
 			} else if (spliter[0].equalsIgnoreCase("move")) {
 				move(spliter[1]);
-                //					break;
+//					break;
 			} else {
 				System.out.println("Error input!");
 			}
 		}
-        //		System.out.println("Game ends!");
+//		System.out.println("Game ends!");
 	}
-    
+
 	private static boolean add(String addPos, String type) {
 		String[] _addPos = addPos.split(",");
 		String ptype = "";
@@ -99,9 +95,9 @@ public class Main {
 				System.out.println("Missing Piece Type!");
 				return false;
 			}
-            
+
 			if (Functions.add(pos, playerlist.get(playerid), ptype)) {
-				Drawing.drawBoard(board, playerlist, iconPool,"add", ptype,pos);
+				Drawing.drawBoard(board,"add", pos);
 				
 				System.out.println("Successfully Added!");
 				
@@ -130,28 +126,30 @@ public class Main {
 			Pos pos = new Pos(Integer.parseInt(_removePos[0]),Integer.parseInt(_removePos[1]));
 			if (Functions.remove(pos, playerlist)) {
 				
-				Drawing.drawBoard(board, playerlist,iconPool,"remove", Functions.getPiece(pos).getPiecetype(),pos);
+				
+				Drawing.drawBoard(board,"remove",pos);
 				
 				System.out.println("Successfully Removed");
 				
 				if (Functions.win(pos, playerlist.get(playerid))) {
 					System.out.println("Player " + playerid + " wins!");
 					return false;
-				} else {
-					System.out.println("Invalid Position!");
-					return false;
-				}
+				} 
+			}
+			else {
+				System.out.println("Invalid Position!");
+				return false;
 			}
 		} catch (Exception e) {
-			System.out.println("Error input!");
+			System.out.println(e.toString());
 			return false;
 		}
 		return true;
 	}
 	private static boolean move(String parameters) {
-        //		String[] split = parameters.split(" ");
-        //		String[] fromPos = split[0].split(",");
-        //		String[] toPos = split[1].split(",");
+//		String[] split = parameters.split(" ");
+//		String[] fromPos = split[0].split(",");
+//		String[] toPos = split[1].split(",");
 		return true;
 	}
 }
