@@ -59,7 +59,7 @@ class BGDLexer(object):
 
 
     def t_STRING(self, t):
-        r"'.*'"
+        r'\'.*?\''
         return t
 
     def t_ID(self, t):
@@ -162,14 +162,14 @@ class BGDLexer(object):
             tok.value = value
         return tok
 
-    def tok_str(self):
+    def tok_str(self, data):
         tok_str = ""
         while True:
             tok = self.token()
             if not tok:
                 break
             tok_str += str(tok) + "\n"
-        # print tok_str
+        print tok_str
         return tok_str
     
 if __name__ == '__main__':
@@ -178,4 +178,4 @@ if __name__ == '__main__':
     f = open('tic-tac-toe.bgd')
     line = f.read()
     m.input(line)
-    m.tok_str()
+    m.tok_str(line)
