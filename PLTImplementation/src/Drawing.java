@@ -12,7 +12,7 @@ import javax.swing.ImageIcon;
  *
  */
 public class Drawing {
-	public static void drawBoard(BoardGUI board, ArrayList<Player> pl, HashMap<Integer, HashMap<String, String>> iconPool, String action, String pieceType, Pos pos)
+	public static void drawBoard(BoardGUI board, String action, Pos pos)
 	{
 		int numOfRows = Board.getRow();
 		int numOfColumns = Board.getCol();
@@ -34,11 +34,15 @@ public class Drawing {
 					{
 						add(board, i+""+j, Board.getBoardSlots()[i][j].Piece().Type + ".png");
 					}*/
-					add(board, i+""+j, Board.getBoardSlots()[i][j].Piece().Type + ".png");
+					
+					if(action.equalsIgnoreCase("remove") && (pos.x() == i && pos.y() == j))
+						remove(board, i+""+j);
+					else
+						add(board, i+""+j, Board.getBoardSlots()[i][j].Piece().Type + ".png");
 				}
 				catch(NullPointerException e)
 				{
-					
+					//remove(board, i+""+j);
 				}		
 			}	
 		}
