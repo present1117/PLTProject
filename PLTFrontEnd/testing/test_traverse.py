@@ -9,18 +9,39 @@ import re
 from test_cases import BGDTests
 
 class testTraverse(unittest.TestCase):
-    def setUp(self):
-        self.m = BGDLexer()
-        f = open('test_traverse_result', 'w')
+	def setUp(self):
+		self.m = BGDLexer()
 
-    def test_piece_stmt(self):
-        self.m.input(BGDTests.for_loop)
-        start = 'for_stmt'
-        self.parser = yacc.yacc(debug = False)
-        root = self.parser.parse(tokenfunc = self.m.token)
-        print Traverse(root).getJava()
-        print  
-          
+	def test_tic_tac_toe(self):
+		self.m.input(BGDTests.tic_tac_toe)
+		self.parser = yacc.yacc(debug = False)
+		root = self.parser.parse(tokenfunc = self.m.token)
+		print Traverse(root).getJava() + '\n******************************************************\n' 
+
+	def test_test_code(self):
+		self.m.input(BGDTests.test_code)
+		self.parser = yacc.yacc(debug = False)
+		root = self.parser.parse(tokenfunc = self.m.token)
+		print Traverse(root).getJava() + '\n******************************************************\n'     	
+
+	def test_init_example(self):
+		self.m.input(BGDTests.init_example)
+		self.parser = yacc.yacc(debug = False)
+		root = self.parser.parse(tokenfunc = self.m.token)
+		print Traverse(root).getJava() + '\n******************************************************\n'        
+
+	'''def test_multication(self):
+		self.m.input(BGDTests.multication)
+		self.parser = yacc.yacc(debug = False)
+		root = self.parser.parse(tokenfunc = self.m.token)
+		self.out_str += Traverse(root).getJava() + '\n******************************************************\n'   
+		'''
+
+	def test_multipiece(self):
+		self.m.input(BGDTests.multipiece)
+		self.parser = yacc.yacc(debug = False)
+		root = self.parser.parse(tokenfunc = self.m.token)
+		print Traverse(root).getJava() + '\n******************************************************\n'  
 
 if __name__ == "__main__":
 	unittest.main(verbosity=2)

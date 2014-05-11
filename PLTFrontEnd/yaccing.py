@@ -49,7 +49,7 @@ class Node(object):
         self.token = token #data type (atom)
 
 
-
+start = 'input_stmt'
 def p_input_stmt(t):
     'input_stmt : piece_stmt board_stmt player_stmt rule_stmt function_stmt'
     t[0] = Node('input_stmt', [t[1], t[2], t[3], t[4], t[5]])
@@ -466,8 +466,8 @@ if __name__ == "__main__":
             self._print_rule(self.parser.parse(tokenfunc = self.m.token))
             print
 
-        def test_sample_code(self):
-            self.m.input(BGDTests.sample_code)
+        def test_tic_tac_toe(self):
+            self.m.input(BGDTests.tic_tac_toe)
             start = 'input_stmt'
             self.parser = yacc.yacc(debug = False)
             self._print_rule(self.parser.parse(tokenfunc = self.m.token))
