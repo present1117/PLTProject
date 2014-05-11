@@ -34,7 +34,11 @@ public class Main {
 			Player newplayer = new Player(i);
 			playerlist.add(newplayer);
 		}
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> FETCH_HEAD
 		
 		for (int i = 0; i < GameDesigner.initOwner.length; i ++) {
 			Functions.add(new Pos(GameDesigner.initPos[i][0],GameDesigner.initPos[i][1]), playerlist.get(GameDesigner.initOwner[i]), GameDesigner.initPieces[i]);
