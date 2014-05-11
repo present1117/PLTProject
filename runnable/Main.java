@@ -34,6 +34,15 @@ public class Main {
 			Player newplayer = new Player(i);
 			playerlist.add(newplayer);
 		}
+
+		
+		for (int i = 0; i < GameDesigner.initOwner.length; i ++) {
+			Functions.add(new Pos(GameDesigner.initPos[i][0],GameDesigner.initPos[i][1]), playerlist.get(GameDesigner.initOwner[i]), GameDesigner.initPieces[i]);
+			Drawing.drawBoard(board, playerlist, iconPool, "add", GameDesigner.initPieces[i], new Pos(GameDesigner.initPos[i][0],GameDesigner.initPos[i][1]));
+			
+		}
+		
+		
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 		while (true) {
