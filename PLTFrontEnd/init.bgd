@@ -1,0 +1,36 @@
+PIECE:
+	'STONE'
+
+BOARD:
+	3 3
+
+PLAYER:
+	1
+
+RULE:
+	action := remove
+	action := win
+
+FUNCTION:
+       def __init__:
+		'STONE' 0 (0,0)
+		'STONE' 0 (0,1)
+		'STONE' 0 (0,2)
+		'STONE'	0 (1,0)
+		'STONE' 0 (1,1)
+		'STONE' 0 (1,2)
+		'STONE' 0 (2,0)
+		'STONE' 0 (2,1)
+		'STONE' 0 (2,2)
+
+       def remove position:
+		if getPiece(pos) ~= NIL:
+			return YES
+		else:
+			return NO
+
+       def win position:
+		if pieceCount('STONE') = 0:
+			return YES
+		else:
+			return NO
