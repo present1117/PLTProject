@@ -141,7 +141,7 @@ public class Main {
 				return false;
 			}
 		} catch (Exception e) {
-			System.out.println(e.toString());
+			System.out.println("Error Input!");
 			return false;
 		}
 		return true;
