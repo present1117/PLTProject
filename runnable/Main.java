@@ -43,7 +43,7 @@ public class Main {
 		
 		for (int i = 0; i < GameDesigner.initOwner.length; i ++) {
 			Functions.add(new Pos(GameDesigner.initPos[i][0],GameDesigner.initPos[i][1]), playerlist.get(GameDesigner.initOwner[i]), GameDesigner.initPieces[i]);
-			Drawing.drawBoard(board, "add", new Pos(GameDesigner.initPos[i][0],GameDesigner.initPos[i][1]));
+			Drawing.drawBoard(board, "add", new Pos(GameDesigner.initPos[i][0],GameDesigner.initPos[i][1]), playerlist.size());
 			
 		}
 		
@@ -124,7 +124,7 @@ public class Main {
 			}
 
 			if (Functions.add(pos, playerlist.get(playerid), ptype)) {
-				Drawing.drawBoard(board,"add", pos);
+				Drawing.drawBoard(board,"add", pos, playerlist.size());
 				
 				System.out.println("Successfully Added!");
 				
@@ -154,7 +154,7 @@ public class Main {
 			if (Functions.remove(pos, playerlist)) {
 				
 				
-				Drawing.drawBoard(board,"remove",pos);
+				Drawing.drawBoard(board,"remove",pos,playerlist.size());
 				
 				System.out.println("Successfully Removed");
 				if (Functions.win(pos, playerlist.get(playerid))) {
