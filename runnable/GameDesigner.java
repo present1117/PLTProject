@@ -27,10 +27,10 @@ static int[] initOwner = {};
 static int[][] initPos = {};
 public static boolean move_res(Pos par0,Pos par1)
 {
-return true;
+return false;
 }
 public static boolean remove_res(Pos par0)
 {
-return true;
+return false;
 }
 }

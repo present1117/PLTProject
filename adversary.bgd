@@ -1,0 +1,22 @@
+PIECE:
+	'stone'
+
+BOARD:
+	10 10
+
+PLAYER:
+	2
+
+RULE:
+	action := add
+	action := remove
+	action := win
+
+FUNCTION:
+       def add piece, position:
+       	return isEmpty(position)
+       def win position:
+		if numberInRow(position) >= 3:
+			return YES
+		else:
+			return NO

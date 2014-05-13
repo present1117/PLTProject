@@ -9,8 +9,7 @@ cd PLTFrontEnd
 python traverse.py ../$inputFile > ../warning.log
 cp GameDesigner.java ../runnable/GameDesigner.java
 echo "GameDesigner.java Done. \n"
-
 #make
 cd ../runnable
-
-#javac
+make clean
+make
