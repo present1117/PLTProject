@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class Main {
 	static ArrayList<Player> playerlist = new ArrayList<Player>();
 	static HashMap<Integer, HashMap<String, String>> iconPool = new HashMap<Integer, HashMap<String, String>>();
-	static BoardGUI board = Drawing.drawInitialBoard(); 
+	static BoardGUI board = Drawing.drawEmptyBoard(); 
 	
 	static final int FALSE = 0;
 	static final int SUCCESS = 1;
