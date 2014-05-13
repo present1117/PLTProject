@@ -42,26 +42,6 @@ public class Drawing {
 		}
 	}
 
-    public static void initializeBoard(BoardGUI board, String action, Pos pos)
-    {
-        int numOfRows = Board.getRow();
-		int numOfColumns = Board.getCol();
-		
-		for(int i = 0; i < numOfRows; i++)
-		{
-			for(int j = 0; j < numOfColumns; j++)
-			{
-				try{
-                    add(board, i+""+j, Board.getBoardSlots()[i][j].Piece().Type + ".png");
-				}
-				catch(NullPointerException e)
-				{
-					
-				}		
-			}	
-		}
-    }
-	
 	public static BoardGUI drawEmptyBoard()
 	{
 		try{
