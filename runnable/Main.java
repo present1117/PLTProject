@@ -14,6 +14,10 @@ public class Main {
 	static HashMap<Integer, HashMap<String, String>> iconPool = new HashMap<Integer, HashMap<String, String>>();
 	static BoardGUI board = Drawing.drawInitialBoard(); 
 	
+	static final int FALSE = 0;
+	static final int SUCCESS = 1;
+	static final int WIN = 2;
+
 	static {
 		for(int i = 0; i < GameDesigner.pieceNum.length; i++)
 		{
@@ -27,6 +31,7 @@ public class Main {
 	static int playerid = 0;
 	
 	public static void main(String[] args) {
+
 		System.out.println("Welcome to our greatest Board game!");
 		System.out.println("This is the start of the game!");
 		
@@ -45,6 +50,9 @@ public class Main {
 		
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
+		boolean flag = false;
+
+		/*
 		while (true) {
 			playerid = playerid % playerlist.size();
 			System.out.println("Player" + playerid + " Action:");
@@ -54,36 +62,55 @@ public class Main {
 			if (spliter[0].equalsIgnoreCase("add")) {
 				if (spliter.length != 3) {
 					System.out.println("Input Length != 3!");
-//					break;
 				}
 				else{
-					add(spliter[1],spliter[2]);
-					} 
-//					break;
+					switch(add(spliter[1],spliter[2])) {
+						case FALSE:
+							break;
+						case WIN:
+							flag = true;
+							break;
+						case SUCCESS:
+							break;
+					}
+				} 
 			} else if (spliter[0].equalsIgnoreCase("remove")) {
 				if (spliter.length != 2) {
 					System.out.println("Input Length != 2");
-//					break;
 				}
-				remove(spliter[1]);
-//					break;
+				switch(remove(spliter[1])) {
+						case FALSE:
+							break;
+						case WIN:
+							break;
+						case SUCCESS:
+							break;
+				}
 			} else if (spliter[0].equalsIgnoreCase("move")) {
-				move(spliter[1]);
-//					break;
+				switch(move(spliter[1])) {
+						case FALSE:
+							break;
+						case WIN:
+							break;
+						case SUCCESS:
+							break;
+				}
 			} else {
 				System.out.println("Error input!");
 			}
+			if (flag) break;
 		}
-//		System.out.println("Game ends!");
+		*/
+		System.out.println("Game ends!");
 	}
 
-	private static boolean add(String addPos, String type) {
+	private static int add(String addPos, String type) {
 		String[] _addPos = addPos.split(",");
 		String ptype = "";
 		
 		if (_addPos.length != 2) {
 			System.out.println("Invalid Position!");
-			return false;
+			return FALSE;
 		}
 		try {
 			Pos pos = new Pos(Integer.parseInt(_addPos[0]),Integer.parseInt(_addPos[1]));
@@ -93,7 +120,7 @@ public class Main {
 			}
 			if (ptype == "") {
 				System.out.println("Missing Piece Type!");
-				return false;
+				return FALSE;
 			}
 
 			if (Functions.add(pos, playerlist.get(playerid), ptype)) {
@@ -103,24 +130,24 @@ public class Main {
 				
 				if (Functions.win(pos, playerlist.get(playerid))) {
 					System.out.println("Player " + playerid + " wins!");
-					return false;
+					return WIN;
 				}
 				playerid ++;
 			} else {
 				System.out.println("Invalid Position!");
-				return false;
+				return FALSE;
 			}
 		} catch (Exception e) {
 			System.out.println(e.getLocalizedMessage());
-			return false;
+			return FALSE;
 		}
-		return true;
+		return SUCCESS;
 	}
-	private static boolean remove(String removePos) {
+	private static int remove(String removePos) {
 		String[] _removePos = removePos.split(",");
 		if (_removePos.length != 2) {
 			System.out.println("Input Length != 2");
-			return false;
+			return FALSE;
 		}
 		try {
 			Pos pos = new Pos(Integer.parseInt(_removePos[0]),Integer.parseInt(_removePos[1]));
@@ -130,29 +157,36 @@ public class Main {
 				Drawing.drawBoard(board,"remove",pos);
 				
 				System.out.println("Successfully Removed");
-				
 				if (Functions.win(pos, playerlist.get(playerid))) {
 					System.out.println("Player " + playerid + " wins!");
-					return false;
-				} 
-			}
-			else {
+					return WIN;
+				}
+				playerid ++; 
+			} else {
 				System.out.println("Invalid Position!");
-				return false;
+				return FALSE;
 			}
 		} catch (Exception e) {
 			System.out.println("Error Input!");
-			return false;
+			return FALSE;
 		}
-		return true;
+		return SUCCESS;
 	}
-	private static boolean move(String parameters) {
+	private static int move(String parameters) {
 		String[] split = parameters.split(" ");
 		String[] fromPos = split[0].split(",");
 		String[] toPos = split[1].split(",");
 		Pos from = new Pos(Integer.parseInt(fromPos[0]),Integer.parseInt(fromPos[1]));
 		Pos to = new Pos(Integer.parseInt(toPos[0]),Integer.parseInt(toPos[1]));
-		Functions.move(from,to,playerlist);
-		return true;
-}
+		if (Functions.move(from,to,playerlist)) {
+			if (Functions.win(to, playerlist.get(playerid))) {
+					System.out.println("Player " + playerid + " wins!");
+					return WIN;
+			} else {
+				playerid ++;
+				return SUCCESS;
+			}
+		}
+		else return FALSE;
+	}
 }

@@ -38,7 +38,7 @@ public class Main {
 		
 		for (int i = 0; i < GameDesigner.initOwner.length; i ++) {
 			Functions.add(new Pos(GameDesigner.initPos[i][0],GameDesigner.initPos[i][1]), playerlist.get(GameDesigner.initOwner[i]), GameDesigner.initPieces[i]);
-			Drawing.drawBoard(board, playerlist, iconPool, "add", GameDesigner.initPieces[i], new Pos(GameDesigner.initPos[i][0],GameDesigner.initPos[i][1]));
+			Drawing.drawBoard(board, "add", new Pos(GameDesigner.initPos[i][0],GameDesigner.initPos[i][1]));
 			
 		}
 		
@@ -97,7 +97,7 @@ public class Main {
 			}
 
 			if (Functions.add(pos, playerlist.get(playerid), ptype)) {
-				Drawing.drawBoard(board, playerlist, iconPool,"add", ptype,pos);
+				Drawing.drawBoard(board,"add", pos);
 				
 				System.out.println("Successfully Added!");
 				
@@ -126,20 +126,22 @@ public class Main {
 			Pos pos = new Pos(Integer.parseInt(_removePos[0]),Integer.parseInt(_removePos[1]));
 			if (Functions.remove(pos, playerlist)) {
 				
-				Drawing.drawBoard(board, playerlist,iconPool,"remove", Functions.getPiece(pos).getPiecetype(),pos);
+				
+				Drawing.drawBoard(board,"remove",pos);
 				
 				System.out.println("Successfully Removed");
 				
 				if (Functions.win(pos, playerlist.get(playerid))) {
 					System.out.println("Player " + playerid + " wins!");
 					return false;
-				} else {
-					System.out.println("Invalid Position!");
-					return false;
-				}
+				} 
+			}
+			else {
+				System.out.println("Invalid Position!");
+				return false;
 			}
 		} catch (Exception e) {
-			System.out.println("Error input!");
+			System.out.println("Error Input!");
 			return false;
 		}
 		return true;

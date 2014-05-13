@@ -363,7 +363,7 @@ class Traverse(object):
 
     def gen_rule_stmt(self, node):
         if 'win' not in localFunc: print "Warning: Action \'win\' is not declared.\n"
-        if 'add' not in localFunc and 'move' not in localFunc: "Warning: Either action \'add\' or \'move\' should be declared in RULE. \n"
+        if 'add' not in localFunc and 'move' not in localFunc and 'remove' not in localFunc: "Warning: Either action \'add\' or \'move\' or 'remove' should be declared in RULE. \n"
         return ''
 
     def gen_player_stmt(self, node):
