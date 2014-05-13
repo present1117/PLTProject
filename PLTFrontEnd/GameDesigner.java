@@ -1,30 +1,36 @@
 import java.lang.*;
 import java.util.*;
 public class GameDesigner{
-static String[] pieceType = {"STONE"};
-static int[] pieceNum = {0};
-static int boardRow = 3;
-static int boardCol = 3;
+static String[] pieceType = {"RED","YELLOW","GREEN","BLUE"};
+static int[] pieceNum = {0,0,0,0};
+static int boardRow = 8;
+static int boardCol = 8;
 static int playerNum = 1;
 
-static String[] initPieces = {"STONE","STONE","STONE","STONE","STONE","STONE","STONE","STONE","STONE"};
-static int[] initOwner = {0,0,0,0,0,0,0,0,0};
-static int[][] initPos = {{0, 0},{0, 1},{0, 2},{1, 0},{1, 1},{1, 2},{2, 0},{2, 1},{2, 2}};
+public static boolean add_res (String pieceType,Pos position)
+{
+Object PIECE_TYPE=pieceType;
 
-public static boolean remove_res (Pos position)
+if(PIECE_TYPE=="RED"||PIECE_TYPE=="YELLOW")
 {
-if(Functions.getPiece(position)!=null)
-{
-return true;
+return Functions.isEmpty(position);
 }
-else
+
+if(PIECE_TYPE=="GREEN")
 {
+return Functions.isEmpty(position)&&Functions.getPieceType(Functions.getPiece(position.x(), position.y()-1))=="RED"&&Functions.getPieceType(Functions.getPiece(position.x(), position.y()+1))=="RED"&&Functions.getPieceType(Functions.getPiece(position.x()-1, position.y()))=="RED"&&Functions.getPieceType(Functions.getPiece(position.x()+1, position.y()))=="RED";
+}
+
+if(PIECE_TYPE=="BLUE")
+{
+return Functions.isEmpty(position)&&Functions.getPieceType(Functions.getPiece(position.x(), position.y()-1))=="RED"&&Functions.getPieceType(Functions.getPiece(position.x()-1, position.y()))=="RED"&&Functions.getPieceType(Functions.getPiece(position.x(), position.y()+1))=="YELLOW"&&Functions.getPieceType(Functions.getPiece(position.x()+1, position.y()))=="YELLOW";
+}
+
 return false;
-}
 }
 public static boolean win_res (Pos position)
 {
-if(Functions.pieceCount("STONE")==0)
+if(Functions.pieceCount("GREEN")+Functions.pieceCount("BLUE")==15)
 {
 return true;
 }
@@ -33,11 +39,14 @@ else
 return false;
 }
 }
-public static boolean add_res(String par0,Pos par1)
+static String[] initPieces = {};
+static int[] initOwner = {};
+static int[][] initPos = {};
+public static boolean move_res(Pos par0,Pos par1)
 {
 return true;
 }
-public static boolean move_res(Pos par0,Pos par1)
+public static boolean remove_res(Pos par0)
 {
 return true;
 }

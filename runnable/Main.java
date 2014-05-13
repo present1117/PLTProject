@@ -147,9 +147,12 @@ public class Main {
 		return true;
 	}
 	private static boolean move(String parameters) {
-//		String[] split = parameters.split(" ");
-//		String[] fromPos = split[0].split(",");
-//		String[] toPos = split[1].split(",");
+		String[] split = parameters.split(" ");
+		String[] fromPos = split[0].split(",");
+		String[] toPos = split[1].split(",");
+		Pos from = new Pos(Integer.parseInt(fromPos[0]),Integer.parseInt(fromPos[1]));
+		Pos to = new Pos(Integer.parseInt(toPos[0]),Integer.parseInt(toPos[1]));
+		Functions.move(from,to,playerlist);
 		return true;
-	}
+}
 }

@@ -413,7 +413,7 @@ class Traverse(object):
                         s = s + para_list[i] + ' ' + 'par' + str(i) + ','
                 s = s[0:-1]
                 s += ')\n'
-                s += '{\nreturn true;\n}\n'
+                s += '{\nreturn false;\n}\n'
         s += '}\n'
         return s
     
