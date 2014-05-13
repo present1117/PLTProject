@@ -12,7 +12,7 @@ import javax.swing.ImageIcon;
  *
  */
 public class Drawing {
-	public static void drawBoard(BoardGUI board, String action, Pos pos)
+	public static void drawBoard(BoardGUI board, String action, Pos pos, int numOfPlayers)
 	{
 		int numOfRows = Board.getRow();
 		int numOfColumns = Board.getCol();
@@ -25,7 +25,14 @@ public class Drawing {
 					if(action.equalsIgnoreCase("remove") && (pos.x() == i && pos.y() == j))
 						remove(board, i+""+j);
 					else
-						add(board, i+""+j, Board.getBoardSlots()[i][j].Piece().Type + ".png");
+                    {
+                        if(numOfPlayers > 1)
+                        {
+                            add(board, i+""+j, Board.getBoardSlots()[i][j].Piece().Type + Board.getBoardSlots()[i][j].Player().getId() + ".png");
+                        }
+                        else
+                            add(board, i+""+j, Board.getBoardSlots()[i][j].Piece().Type + ".png");
+                    }
 				}
 				catch(NullPointerException e)
 				{
@@ -35,8 +42,27 @@ public class Drawing {
 		}
 	}
 
+    public static void initializeBoard(BoardGUI board, String action, Pos pos)
+    {
+        int numOfRows = Board.getRow();
+		int numOfColumns = Board.getCol();
+		
+		for(int i = 0; i < numOfRows; i++)
+		{
+			for(int j = 0; j < numOfColumns; j++)
+			{
+				try{
+                    add(board, i+""+j, Board.getBoardSlots()[i][j].Piece().Type + ".png");
+				}
+				catch(NullPointerException e)
+				{
+					
+				}		
+			}	
+		}
+    }
 	
-	public static BoardGUI drawInitialBoard()
+	public static BoardGUI drawEmptyBoard()
 	{
 		try{
 			Image whiteBlock = ImageIO.read(new File("wood.jpg"));
