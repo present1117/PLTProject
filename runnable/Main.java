@@ -52,7 +52,7 @@ public class Main {
 		Scanner sc = new Scanner(System.in);
 		boolean flag = false;
 
-		/*
+		
 		while (true) {
 			playerid = playerid % playerlist.size();
 			System.out.println("Player" + playerid + " Action:");
@@ -100,7 +100,7 @@ public class Main {
 			}
 			if (flag) break;
 		}
-		*/
+		
 		System.out.println("Game ends!");
 	}
 
