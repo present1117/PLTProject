@@ -277,7 +277,7 @@ public class Functions {
 	public static boolean removePiece(Pos pos){
 		Piece piece = Board.getSlot(pos).Piece();
 		if (piece == null) {
-			return true;;
+			return true;
 		} else {
 			//Player owner = piece.owner;
 			Board.getSlot(pos).setPiece(null, null);
@@ -286,7 +286,7 @@ public class Functions {
 			//	if (p.getId() == owner.getId()) {
 			//		p.removePiece(piece);
 			//	}
-			}
+			//}
 			return true;
 		}
 	}
