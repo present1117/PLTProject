@@ -340,6 +340,8 @@ class Traverse(object):
                 funcParam['init']['param'].append([node.children[1], node.children[2], node.children[3].string])
         elif node.type == 'input_stmt':
             node.string = self.gen_input_stmt(node)
+        elif node.type == 'compound_stmt' and node.children[0].type == 'func_expr':
+            node.string = node.children[0].string + ';'
         elif node.type == 'factor' or node.type == 'term' or node.type == 'operand' or node.type == 'comparison' or node.type == 'not_test' or node.type == 'and_test' or node.type == 'or_test' or node.type == 'expr' or node.type == 'parameter' or node.type == 'flow_stmt' or node.type == 'compound_stmt' or node.type == 'simple_stmt' or node.type == 'stmt':
             if isinstance(node.children[0], Node):
                 node.string = node.children[0].string
