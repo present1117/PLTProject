@@ -16,7 +16,7 @@ import re
 ID_pattern = re.compile(r'[A-Za-z_][A-Za-z0-9_]*')
 
 
-builtInFunc = ['isEmpty', 'numberInRow', 'getPieceType', 'getPiecePlayer', 'getPiecePos', 'getPiece', 'pieceCount', 'isBoardFull', 'getPiecefromPlayer', 'findNextInRow', 'findSameInCircle', 'getAllPiecesPos', 'create2DimArray']
+builtInFunc = ['isEmpty', 'numberInRow', 'getPieceType', 'getPiecePlayer', 'getPiecePos', 'getPiece', 'pieceCount', 'isBoardFull', 'getPiecefromPlayer', 'findNextInRow', 'findSameInCircle', 'getAllPiecesPos', 'create2DimArray', 'removePiece']
 actionFunc = ['add', 'move', 'win', 'remove']
 funcParam = defaultdict(dict)
 funcParam['add']['returnValue'] = 'boolean'
@@ -53,6 +53,8 @@ funcParam['getAllPiecesPos']['returnValue'] = 'Pos[]'
 funcParam['getAllPiecesPos']['param'] = []
 funcParam['create2DimArray']['returnValue'] = 'int[][]'
 funcParam['create2DimArray']['param'] = ['int', 'int']
+funcParam['removePiece']['returnValue'] = 'boolean'
+funcParam['removePiece']['param'] = ['Pos']
 
 
 #funcParam['add'] = ['boolean', 'int[]']
@@ -530,6 +532,8 @@ class Traverse(object):
     def gen_func_expr(self, node):
         if node.children[0] in builtInFunc:
             s = 'Functions.' + node.children[0]
+        if node.children[0] in actionFunc:
+            s = node.children[0] + '_res'
         else:
             s = node.children[0]
         if len(node.children) == 1:
