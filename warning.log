@@ -1,2 +1,2 @@
-LexToken((,'(',32,420)
+LexToken(NEWLINE,'\n',37,514)
 Syntax error in input!

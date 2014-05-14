@@ -29,10 +29,10 @@ FUNCTION:
 		piecelist1 := getPiecefromPlayer(1)
 		piecelist2 := getPiecefromPlayer(2)
 		if piecelist1.size = 4:
-			Board.getSlot(position).setPiece(NIL, NIL)
+			removePiece(position)
 			return 1
 		elseif piecelist2.size = 4:
-			Board.getSlot(position).setPiece(NIL, NIL)
+			removePiece(position)
 			return 1
 		else
 			return -1
