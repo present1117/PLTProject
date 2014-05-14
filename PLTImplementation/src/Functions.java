@@ -290,7 +290,25 @@ public class Functions {
 			return true;
 		}
 	}
-
+	public static boolean move(Pos fromPos, Pos toPos, ArrayList<Player> players) {
+		Piece fromPiece = Board.getSlot(fromPos).Piece();
+		String type = fromPiece.getPiecetype();
+		Piece toPiece = Board.getSlot(toPos).Piece();
+		if (fromPiece == null || toPiece != null) {
+			return false;
+		} else {
+			Player owner = fromPiece.owner;
+			Board.getSlot(fromPos).setPiece(null,null);
+			for (Player p : players) {
+				if (p.getId() == owner.getId()) {
+					p.removePiece(fromPiece);
+					Functions.add(toPos,p,type);
+					return true;
+				}
+			}
+			return false;
+		}
+	}
 	public static Piece findNextInRow(Pos pos, int mode) {
 		int x = pos.x();
 		int y = pos.y();
