@@ -532,9 +532,11 @@ class Traverse(object):
             return s + children[-1].string
 
     def gen_func_expr(self, node):
+        print node.children[0]
         if node.children[0] in builtInFunc:
+            print node.children[0]
             s = 'Functions.' + node.children[0]
-        elif node.children[0] in actionFunc:
+        if node.children[0] in actionFunc:
             s = node.children[0] + '_res'
         else:
             s = node.children[0]

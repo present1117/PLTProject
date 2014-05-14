@@ -19,7 +19,7 @@ FUNCTION:
 		'STONE' 1 (1,1)
 
 
-       def add position:
+       def add piece, position:
 		if getPiece(position) ~= NIL:
 			return YES
 		else:
@@ -28,11 +28,11 @@ FUNCTION:
        def win position:
 		piecelist1 := getPiecefromPlayer(1)
 		piecelist2 := getPiecefromPlayer(2)
-		if piecelist1.size = 4:
+		if piecelist1.length = 4:
 			removePiece(position)
 			return 1
-		elseif piecelist2.size = 4:
+		elseif piecelist2.length = 4:
 			removePiece(position)
 			return 1
-		else
+		else:
 			return -1
