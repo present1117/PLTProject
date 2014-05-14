@@ -42,9 +42,11 @@ public class Main {
 
 		
 		for (int i = 0; i < GameDesigner.initOwner.length; i ++) {
-			Functions.add(new Pos(GameDesigner.initPos[i][0],GameDesigner.initPos[i][1]), playerlist.get(GameDesigner.initOwner[i]), GameDesigner.initPieces[i]);
-			Drawing.drawBoard(board, "add", new Pos(GameDesigner.initPos[i][0],GameDesigner.initPos[i][1]), playerlist.size());
-			
+			Pos pos = new Pos(GameDesigner.initPos[i][0],GameDesigner.initPos[i][1]);
+			Player currentPlayer = playerlist.get(GameDesigner.initOwner[i]);
+			Board.initSlot(pos);
+			Board.getSlot(pos).setPiece(new Piece(currentPlayer, new Pos(pos), GameDesigner.initPieces[i]), currentPlayer);
+			Drawing.drawBoard(board, "add", pos, playerlist.size());
 		}
 		
 		
@@ -66,11 +68,14 @@ public class Main {
 				else{
 					switch(add(spliter[1],spliter[2])) {
 						case FALSE:
+							System.out.println("Failed to Add!");
 							break;
 						case WIN:
+							System.out.println("Player " + playerid + " wins!");
 							flag = true;
 							break;
 						case SUCCESS:
+							System.out.println("Successfully Added!");
 							break;
 					}
 				} 
@@ -80,19 +85,27 @@ public class Main {
 				}
 				switch(remove(spliter[1])) {
 						case FALSE:
+							System.out.println("Failed to Remove!");
 							break;
 						case WIN:
+							flag = true;
+							System.out.println("Player " + playerid + " wins!");
 							break;
 						case SUCCESS:
+							System.out.println("Successfully Removed");
 							break;
 				}
 			} else if (spliter[0].equalsIgnoreCase("move")) {
 				switch(move(spliter[1])) {
 						case FALSE:
+							System.out.println("Failed to Move!");
 							break;
 						case WIN:
+							System.out.println("Player " + playerid + " wins!");
+							flag = true;
 							break;
 						case SUCCESS:
+							System.out.println("Successfully Moved");
 							break;
 				}
 			} else {
@@ -109,7 +122,7 @@ public class Main {
 		String ptype = "";
 		
 		if (_addPos.length != 2) {
-			System.out.println("Invalid Position!");
+			System.out.println("Invalid Length!");
 			return FALSE;
 		}
 		try {
@@ -119,26 +132,19 @@ public class Main {
 					ptype = t;
 			}
 			if (ptype == "") {
-				System.out.println("Missing Piece Type!");
+				System.out.println("Invalid Piece Type!");
 				return FALSE;
 			}
 
 			if (Functions.add(pos, playerlist.get(playerid), ptype)) {
 				Drawing.drawBoard(board,"add", pos, playerlist.size());
-				
-				System.out.println("Successfully Added!");
-				
-				if (Functions.win(pos, playerlist.get(playerid))) {
-					System.out.println("Player " + playerid + " wins!");
+				if (Functions.win(pos, playerlist.get(playerid)))
 					return WIN;
-				}
 				playerid ++;
 			} else {
-				System.out.println("Invalid Position!");
 				return FALSE;
 			}
 		} catch (Exception e) {
-			System.out.println(e.getLocalizedMessage());
 			return FALSE;
 		}
 		return SUCCESS;
@@ -146,28 +152,20 @@ public class Main {
 	private static int remove(String removePos) {
 		String[] _removePos = removePos.split(",");
 		if (_removePos.length != 2) {
-			System.out.println("Input Length != 2");
+			System.out.println("Invalid Length");
 			return FALSE;
 		}
 		try {
 			Pos pos = new Pos(Integer.parseInt(_removePos[0]),Integer.parseInt(_removePos[1]));
 			if (Functions.remove(pos, playerlist)) {
-				
-				
 				Drawing.drawBoard(board,"remove",pos,playerlist.size());
-				
-				System.out.println("Successfully Removed");
-				if (Functions.win(pos, playerlist.get(playerid))) {
-					System.out.println("Player " + playerid + " wins!");
+				if (Functions.win(pos, playerlist.get(playerid)))
 					return WIN;
-				}
 				playerid ++; 
 			} else {
-				System.out.println("Invalid Position!");
 				return FALSE;
 			}
 		} catch (Exception e) {
-			System.out.println("Error Input!");
 			return FALSE;
 		}
 		return SUCCESS;
@@ -176,17 +174,21 @@ public class Main {
 		String[] split = parameters.split(" ");
 		String[] fromPos = split[0].split(",");
 		String[] toPos = split[1].split(",");
-		Pos from = new Pos(Integer.parseInt(fromPos[0]),Integer.parseInt(fromPos[1]));
-		Pos to = new Pos(Integer.parseInt(toPos[0]),Integer.parseInt(toPos[1]));
-		if (Functions.move(from,to,playerlist)) {
-			if (Functions.win(to, playerlist.get(playerid))) {
-					System.out.println("Player " + playerid + " wins!");
-					return WIN;
-			} else {
-				playerid ++;
-				return SUCCESS;
+		try {
+			Pos from = new Pos(Integer.parseInt(fromPos[0]),Integer.parseInt(fromPos[1]));
+			Pos to = new Pos(Integer.parseInt(toPos[0]),Integer.parseInt(toPos[1]));
+			if (Functions.move(from,to,playerlist)) {
+				if (Functions.win(to, playerlist.get(playerid))) {
+						return WIN;
+				} else {
+					playerid ++;
+					return SUCCESS;
+				}
 			}
+			else return FALSE;
+		} catch (Exception e) {
+			return FALSE;
 		}
-		else return FALSE;
+		
 	}
 }
