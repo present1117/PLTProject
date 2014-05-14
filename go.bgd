@@ -5,25 +5,34 @@ BOARD:
 	3 3
 
 PLAYER:
-	1
+	2
 
 RULE:
-	action := remove
+	action := add
 	action := win
 
 FUNCTION:
        def __init__:
-		'STONE' 0 (0,0)
-		'STONE' 0 (2,2)
+		'STONE' 0 (0,1)
+		'STONE' 0 (1,0)
+		'STONE' 0 (2,1)
+		'STONE' 1 (1,1)
 
-       def remove position:
+
+       def add position:
 		if getPiece(position) ~= NIL:
 			return YES
 		else:
 			return NO
 
        def win position:
-		if pieceCount('STONE') = 0:
-			return YES
-		else:
-			return NO
+		piecelist1 := getPiecefromPlayer(1)
+		piecelist2 := getPiecefromPlayer(2)
+		if piecelist1.size = 4:
+			Board.getSlot(position).setPiece(NIL, NIL)
+			return 1
+		elseif piecelist2.size = 4:
+			Board.getSlot(position).setPiece(NIL, NIL)
+			return 1
+		else
+			return -1
